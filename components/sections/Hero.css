@@ -38,7 +38,7 @@
 .site .b-fact{display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:2px;padding-inline-end:22px;margin-inline-end:22px;border-inline-end:1px solid var(--line)}
 .site .b-fact:last-child{border-inline-end:0;margin-inline-end:0;padding-inline-end:0}
 .site .b-fact dd{margin:0;display:flex;align-items:baseline;gap:8px;font-family:var(--serif);font-weight:700;font-size:clamp(26px,2.4vw,32px);line-height:1.1;color:var(--navy)}
-.site .b-fact-stars{font-family:var(--sans);font-size:14px;letter-spacing:1px;color:#c19a4b}
+.site .b-fact-stars{font-family:var(--sans);font-size:14px;letter-spacing:1px;color:var(--gold)}
 .site .b-fact dt{font-size:14.5px;line-height:1.4;color:var(--muted);max-width:15em}
 /* Phones: the facts move up under the headline so they are seen before any scrolling. */
 @media (max-width:979px){
@@ -61,12 +61,11 @@
 }
 
 /* Service shortcuts under the hero */
-.site .b-domain-nav{background:var(--white);border-bottom:1px solid var(--line);padding:28px 0}
 .site .b-domain-title{margin:0 0 14px;font-weight:600;color:var(--ink);font-size:18px}
 .site .b-domain-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .site .b-domain-link{
   display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 14px;
-  border:1px solid var(--line);border-radius:var(--radius-sm);background:#fff;
+  border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--white);
   text-decoration:none;color:var(--navy);font-weight:600;font-size:16.5px;line-height:1.3;
   transition:border-color var(--t),background-color var(--t),transform var(--t),box-shadow var(--t);
 }
@@ -77,11 +76,10 @@
 /* Pointer devices only. */
 @media (hover:hover){
   .site .b-domain-link:hover{border-color:var(--navy);background:var(--paper);transform:translateY(-2px);box-shadow:var(--shadow-hover)}
-  .site .b-domain-link:hover .b-domain-icon{background:var(--navy);color:#fff}
+  .site .b-domain-link:hover .b-domain-icon{background:var(--navy);color:var(--white)}
 }
 .site .b-domain-icon svg{width:20px;height:20px}
 @media (min-width:860px){
-  .site .b-domain-nav .b-container{display:flex;align-items:center;gap:28px}
   .site .b-domain-title{margin:0;flex:none}
   .site .b-domain-list{grid-template-columns:repeat(4,1fr);flex:1}
 }

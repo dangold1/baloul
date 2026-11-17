@@ -1,27 +1,27 @@
 .site .b-reviews{background:var(--paper);border-block:1px solid var(--line)}
 .site .b-review-grid{display:grid;gap:16px}
 @media (min-width:860px){.site .b-review-grid{grid-template-columns:.8fr 1fr 1fr;gap:20px;align-items:stretch}}
-.site .b-review-card{margin:0;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px 26px;display:flex;flex-direction:column;gap:16px}
+.site .b-review-card{margin:0;background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:28px 26px;display:flex;flex-direction:column;gap:16px}
 .site .b-review-card blockquote{margin:0;flex:1}
 .site .b-review-card blockquote p{margin:0;font-family:var(--serif);font-size:21px;line-height:1.6;color:var(--ink)}
 .site .b-review-card figcaption{font-size:15.5px;color:var(--muted);padding-top:14px;border-top:1px solid var(--line)}
-.site .b-google-card{background:var(--navy);color:#fff;border-radius:var(--radius);padding:28px 26px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
-.site .b-google-card .b-stars{color:#e2b76f}
+.site .b-google-card{background:var(--navy);color:var(--white);border-radius:var(--radius);padding:28px 26px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.site .b-google-card .b-stars{color:var(--gold-light)}
 .site .b-google-big{font-family:var(--serif);font-size:64px;line-height:1;font-weight:700}
 .site .b-google-count{color:#d8dee8;font-size:17px}
-.site .b-google-link{margin-top:auto;width:100%;background:transparent;color:#fff;border-color:rgba(255,255,255,.55)}
-.site .b-google-link:hover{border-color:#fff;background:rgba(255,255,255,.06)}
-.site .b-google-card :focus-visible{outline-color:#fff}
+.site .b-google-link{margin-top:auto;width:100%;background:transparent;color:var(--white);border-color:rgba(255,255,255,.55)}
+.site .b-google-link:hover{border-color:var(--white);background:rgba(255,255,255,.06)}
+.site .b-google-card :focus-visible{outline-color:var(--white)}
 @media (max-width:859px){.site .b-google-link{margin-top:12px}}
 
 /* The one dark band on the page: proof gets its own weight. */
 .site .b-reviews{background:var(--navy);border-block:0}
-.site .b-reviews .b-section-head h2{color:#fff}
-.site .b-reviews .b-lead{color:#c9d2df}
-.site .b-reviews .b-eyebrow{color:#e2b76f}
-.site .b-reviews .b-eyebrow::before{background:#e2b76f}
+.site .b-reviews .b-section-head h2{color:var(--white)}
+.site .b-reviews .b-lead{color:var(--on-dark-muted)}
+.site .b-reviews .b-eyebrow{color:var(--gold-light)}
+.site .b-reviews .b-eyebrow::before{background:var(--gold-light)}
 .site .b-reviews .b-google-card{background:transparent;border:1px solid rgba(255,255,255,.22)}
 .site .b-reviews .b-review-card{border:0}
-.site .b-reviews .b-text-link{color:#fff;text-decoration-color:#e2b76f}
-.site .b-reviews .b-text-link:hover{text-decoration-color:#fff}
-.site .b-reviews :focus-visible{outline-color:#fff}
+.site .b-reviews .b-text-link{color:var(--white);text-decoration-color:var(--gold-light)}
+.site .b-reviews .b-text-link:hover{text-decoration-color:var(--white)}
+.site .b-reviews :focus-visible{outline-color:var(--white)}

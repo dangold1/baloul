@@ -37,7 +37,7 @@
   .site .b-nav-cta{
     display:inline-flex;align-items:center;justify-content:center;
     min-height:48px;padding:0 22px;border-radius:var(--radius-sm);
-    background:var(--navy);color:#fff;text-decoration:none;font-weight:600;font-size:17px;
+    background:var(--navy);color:var(--white);text-decoration:none;font-weight:600;font-size:17px;
     transition:background-color var(--t),transform var(--t),box-shadow var(--t);
   }
   @media (hover:hover){.site .b-nav-cta:hover{background:var(--navy-2);transform:translateY(-1px);box-shadow:var(--shadow-hover)}}
@@ -50,7 +50,7 @@
 .site .b-menu{
   display:inline-flex;align-items:center;gap:10px;list-style:none;cursor:pointer;
   min-height:48px;padding:0 16px;border:1.5px solid var(--line-strong);border-radius:var(--radius-sm);
-  background:#fff;color:var(--navy);font-weight:600;font-size:16px;
+  background:var(--white);color:var(--navy);font-weight:600;font-size:16px;
 }
 .site .b-menu::-webkit-details-marker{display:none}
 .site .b-menu-icon{position:relative;width:18px;height:2px;background:currentColor;border-radius:2px}
@@ -79,7 +79,7 @@
 .site .b-mobile-group a{padding-inline-start:16px}
 .site .b-mobile a.b-mobile-cta{
   border:0;margin-top:14px;justify-content:center;
-  background:var(--navy);color:#fff;border-radius:var(--radius-sm);font-weight:600;
+  background:var(--navy);color:var(--white);border-radius:var(--radius-sm);font-weight:600;
 }
 
 /* Desktop services menu (native <details>) */
@@ -97,7 +97,7 @@
 .site .b-services-menu summary:hover,.site .b-services-menu[open] summary{background:var(--paper-2);color:var(--navy)}
 .site .b-services-menu-list{
   position:absolute;top:calc(100% + 8px);inset-inline-start:0;min-width:240px;z-index:60;
-  display:grid;padding:8px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+  display:grid;padding:8px;background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
   box-shadow:0 18px 40px rgba(23,42,70,.14);
 }
 .site .b-services-menu-list a{padding:12px 14px;border-radius:var(--radius-sm);text-decoration:none;color:var(--ink);font-size:17px;font-weight:500}
@@ -106,5 +106,5 @@
 /* Prototype: the header button stays quiet so the hero button is the only filled navy action on screen. */
 @media (min-width:980px){
   .site .b-nav-cta{background:transparent!important;color:var(--navy)!important;border:1.5px solid var(--navy)!important}
-  @media (hover:hover){.site .b-nav-cta:hover{background:var(--navy)!important;color:#fff!important}}
+  @media (hover:hover){.site .b-nav-cta:hover{background:var(--navy)!important;color:var(--white)!important}}
 }

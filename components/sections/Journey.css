@@ -14,7 +14,7 @@
 .site .b-situation-link svg{width:18px;height:18px;transition:transform var(--t)}
 /* Pointer devices only: a touch must not leave a card stuck in its hover state. */
 @media (hover:hover){
-  .site .b-situation:hover{border-color:var(--navy);background:#fff;transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+  .site .b-situation:hover{border-color:var(--navy);background:var(--white);transform:translateY(-2px);box-shadow:var(--shadow-hover)}
   .site .b-situation:hover .b-situation-link svg{transform:translateX(-4px)}
 }
 
@@ -26,7 +26,7 @@
 .site .b-step:last-child::before{display:none}
 .site .b-step-num{
   position:absolute;inset-inline-start:0;top:0;width:44px;height:44px;border-radius:50%;
-  display:grid;place-items:center;background:#fff;border:1.5px solid var(--bronze-soft);
+  display:grid;place-items:center;background:var(--white);border:1.5px solid var(--bronze-soft);
   font-family:var(--serif);font-weight:700;font-size:20px;color:var(--navy);
 }
 .site .b-step h3{margin:6px 0 6px}

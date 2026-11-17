@@ -50,8 +50,8 @@
   /* Over the dark bands (reviews, footer). */
   .site [data-tone="dark"] .b-stepper-track{background:rgba(255,255,255,.28)}
   .site [data-tone="dark"] .b-stepper-dot::before{background:transparent;border-color:rgba(255,255,255,.55)}
-  .site [data-tone="dark"] .b-stepper-step[data-state="past"] .b-stepper-dot::before{background:#fff;border-color:#fff}
-  .site [data-tone="dark"] .b-stepper-step[data-state="current"] .b-stepper-dot::before{background:#e2b76f;border-color:#e2b76f}
+  .site [data-tone="dark"] .b-stepper-step[data-state="past"] .b-stepper-dot::before{background:var(--white);border-color:var(--white)}
+  .site [data-tone="dark"] .b-stepper-step[data-state="current"] .b-stepper-dot::before{background:var(--gold-light);border-color:var(--gold-light)}
 }
 /* Wide screens have room beside the content: the current label stays visible. */
 @media (min-width:1400px){

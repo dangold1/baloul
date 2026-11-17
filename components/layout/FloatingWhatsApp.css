@@ -11,8 +11,8 @@
   display:flex;align-items:center;justify-content:center;gap:8px;min-height:50px;
   border-radius:var(--radius-sm);text-decoration:none;font-weight:600;font-size:17px;
 }
-.site .b-call{background:var(--navy);color:#fff}
-.site .b-wa{background:var(--wa);color:#fff}
+.site .b-call{background:var(--navy);color:var(--white)}
+.site .b-wa{background:var(--wa);color:var(--white)}
 .site .b-wa:hover{background:var(--wa-2)}
 @media (min-width:760px){
   .site .b-floating{
@@ -22,7 +22,7 @@
   /* Desktop: a round WhatsApp button in the familiar WhatsApp green, follows the page. */
   .site .b-floating a.b-wa{
     width:60px;height:60px;min-height:0;padding:0;border-radius:50%;
-    background:#25d366;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.18);
+    background:var(--wa-brand);color:var(--white);box-shadow:0 6px 18px rgba(0,0,0,.18);
     transition:transform var(--t),box-shadow var(--t),background-color var(--t);
   }
   .site .b-floating a.b-wa svg{width:32px;height:32px}
@@ -47,7 +47,7 @@
 }
 .site .b-wa-menu-head{display:flex;align-items:center;gap:10px;margin:0 4px 6px}
 .site .b-wa-menu-badge{
-  flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#25d366;color:#fff;
+  flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--wa-brand);color:var(--white);
 }
 .site .b-wa-menu-badge svg{width:20px;height:20px}
 .site .b-wa-menu-title{flex:1;margin:0;font-size:17px;font-weight:700;color:var(--navy);line-height:1.3}
