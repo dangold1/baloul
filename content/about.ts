@@ -2,7 +2,6 @@ export const aboutParagraphs = [
   "הפעילות של BALOUL החלה בשנת 2003 עם יצחק בלול, סוכן ביטוח בעל ניסיון של יותר משני עשורים. יצחק הגיע מעולם ההייטק והוא בעל תואר בהנדסת חשמל ואלקטרוניקה ותואר שני במנהל עסקים.",
   "בשנת 2014 הפעילות התרחבה לסוכנות רחבה ומבוססת יותר. כיום אנחנו מלווים לקוחות בתחומי הפיננסים, הפנסיה והביטוח, עם דגש על ליווי אישי, שקיפות וחשיבה לטווח ארוך.",
 ];
-export const aboutInlineChips = ["ניסיון מאז 2003", "ליווי אישי", "כתובת אחת"];
 export const aboutModalChips = ["ניסיון מאז 2003", "יחס אישי", "ראייה רחבה", "ליווי לאורך זמן"];
 
 /** Milestones shown in the "who we are" section. */
@@ -24,7 +23,6 @@ export const aboutParagraphsEn = [
   "BALOUL began in 2003 with Yitzhak Baloul, an insurance agent with more than two decades of experience. Yitzhak came from the high-tech world and holds a degree in electrical and electronics engineering and an MBA.",
   "In 2014 the practice grew into a broader, more established agency. Today we support clients in finance, pensions and insurance, with an emphasis on personal service, transparency and long-term thinking.",
 ];
-export const aboutInlineChipsEn = ["Experience since 2003", "Personal service", "One point of contact"];
 export const aboutModalChipsEn = ["Experience since 2003", "Personal attention", "The full picture", "Long-term support"];
 
 export const milestonesEn = [

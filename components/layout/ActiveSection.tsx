@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { SectionId, StepId } from "@/content/sections";
 import { toSectionId } from "@/content/sections";
+import { DOM } from "@/lib/dom";
 import { readingLine, resolveStep } from "@/lib/steps";
 
 /** A part of the home page that announced itself as a step: its id, its name in the stepper, and its element. */
@@ -98,7 +99,7 @@ export function ActiveSectionProvider({ children }: { children: React.ReactNode 
     const measure = () => {
       frame = 0;
       if (locked.current || registry.current.size === 0) return;
-      const header = document.querySelector(".b-header")?.getBoundingClientRect().bottom ?? 0;
+      const header = document.querySelector(DOM.header)?.getBoundingClientRect().bottom ?? 0;
       const boxes = [...registry.current.values()].map((s) => ({ id: s.id, top: s.el.getBoundingClientRect().top }));
       const doc = document.documentElement;
       const atBottom = scrollY > 0 && scrollY + innerHeight >= doc.scrollHeight - 2;

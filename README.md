@@ -37,7 +37,7 @@ npm start          # הצגת תוצאת ה־build: http://localhost:3000
 app/                 עמודים: בית, app/[slug] לעמודי השירות (/pension-retirement וכו') ולעמודים המשפטיים (/privacy וכו'), sitemap, robots, manifest
 components/service   ServicePage: תבנית אחת לארבעת עמודי השירות
 components/layout    UtilityBar, Header, MobileMenu, Footer, FloatingWhatsApp, HashLinkController
-components/sections Hero, DomainNav, Situations, Services (+ServiceCard), Process, About, Reviews, Knowledge, Contact
+components/sections Hero, Situations, Services (+ServiceCard), Process, About, Reviews, Knowledge, Contact
 components/lead      ContactForm, LeadPopup, useLeadSubmit (זרימת הליד המשותפת)
 components/consent   CookieConsent, CookieSettingsLink
 components/analytics TagManager (GTM אחרי הסכמה), ClickTracker

@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { DOM } from "@/lib/dom";
 import { useSteps } from "./ActiveSection";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 /** Dark bands where the stepper switches to its light colours. */
-const darkAreas = ["#reviews", ".b-footer"];
+const darkAreas = [DOM.reviews, ".b-footer"];
 
 /**
  * Scroll progress for the home page (Dan, 2026-11-10).
@@ -29,7 +30,7 @@ export function ScrollStepper() {
       const max = doc.scrollHeight - innerHeight;
       const progress = max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
       root?.style.setProperty("--stepper-progress", progress.toFixed(4));
-      const header = document.querySelector(".b-header");
+      const header = document.querySelector(DOM.header);
       if (header) root?.style.setProperty("--stepper-top", `${Math.round(header.getBoundingClientRect().bottom)}px`);
       const mid = innerHeight / 2;
       setDark(

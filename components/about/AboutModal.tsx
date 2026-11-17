@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { site } from "@/content/site";
 import { aboutModalChips, aboutModalChipsEn, aboutParagraphs, aboutParagraphsEn } from "@/content/about";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
+import { cx } from "@/lib/cx";
 import { pick } from "@/lib/i18n/languages";
 import { OPEN_ABOUT_EVENT, setRootState } from "@/lib/ui-events";
 
@@ -38,7 +39,7 @@ export function AboutModal() {
   }, [open, close]);
 
   return (
-    <div aria-hidden={!open} className={`b-modal${open ? " open" : ""}`} id="about-modal">
+    <div aria-hidden={!open} className={cx("b-modal", open && "open")} id="about-modal">
       <div className="b-modal-backdrop b-close-about" onClick={close} />
       <div aria-labelledby="aboutTitle" aria-modal="true" className="b-modal-dialog" role="dialog">
         <button ref={closeRef} aria-label={t("about.modalClose")} className="b-modal-close b-close-about" type="button" onClick={close}>

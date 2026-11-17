@@ -1,4 +1,5 @@
 import type { Service } from "@/content/services";
+import { cx } from "@/lib/cx";
 
 const paths: Record<Service["icon"], React.ReactNode> = {
   chart: (
@@ -80,7 +81,7 @@ export function PinIcon({ className }: IconProps) {
 export function ArrowIcon({ className }: IconProps) {
   // Points left: "forward" in a right-to-left page. The b-arrow class mirrors it in English (shared.css).
   return (
-    <svg {...base} className={className ? `b-arrow ${className}` : "b-arrow"}>
+    <svg {...base} className={cx("b-arrow", className)}>
       <path d="M19 12H5" />
       <path d="M11 6l-6 6 6 6" />
     </svg>

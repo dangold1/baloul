@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { DOM } from "@/lib/dom";
 
 /**
  * One place for in-page navigation (replaces the legacy per-version menu scripts):
@@ -9,8 +10,6 @@ import { useEffect } from "react";
  */
 function openTarget(target: Element) {
   if (target instanceof HTMLDetailsElement) target.open = true;
-  const inner = target.querySelector<HTMLDetailsElement>(".b-solution-details");
-  if (inner) inner.open = true;
 }
 
 export function HashLinkController() {
@@ -23,7 +22,7 @@ export function HashLinkController() {
       const target = href.length > 1 ? document.querySelector(href) : document.getElementById("top");
       if (!target) return;
       e.preventDefault();
-      document.querySelector("#bMobileMenu")?.removeAttribute("open");
+      document.querySelector(DOM.mobileMenu)?.removeAttribute("open");
       openTarget(target);
       const block: ScrollLogicalPosition = href.startsWith("#service-") && window.innerWidth > 980 ? "center" : "start";
       requestAnimationFrame(() =>

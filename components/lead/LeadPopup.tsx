@@ -5,6 +5,8 @@ import { WhatsAppIcon } from "@/components/ui/Icons";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { popupTopics, topicLabel } from "@/content/services";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
+import { cx } from "@/lib/cx";
+import { DOM } from "@/lib/dom";
 import { track } from "@/lib/analytics";
 import { LEAD_SUBMITTED_KEY, setRootState } from "@/lib/ui-events";
 import { NetlifyFields } from "./Honeypot";
@@ -26,7 +28,7 @@ function storageFlag(key: string): boolean {
 }
 
 /** Another dialog (cookie consent, about) is on screen. */
-const otherDialogOpen = () => Boolean(document.querySelector(".b-modal.open, .b-consent[data-open='true']"));
+const otherDialogOpen = () => Boolean(document.querySelector(DOM.openDialog));
 
 export function LeadPopup() {
   const [open, setOpen] = useState(false);
@@ -88,7 +90,7 @@ export function LeadPopup() {
   }, [open, close]);
 
   return (
-    <div className={`b-lead-pop${open ? " open" : ""}`} id="bLeadPop" aria-hidden={!open}>
+    <div className={cx("b-lead-pop", open && "open")} id="bLeadPop" aria-hidden={!open}>
       <div className="b-lead-pop-backdrop" onClick={close} />
       <div className="b-lead-pop-card" role="dialog" aria-modal="true" aria-labelledby="bLeadPopTitle">
         <button ref={closeRef} type="button" className="b-lead-pop-close" aria-label={t("popup.close")} onClick={close}>
