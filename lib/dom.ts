@@ -4,5 +4,6 @@ export const DOM = {
   header: ".b-header",
   reviews: "#reviews",
   mobileMenu: "#bMobileMenu",
-  openDialog: ".b-modal.open, .b-consent[data-open='true']",
+  /** Any dialog, banner or popover on screen (see components/ui/Dialog.tsx). */
+  openDialog: "[data-dialog-open]",
 } as const;

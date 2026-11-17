@@ -7,21 +7,20 @@
 .site .b-lead-pop-backdrop{position:absolute;inset:0;background:rgba(16,26,40,.55)}
 .site .b-lead-pop-card{
   position:relative;width:min(520px,100%);max-height:92svh;overflow:auto;overscroll-behavior:contain;
-  background:#fff;border-radius:var(--radius);
+  background:var(--white);border-radius:var(--radius);
   box-shadow:0 24px 70px rgba(16,26,40,.3);padding:32px 22px 24px;text-align:start;
 }
 @media (min-width:600px){.site .b-lead-pop-card{padding:40px 36px 30px}}
 .site .b-lead-pop-close{
   position:absolute;top:12px;inset-inline-end:12px;width:48px;height:48px;border-radius:50%;
-  border:1px solid var(--line-strong);background:#fff;color:var(--navy);font-size:26px;line-height:1;cursor:pointer;
+  border:1px solid var(--line-strong);background:var(--white);color:var(--navy);font-size:26px;line-height:1;cursor:pointer;
 }
 .site .b-lead-pop-brand{font-family:var(--serif);font-weight:700;letter-spacing:.08em;color:var(--navy);font-size:18px;margin-bottom:12px}
 .site .b-lead-pop-eyebrow{color:var(--bronze);font-weight:600;font-size:15px;margin-bottom:6px}
 .site .b-lead-pop h2{font-size:clamp(26px,4vw,32px);margin:0 0 10px;padding-inline-end:44px}
 .site .b-lead-pop-card>p{color:var(--muted);margin:0 0 22px}
 .site .b-lead-pop-fields{display:grid;gap:16px}
-@media (min-width:600px){.site .b-lead-pop-fields{grid-template-columns:1fr 1fr}.site .b-lead-pop-full{grid-column:1/-1}}
-.site .b-lead-pop-fields label{display:grid;gap:8px}
+@media (min-width:600px){.site .b-lead-pop-fields{grid-template-columns:1fr 1fr}}
 /* Same primary button as the contact form; only the spacing is popup-specific. */
 .site .b-lead-pop-submit{margin-top:20px}
 .site .b-lead-pop .b-form-status{text-align:center}

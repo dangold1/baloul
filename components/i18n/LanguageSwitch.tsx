@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { basePath, LANG_STORAGE_KEY, LANGS, localePath, parseLang } from "@/lib/i18n/languages";
+import { useDismiss } from "@/lib/useDismiss";
 import { useLocalStorage } from "@/lib/useLocalStorage";
 import { useSteps } from "@/components/layout/ActiveSection";
 import { Flag } from "./Flags";
@@ -36,12 +37,8 @@ export function LanguageSwitch() {
     if (returnFocus) triggerRef.current?.focus();
   };
 
-  useEffect(() => {
-    if (!open) return;
-    const onDown = (e: PointerEvent) => !rootRef.current?.contains(e.target as Node) && setOpen(false);
-    document.addEventListener("pointerdown", onDown);
-    return () => document.removeEventListener("pointerdown", onDown);
-  }, [open]);
+  // Escape returns focus to the flag button; a press elsewhere just closes.
+  useDismiss(rootRef, open, (reason) => close(reason === "escape"));
 
   const onMenuKey = (e: React.KeyboardEvent) => {
     const i = itemRefs.current.findIndex((el) => el === document.activeElement);
@@ -50,7 +47,6 @@ export function LanguageSwitch() {
       ArrowUp: () => focusItem(i - 1),
       Home: () => focusItem(0),
       End: () => focusItem(LANGS.length - 1),
-      Escape: () => close(true),
       Tab: () => setOpen(false),
     };
     if (!keys[e.key]) return;

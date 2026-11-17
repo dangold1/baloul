@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
+import { useDismiss } from "@/lib/useDismiss";
 import type { NavItem } from "./nav";
 import { NavLink } from "./NavLink";
 
@@ -22,24 +23,16 @@ export function MobileMenu({ items }: { items: NavItem[] }) {
     </NavLink>
   );
 
+  const [open, setOpen] = useState(false);
+  useDismiss(ref, open, () => ref.current?.removeAttribute("open"));
   useEffect(() => {
     const close = () => ref.current?.removeAttribute("open");
-    const onClick = (e: MouseEvent) => {
-      if (ref.current?.open && !ref.current.contains(e.target as Node)) close();
-    };
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
-    document.addEventListener("click", onClick);
-    document.addEventListener("keydown", onKey);
     window.addEventListener("hashchange", close);
-    return () => {
-      document.removeEventListener("click", onClick);
-      document.removeEventListener("keydown", onKey);
-      window.removeEventListener("hashchange", close);
-    };
+    return () => window.removeEventListener("hashchange", close);
   }, []);
 
   return (
-    <details className="b-mobile-menu-shell" id="bMobileMenu" ref={ref}>
+    <details className="b-mobile-menu-shell" id="bMobileMenu" ref={ref} onToggle={(e) => setOpen(e.currentTarget.open)}>
       <summary aria-label={t("menu.open")} className="b-menu">
         <span aria-hidden="true" className="b-menu-icon" />
         <span aria-hidden="true" className="b-menu-text">

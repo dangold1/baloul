@@ -3,13 +3,14 @@
 import { WhatsAppIcon } from "@/components/ui/Icons";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { popupTopics, topicLabel } from "@/content/services";
+import { popupTopics } from "@/content/services";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
-import { cx } from "@/lib/cx";
+import { Dialog } from "@/components/ui/Dialog";
 import { DOM } from "@/lib/dom";
 import { track } from "@/lib/analytics";
 import { LEAD_SUBMITTED_KEY, setRootState } from "@/lib/ui-events";
 import { NetlifyFields } from "./Honeypot";
+import { LeadFields } from "./LeadFields";
 import { useLeadSubmit } from "./useLeadSubmit";
 
 const FORM_NAME = "popup-lead";
@@ -27,14 +28,13 @@ function storageFlag(key: string): boolean {
   }
 }
 
-/** Another dialog (cookie consent, about) is on screen. */
+/** Another dialog, banner or popover (cookie consent, About, the WhatsApp bubble) is on screen. */
 const otherDialogOpen = () => Boolean(document.querySelector(DOM.openDialog));
 
 export function LeadPopup() {
   const [open, setOpen] = useState(false);
-  const { lang, t } = useLanguage();
+  const { t } = useLanguage();
   const shown = useRef(false);
-  const closeRef = useRef<HTMLButtonElement>(null);
 
   const close = useCallback(() => {
     setOpen(false);
@@ -48,7 +48,7 @@ export function LeadPopup() {
     let timer: number | undefined;
     // On the home page, wait until the visitor has read past the reviews (the proof), never on top of them.
     const reached = () => {
-      const reviews = document.getElementById("reviews");
+      const reviews = document.querySelector(DOM.reviews);
       if (reviews) return reviews.getBoundingClientRect().bottom < window.innerHeight * 0.4;
       const max = document.documentElement.scrollHeight - window.innerHeight;
       return max > 0 && window.scrollY / max >= SCROLL_TRIGGER;
@@ -78,60 +78,32 @@ export function LeadPopup() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!open) return;
-    const focusTimer = window.setTimeout(() => closeRef.current?.focus(), 180);
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
-    document.addEventListener("keydown", onKey);
-    return () => {
-      window.clearTimeout(focusTimer);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [open, close]);
-
   return (
-    <div className={cx("b-lead-pop", open && "open")} id="bLeadPop" aria-hidden={!open}>
-      <div className="b-lead-pop-backdrop" onClick={close} />
-      <div className="b-lead-pop-card" role="dialog" aria-modal="true" aria-labelledby="bLeadPopTitle">
-        <button ref={closeRef} type="button" className="b-lead-pop-close" aria-label={t("popup.close")} onClick={close}>
-          ×
+    <Dialog variant="leadPop" id="bLeadPop" open={open} onClose={close} labelledBy="bLeadPopTitle" closeLabel={t("popup.close")} focusDelay={180}>
+      <div className="b-lead-pop-brand">BALOUL</div>
+      <div className="b-lead-pop-eyebrow">{t("popup.eyebrow")}</div>
+      <h2 id="bLeadPopTitle">{t("popup.title")}</h2>
+      <p>{t("popup.text")}</p>
+      <form className="b-form" id="bLeadPopForm" name={FORM_NAME} method="POST" data-netlify="true" netlify-honeypot="bot-field" onSubmit={onSubmit}>
+        <NetlifyFields formName={FORM_NAME} label={t("form.honeypot")} />
+        <div className="b-lead-pop-fields">
+          <LeadFields
+            idPrefix="bLeadPop"
+            topics={popupTopics}
+            namePlaceholder={t("popup.namePlaceholder")}
+            topicQuestion={t("popup.topic")}
+            onPhoneInput={onPhoneInput}
+          />
+        </div>
+        <button className="b-btn b-btn-wa b-btn-block b-lead-pop-submit" type="submit">
+          <WhatsAppIcon />
+          <span>{t("form.submit")}</span>
         </button>
-        <div className="b-lead-pop-brand">BALOUL</div>
-        <div className="b-lead-pop-eyebrow">{t("popup.eyebrow")}</div>
-        <h2 id="bLeadPopTitle">{t("popup.title")}</h2>
-        <p>{t("popup.text")}</p>
-        <form id="bLeadPopForm" name={FORM_NAME} method="POST" data-netlify="true" netlify-honeypot="bot-field" onSubmit={onSubmit}>
-          <NetlifyFields formName={FORM_NAME} />
-          <div className="b-lead-pop-fields">
-            <label>
-              <span>{t("form.name")}</span>
-              <input id="bLeadPopName" name="name" autoComplete="name" required type="text" placeholder={t("popup.namePlaceholder")} />
-            </label>
-            <label>
-              <span>{t("form.phone")}</span>
-              <input id="bLeadPopPhone" name="phone" autoComplete="tel" inputMode="tel" required type="tel" dir="ltr" placeholder="050-0000000" onInput={onPhoneInput} />
-            </label>
-            <label className="b-lead-pop-full">
-              <span>{t("popup.topic")}</span>
-              <select id="bLeadPopTopic" name="topic">
-                {popupTopics.map((topic) => (
-                  <option key={topic} value={topic}>
-                    {topicLabel(topic, lang)}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-          <button className="b-btn b-btn-wa b-btn-block b-lead-pop-submit" type="submit">
-            <WhatsAppIcon />
-            <span>{t("form.submit")}</span>
-          </button>
-          <div className="b-form-status" id="bLeadPopStatus" aria-live="polite">
-            {status}
-          </div>
-          <small>{t("popup.privacy")}</small>
-        </form>
-      </div>
-    </div>
+        <div className="b-form-status" id="bLeadPopStatus" aria-live="polite">
+          {status}
+        </div>
+        <small>{t("popup.privacy")}</small>
+      </form>
+    </Dialog>
   );
 }
