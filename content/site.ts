@@ -1,7 +1,8 @@
 /** Business details used across the site, the schema markup and the lead flow. */
 export const site = {
   name: "BALOUL",
-  url: "https://baloul.co.il",
+  /** The deployed address: Netlify's URL at build time (see next.config.ts), else the real domain. */
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://baloul.co.il",
   title: "BALOUL | סוכנות לפנסיה, ביטוח ותכנון פיננסי בחולון, מאז 2003",
   description:
     "BALOUL מלווה לקוחות פרטיים, משפחות ועסקים בפנסיה ותכנון פרישה, חיסכון והשקעות, ביטוח ותביעות. פעילות מקצועית מאז 2003, משרד בחולון, דירוג 5.0 ב־Google.",
@@ -30,7 +31,8 @@ export const site = {
     logo: { src: "/images/logo.webp", width: 480, height: 463 },
     hero: { src: "/images/hero.webp", width: 1536, height: 1024 },
     team: { src: "/images/team.webp", width: 1400, height: 933 },
-    share: "/assets/hero-share.jpg",
+    /** Link preview (WhatsApp, Facebook): the About team photo, 1200x630. */
+    share: "/assets/share-team.jpg",
   },
 } as const;
 
