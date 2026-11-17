@@ -5,7 +5,7 @@ export const reviews: Review[] = [
   { quote: "״הם שמים את האינטרס שלי במקום הראשון. אני סומך עליהם באופן מלא וממליץ ללא היסוס.״", author: "מתוך המלצה של לקוח בפייסבוק" },
 ];
 
-export const googleRating = { score: "5.0", countLabel: "מעל 100 ביקורות ב Google" };
+export const googleRating = { score: "5.0", countLabel: "מעל 100 ביקורות ב־Google" };
 
 export const reviewsEn: Review[] = [
   {

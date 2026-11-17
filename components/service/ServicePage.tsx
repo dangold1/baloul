@@ -73,7 +73,7 @@ export function ServicePage({ service: heService }: { service: Service }) {
                 <dd>{t("service.factSince", { year: site.foundedYear })}</dd>
               </div>
               <div>
-                <dt>{rating.countLabel.replace(" ב Google", " ב־Google")}</dt>
+                <dt>{rating.countLabel}</dt>
                 <dd>{rating.score}</dd>
               </div>
               <div>
