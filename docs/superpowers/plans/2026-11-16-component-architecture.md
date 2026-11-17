@@ -38,6 +38,44 @@
 - `SiteShell` already exists as the `<html>` shell. It stays as it is.
 - Playwright is missing and there is no git repo.
 
+## Target Component Map
+
+How a page is put together after the redesign. s = server component, c = client component, **bold** = new. The task that delivers each item is in brackets.
+
+```
+app/(he)/…  and  app/(en)/en/…        routes: only pass lang
+└─ SiteShell(lang)                    <html>, consent, analytics          [s, exists]
+   └─ pages/HomePage(lang) | SubPage(lang, slug)                          [s]
+      └─ layout/PageChrome(lang, variant)                                  [s, T8]
+         ├─ UtilityBar  Header  Footer  FloatingWhatsApp  LeadPopup  AboutModal
+         └─ <main> regions (sections/ or service/)
+               └─ blocks/  →  ui/
+```
+
+| Folder | Components | Role |
+|---|---|---|
+| `pages/` | HomePage (s), SubPage (s, gets `lang` [T7]) | Chooses which regions a page shows |
+| `layout/` | SiteShell (s), **PageChrome** (s) [T8], UtilityBar (s) [T8], Footer (s) [T8], Header (c), MobileMenu (c), ServicesMenu (c), NavLink (c), FloatingWhatsApp (c), ScrollStepper (c), HashLinkController (c), ActiveSection (c, provider and hooks only), **Section / StepRegion** (c, split out) [T8] | The site frame and its interactive parts |
+| `sections/` | Hero, Services, ServiceCard, Process, About, Reviews, Knowledge, Contact. All become server components [T6]. | Home regions: the `Section` wrapper plus blocks |
+| `service/` | ServicePage (s, 70 lines or fewer), **ServiceHero**, **ServiceSituations**, **ServiceChecks** (s) [T7] | Service-page regions |
+| `legal/` | LegalPage, which becomes a server component [T7] | The legal page |
+| `blocks/` | **StepsList, FaqList, ReviewCard, GoogleReviewsLink, CallLine, ContactLinks, ContactBlock, ServiceLinks** (all s) [T6] | Content shared by the home and service pages |
+| `ui/` | **ButtonLink, Stars, Logo** (s) [T3], **Dialog** (c) [T4], Icons, ServiceEmblem, SectionHeading, Typography | Primitives that don't depend on the language |
+| `lead/` | ContactForm (c), **LeadFields** (c) [T5], LeadPopup (c, uses Dialog) [T4], Honeypot, useLeadSubmit | Forms |
+| `about/`, `consent/`, `analytics/`, `i18n/`, `seo/` | Unchanged, except that they now use `Dialog` and `useDismiss` [T4] | |
+| `lib/`, `content/` | **cx**, **dom** [T2], **contact** [T3], **useDismiss** [T4], **i18n/makeI18n**, **content/localized (getContent)** [T1] | Shared helpers |
+
+Where each shared block is used:
+
+| Block | Home page | Service page |
+|---|---|---|
+| StepsList | Process | "How we work" region |
+| FaqList | Knowledge | Service FAQ |
+| ReviewCard + Stars | Reviews | Single review |
+| ContactBlock + ContactLinks | Contact | Contact region |
+| CallLine + ButtonLink | Hero | ServiceHero |
+| ServiceLinks | — | "Other services" |
+
 ## Global Constraints
 
 - Code is the source of truth for i18n. The language-switch plan's unticked boxes are stale, so ignore them.
