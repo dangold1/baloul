@@ -1,0 +1,40 @@
+/* Service pages reuse the home sections' styles; only what is specific to them lives here. */
+.site .b-service-hero{background:var(--paper);padding:24px 0 48px;border-bottom:1px solid var(--line)}
+@media (min-width:760px){.site .b-service-hero{padding:32px 0 72px}}
+.site .b-crumbs{display:flex;align-items:center;gap:10px;font-size:15px;color:var(--muted);margin-bottom:28px}
+.site .b-crumbs a{color:var(--navy);text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--bronze-soft)}
+.site .b-crumbs span[aria-current]{color:var(--ink)}
+.site .b-service-hero-grid{display:grid;gap:24px;align-items:center}
+@media (min-width:980px){.site .b-service-hero-grid{grid-template-columns:minmax(0,1fr) 300px;gap:64px}}
+.site .b-service-hero h1{margin-bottom:18px;max-width:16em}
+/* Checkable facts beside the intro, the same ones the home page leads with. */
+.site .b-service-facts{margin:0;display:grid;border-top:1px solid var(--line-strong)}
+/* Phones: one row per fact, label on the right and the value on the left. */
+.site .b-service-facts > div{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
+.site .b-service-facts dd{margin:0;font-family:var(--serif);font-weight:700;color:var(--navy);font-size:22px;line-height:1.2;white-space:nowrap}
+.site .b-service-facts dt{font-size:16px;line-height:1.45;color:var(--muted)}
+@media (min-width:980px){
+  .site .b-service-facts > div{flex-direction:column-reverse;justify-content:flex-end;align-items:stretch;gap:4px;padding:22px 0}
+  .site .b-service-facts dd{font-size:30px}
+}
+
+.site .b-checks{background:var(--white)}
+.site .b-checks-grid{display:grid;gap:24px}
+@media (min-width:980px){.site .b-checks-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:start}}
+.site .b-checks .b-section-head{margin-bottom:0}
+.site .b-checks-list{list-style:none;display:grid;gap:0;border-top:1px solid var(--line)}
+.site .b-checks-list li{position:relative;padding-block:18px;padding-inline:36px 0;border-bottom:1px solid var(--line);font-size:18px;line-height:1.55;font-weight:500}
+.site .b-checks-list li::before{
+  content:"";position:absolute;inset-inline-start:0;top:22px;width:22px;height:22px;border-radius:50%;background:var(--paper-2);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2386593a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:center;
+}
+
+.site .b-service-page .b-section-head{max-width:720px}
+.site .b-review-single{max-width:760px;display:grid;gap:20px;justify-items:start}
+.site .b-review-single .b-review-card blockquote p{font-size:23px}
+
+.site .b-other-services{background:var(--white);border-top:1px solid var(--line);padding:32px 0 40px}
+@media (max-width:759px){.site .b-other-services{padding-bottom:56px}}
+.site .b-other-services .b-domain-list{grid-template-columns:1fr}
+@media (min-width:640px){.site .b-other-services .b-domain-list{grid-template-columns:repeat(3,1fr)}}

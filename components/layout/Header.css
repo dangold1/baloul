@@ -1,0 +1,110 @@
+/* Header: sticky, calm, one row. Phones get a labelled "תפריט" button instead of a bare icon. */
+.site .b-header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,255,255,.97);
+  border-bottom:1px solid var(--line);
+}
+@supports (backdrop-filter:blur(8px)){.site .b-header{background:rgba(255,255,255,.92);backdrop-filter:blur(8px)}}
+.site .b-nav{display:flex;align-items:center;gap:24px;min-height:var(--header-h)}
+
+.site .b-brand{display:flex;align-items:center;gap:12px;text-decoration:none;margin-inline-end:auto}
+.site .b-brand img{width:52px;height:auto;mix-blend-mode:multiply}
+.site .b-brand-text{display:grid;line-height:1.15}
+.site .b-brand-name{font-family:var(--serif);font-weight:700;font-size:22px;letter-spacing:.08em;color:var(--navy)}
+.site .b-brand-tag{font-size:13px;color:var(--muted)}
+@media (min-width:760px){.site .b-brand img{width:60px}}
+
+.site .b-links{display:none}
+.site .b-nav-cta{display:none}
+
+@media (min-width:1024px){
+  .site .b-brand{margin-inline-end:0}
+  .site .b-links{display:flex;align-items:center;gap:4px;margin-inline:auto}
+  .site .b-links a{
+    position:relative;padding:10px 14px;border-radius:var(--radius-sm);
+    color:var(--ink);text-decoration:none;font-size:17px;font-weight:500;
+    transition:color var(--t);
+  }
+  /* A bronze underline that grows from the reading start on hover, and stays on the active section's link. */
+  .site .b-links a::after{
+    content:"";position:absolute;inset-inline:14px;bottom:6px;height:2px;border-radius:1px;
+    background:var(--bronze);transform:scaleX(0);transform-origin:right;transition:transform var(--t);
+  }
+  :root[dir="ltr"] .site .b-links a::after{transform-origin:left}
+  .site .b-links a:hover{color:var(--navy)}
+  .site .b-links a:hover::after,.site .b-links a[aria-current="true"]::after{transform:scaleX(1)}
+  .site .b-links a[aria-current="true"]{color:var(--navy)}
+  .site .b-nav-cta{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-height:48px;padding:0 22px;border-radius:var(--radius-sm);
+    background:var(--navy);color:var(--white);text-decoration:none;font-weight:600;font-size:17px;
+    transition:background-color var(--t),transform var(--t),box-shadow var(--t);
+  }
+  @media (hover:hover){.site .b-nav-cta:hover{background:var(--navy-2);transform:translateY(-1px);box-shadow:var(--shadow-hover)}}
+  .site .b-nav-cta:active{transform:none;box-shadow:none}
+  .site .b-mobile-menu-shell{display:none}
+}
+
+/* Mobile menu (native <details>) */
+.site .b-mobile-menu-shell{position:static}
+.site .b-menu{
+  display:inline-flex;align-items:center;gap:10px;list-style:none;cursor:pointer;
+  min-height:48px;padding:0 16px;border:1.5px solid var(--line-strong);border-radius:var(--radius-sm);
+  background:var(--white);color:var(--navy);font-weight:600;font-size:16px;
+}
+.site .b-menu::-webkit-details-marker{display:none}
+.site .b-menu-icon{position:relative;width:18px;height:2px;background:currentColor;border-radius:2px}
+.site .b-menu-icon::before,.site .b-menu-icon::after{content:"";position:absolute;inset-inline-start:0;width:18px;height:2px;background:currentColor;border-radius:2px}
+.site .b-menu-icon::before{top:-6px}
+.site .b-menu-icon::after{top:6px}
+.site .b-mobile-menu-shell[open] .b-menu-icon{background:transparent}
+.site .b-mobile-menu-shell[open] .b-menu-icon::before{top:0;transform:rotate(45deg)}
+.site .b-mobile-menu-shell[open] .b-menu-icon::after{top:0;transform:rotate(-45deg)}
+.site .b-mobile{
+  position:absolute;inset-inline:0;top:100%;
+  background:var(--white);border-bottom:1px solid var(--line);
+  box-shadow:0 18px 30px rgba(23,42,70,.12);
+  padding:8px var(--gutter) 20px;
+  max-height:calc(100svh - var(--header-h));overflow:auto;
+}
+.site .b-mobile a{
+  display:flex;align-items:center;min-height:54px;
+  border-bottom:1px solid var(--line);
+  color:var(--ink);text-decoration:none;font-size:18px;font-weight:500;
+}
+.site .b-mobile a[aria-current="true"]:not(.b-mobile-cta){color:var(--navy);box-shadow:inset -3px 0 0 var(--bronze);padding-inline-start:12px}
+:root[dir="ltr"] .site .b-mobile a[aria-current="true"]:not(.b-mobile-cta){box-shadow:inset 3px 0 0 var(--bronze)}
+.site .b-mobile-group{margin-top:10px}
+.site .b-mobile-group-title{margin:0;padding:8px 0 2px;font-size:15px;font-weight:600;color:var(--bronze)}
+.site .b-mobile-group a{padding-inline-start:16px}
+.site .b-mobile a.b-mobile-cta{
+  border:0;margin-top:14px;justify-content:center;
+  background:var(--navy);color:var(--white);border-radius:var(--radius-sm);font-weight:600;
+}
+
+/* Desktop services menu (native <details>) */
+.site .b-services-menu{position:relative}
+.site .b-services-menu summary{
+  list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+  padding:10px 14px;border-radius:var(--radius-sm);color:var(--ink);font-size:17px;font-weight:500;
+}
+.site .b-services-menu summary::-webkit-details-marker{display:none}
+.site .b-services-menu summary::after{
+  content:"";width:10px;height:10px;border-right:1.8px solid currentColor;border-bottom:1.8px solid currentColor;
+  transform:translateY(-3px) rotate(45deg);transition:transform .15s ease;
+}
+.site .b-services-menu[open] summary::after{transform:translateY(2px) rotate(-135deg)}
+.site .b-services-menu summary:hover,.site .b-services-menu[open] summary{background:var(--paper-2);color:var(--navy)}
+.site .b-services-menu-list{
+  position:absolute;top:calc(100% + 8px);inset-inline-start:0;min-width:240px;z-index:60;
+  display:grid;padding:8px;background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:0 18px 40px rgba(23,42,70,.14);
+}
+.site .b-services-menu-list a{padding:12px 14px;border-radius:var(--radius-sm);text-decoration:none;color:var(--ink);font-size:17px;font-weight:500}
+.site .b-services-menu-list a:hover{background:var(--paper);color:var(--navy)}
+
+/* Prototype: the header button stays quiet so the hero button is the only filled navy action on screen. */
+@media (min-width:980px){
+  .site .b-nav-cta{background:transparent!important;color:var(--navy)!important;border:1.5px solid var(--navy)!important}
+  @media (hover:hover){.site .b-nav-cta:hover{background:var(--navy)!important;color:var(--white)!important}}
+}

@@ -1,0 +1,85 @@
+/* Hero: headline, plain explanation, two clear actions, and checkable facts. */
+.site .b-hero{background:var(--paper);padding:32px 0 48px;border-bottom:1px solid var(--line)}
+.site .b-hero-grid{display:grid;gap:32px;align-items:center}
+.site .b-hero h1{margin-bottom:20px;max-width:15em}
+.site .b-hero-lead{font-size:clamp(18px,1.7vw,21px);line-height:1.75;color:var(--muted);max-width:36em;margin-bottom:28px}
+.site .b-hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+.site .b-hero-actions .b-btn-secondary svg{color:var(--wa)}
+.site .b-hero-call{display:flex;align-items:center;gap:8px;margin:20px 0 0;color:var(--muted);font-size:17px}
+.site .b-hero-call svg{color:var(--bronze)}
+.site .b-hero-call a{color:var(--navy);font-weight:700;text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--bronze-soft);direction:ltr;unicode-bidi:isolate}
+/* Team photo is 3:2 with people near both edges: keep its full width, never crop the sides. */
+.site .b-hero-visual img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;object-position:center top;border-radius:var(--radius)}
+
+@media (max-width:559px){
+  .site .b-hero-actions .b-btn{width:100%}
+}
+@media (min-width:980px){
+  .site .b-hero{padding:56px 0 56px}
+  /* The photo spans exactly from the kicker to the phone line; the facts run under both columns. */
+  .site .b-hero-grid{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:56px;row-gap:0;align-items:start;
+    grid-template-areas:"kicker photo" "title photo" "lead photo" "actions photo" "call photo" "facts facts";
+  }
+  .site .b-hero-copy{display:contents}
+  .site .b-hero-copy .b-kicker{grid-area:kicker}
+  .site .b-hero-copy h1{grid-area:title;max-width:none;font-size:clamp(38px,3.3vw,50px)}
+  .site .b-hero-lead{font-size:19px;margin-bottom:24px}
+  .site .b-hero-lead{grid-area:lead}
+  .site .b-hero-actions{grid-area:actions}
+  .site .b-hero-call{grid-area:call;margin-bottom:0}
+  .site .b-hero-copy .b-facts{grid-area:facts;grid-template-columns:repeat(3,1fr);margin-top:40px;padding-top:28px}
+  .site .b-hero-visual{grid-area:photo;position:relative;min-height:100%}
+  .site .b-hero-visual img{position:absolute;inset:0;height:100%;aspect-ratio:auto;object-position:center 15%}
+}
+
+/* Facts: part of the first screen, directly under the actions. */
+.site .b-facts{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:0;margin:28px 0 0;padding-top:22px;border-top:1px solid var(--line)}
+.site .b-fact{display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:2px;padding-inline-end:22px;margin-inline-end:22px;border-inline-end:1px solid var(--line)}
+.site .b-fact:last-child{border-inline-end:0;margin-inline-end:0;padding-inline-end:0}
+.site .b-fact dd{margin:0;display:flex;align-items:baseline;gap:8px;font-family:var(--serif);font-weight:700;font-size:clamp(26px,2.4vw,32px);line-height:1.1;color:var(--navy)}
+.site .b-fact-stars{font-family:var(--sans);font-size:14px;letter-spacing:1px;color:var(--gold)}
+.site .b-fact dt{font-size:14.5px;line-height:1.4;color:var(--muted);max-width:15em}
+/* Phones: the facts move up under the headline so they are seen before any scrolling. */
+@media (max-width:979px){
+  .site .b-hero-copy{display:flex;flex-direction:column}
+  .site .b-hero-copy .b-facts{order:2;margin:0 0 22px;padding:14px 0;border-block:1px solid var(--line)}
+  .site .b-hero-copy h1{order:1}
+  .site .b-hero-copy .b-kicker{order:0}
+  .site .b-hero-lead{order:3}
+  .site .b-hero-actions{order:4}
+  .site .b-hero-call{order:5}
+}
+@media (max-width:559px){
+  .site .b-hero h1{font-size:32px;margin-bottom:18px}
+  .site .b-hero-lead{font-size:18px;line-height:1.65;margin-bottom:22px}
+  .site .b-facts{grid-template-columns:repeat(3,1fr)}
+  .site .b-fact{padding-inline-end:10px;margin-inline-end:10px}
+  .site .b-fact dd{font-size:24px;flex-direction:column;gap:2px}
+  .site .b-fact-stars{font-size:11px}
+  .site .b-fact dt{font-size:13.5px}
+}
+
+/* Service shortcuts under the hero */
+.site .b-domain-title{margin:0 0 14px;font-weight:600;color:var(--ink);font-size:18px}
+.site .b-domain-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.site .b-domain-link{
+  display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 14px;
+  border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--white);
+  text-decoration:none;color:var(--navy);font-weight:600;font-size:16.5px;line-height:1.3;
+  transition:border-color var(--t),background-color var(--t),transform var(--t),box-shadow var(--t);
+}
+.site .b-domain-icon{
+  flex:none;width:36px;height:36px;display:grid;place-items:center;border-radius:50%;
+  background:var(--paper-2);color:var(--bronze);transition:background-color var(--t),color var(--t);
+}
+/* Pointer devices only. */
+@media (hover:hover){
+  .site .b-domain-link:hover{border-color:var(--navy);background:var(--paper);transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+  .site .b-domain-link:hover .b-domain-icon{background:var(--navy);color:var(--white)}
+}
+.site .b-domain-icon svg{width:20px;height:20px}
+@media (min-width:860px){
+  .site .b-domain-title{margin:0;flex:none}
+  .site .b-domain-list{grid-template-columns:repeat(4,1fr);flex:1}
+}
