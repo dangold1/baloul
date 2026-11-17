@@ -11,5 +11,5 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 }
 
 export default async function Page({ params }: { params: Promise<Params> }) {
-  return <SubPage slug={(await params).slug} />;
+  return <SubPage lang="en" slug={(await params).slug} />;
 }

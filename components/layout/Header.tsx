@@ -1,5 +1,6 @@
 "use client";
 
+import { sectionHref, toSectionId } from "@/content/sections";
 import { Logo } from "@/components/ui/Logo";
 import { AboutLink } from "@/components/about/AboutLink";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
@@ -17,7 +18,12 @@ import { desktopNav, mobileNav } from "./nav";
 export function Header({ home = true, contactHref }: { home?: boolean; contactHref?: string }) {
   const { t, href } = useLanguage();
   const base = home ? "" : href("/");
-  const cta = contactHref ?? `${base}#contact`;
+  const cta = contactHref ?? sectionHref("contact", base);
+  /** A home page anchor from nav.ts ("#process"), pointing back to the home page on sub pages. "#top" is not a section. */
+  const homeAnchor = (hash: string) => {
+    const id = toSectionId(hash);
+    return id ? sectionHref(id, base) : `${base}${hash}`;
+  };
   return (
     <header className="b-header">
       <div className="b-container b-nav">
@@ -36,7 +42,7 @@ export function Header({ home = true, contactHref }: { home?: boolean; contactHr
                 {t(item.labelKey)}
               </AboutLink>
             ) : (
-              <NavLink key={item.href} href={item.opensAbout ? `${base}#about-inline` : `${base}${item.href}`}>
+              <NavLink key={item.href} href={item.opensAbout ? sectionHref("about-inline", base) : homeAnchor(item.href)}>
                 {t(item.labelKey)}
               </NavLink>
             ),
@@ -49,7 +55,7 @@ export function Header({ home = true, contactHref }: { home?: boolean; contactHr
         <MobileMenu
           items={mobileNav.map((i) => ({
             ...i,
-            href: i.href.startsWith("#") ? (i.href === "#contact" ? cta : `${base}${i.href}`) : href(i.href),
+            href: i.href.startsWith("#") ? (i.href === sectionHref("contact") ? cta : homeAnchor(i.href)) : href(i.href),
           }))}
         />
       </div>

@@ -9,22 +9,18 @@ import { readingLine, resolveStep } from "@/lib/steps";
 /** A part of the home page that announced itself as a step: its id, its name in the stepper, and its element. */
 export type RegisteredStep = { id: StepId; label: string; el: HTMLElement };
 
-type StepChange = (id: StepId, prev: StepId | null) => void;
-
 type StepsState = {
   steps: RegisteredStep[];
   currentStep: StepId | null;
   register: (step: RegisteredStep) => () => void;
   /** Mark a step as chosen by the visitor (a click). Scrolling does not override it until the scroll that follows has ended. */
   choose: (id: StepId) => void;
-  subscribe: (cb: StepChange) => () => void;
 };
 
 type ActiveSectionState = {
   activeId: SectionId | null;
+  /** On a click: the scroll-spy does not override the choice while the page scrolls there. */
   setActive: (id: SectionId | null) => void;
-  /** Call before setActive on a click, so the scroll-spy does not override the choice while the page scrolls there. */
-  markClick: () => void;
 };
 
 /** If a click causes no scroll (the target is already in view), the lock ends after this long. */
@@ -40,7 +36,6 @@ const StepsContext = createContext<StepsState>({
   currentStep: null,
   register: () => noop,
   choose: noop,
-  subscribe: () => noop,
 });
 
 const byDocumentOrder = (a: RegisteredStep, b: RegisteredStep) =>
@@ -48,7 +43,7 @@ const byDocumentOrder = (a: RegisteredStep, b: RegisteredStep) =>
 
 /**
  * The single scroll-spy of the home page (rebuilt 2026-11-10 for the stepper). Every part of the page registers
- * itself (Section, StepRegion). On each scroll frame the current step is the last part whose top has passed
+ * itself (Section, StepRegion in ./Section). On each scroll frame the current step is the last part whose top has passed
  * the reading line under the header (lib/steps.ts), so the answer depends on position only, never on the order
  * scroll events arrive in. The stepper, the top menu (aria-current) and the section tint all read this one value.
  */
@@ -59,7 +54,6 @@ export function ActiveSectionProvider({ children }: { children: React.ReactNode 
   const locked = useRef(false);
   const lockedAt = useRef(0);
   const lockTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const subscribers = useRef(new Set<StepChange>());
   const prevStep = useRef<StepId | null>(null);
   const measureRef = useRef<() => void>(noop);
 
@@ -88,11 +82,6 @@ export function ActiveSectionProvider({ children }: { children: React.ReactNode 
     },
     [lock],
   );
-
-  const subscribe = useCallback((cb: StepChange) => {
-    subscribers.current.add(cb);
-    return () => void subscribers.current.delete(cb);
-  }, []);
 
   useEffect(() => {
     let frame = 0;
@@ -135,19 +124,15 @@ export function ActiveSectionProvider({ children }: { children: React.ReactNode 
     };
   }, [choose]);
 
-  // One notification per real change: React subscribers and a window event for everything else.
+  // One window event per real change.
   useEffect(() => {
     if (currentStep === null || currentStep === prevStep.current) return;
     const prev = prevStep.current;
     prevStep.current = currentStep;
-    for (const cb of subscribers.current) cb(currentStep, prev);
     dispatchEvent(new CustomEvent(STEP_EVENT, { detail: { id: currentStep, prev } }));
   }, [currentStep]);
 
-  const value = useMemo(
-    () => ({ steps, currentStep, register, choose, subscribe }),
-    [steps, currentStep, register, choose, subscribe],
-  );
+  const value = useMemo(() => ({ steps, currentStep, register, choose }), [steps, currentStep, register, choose]);
   return <StepsContext.Provider value={value}>{children}</StepsContext.Provider>;
 }
 
@@ -167,14 +152,6 @@ export function useRegisterStep(id: StepId, label: string, ref: React.RefObject<
   }, [id, label, ref, register]);
 }
 
-/** Run something whenever the visitor reaches another part of the page. */
-export function useStepChange(cb: StepChange): void {
-  const { subscribe } = useContext(StepsContext);
-  const latest = useRef(cb);
-  latest.current = cb;
-  useEffect(() => subscribe((id, prev) => latest.current(id, prev)), [subscribe]);
-}
-
 /** Safe outside the provider (service and legal pages): nothing is active and setActive does nothing. */
 export function useActiveSection(): ActiveSectionState {
   const { currentStep, choose } = useContext(StepsContext);
@@ -182,64 +159,7 @@ export function useActiveSection(): ActiveSectionState {
     () => ({
       activeId: currentStep === null || currentStep === "top" ? null : currentStep,
       setActive: (id: SectionId | null) => choose(id ?? "top"),
-      markClick: noop,
     }),
     [currentStep, choose],
-  );
-}
-
-/** A part of the home page that counts as a step but is not a Section (the hero). The DOM id stays with the caller. */
-export function StepRegion({
-  step,
-  label,
-  className,
-  labelledBy,
-  children,
-}: {
-  step: StepId;
-  label: string;
-  className?: string;
-  labelledBy: string;
-  children: React.ReactNode;
-}) {
-  const ref = useRef<HTMLElement>(null);
-  useRegisterStep(step, label, ref);
-  return (
-    <section ref={ref} className={className} aria-labelledby={labelledBy} data-step={step}>
-      {children}
-    </section>
-  );
-}
-
-/** A home page <section>: a step in the stepper, and active when clicked anywhere inside it. Links inside keep working. */
-export function Section({
-  id,
-  step,
-  className,
-  labelledBy,
-  children,
-}: {
-  id: SectionId;
-  /** The section's name in the stepper. */
-  step: string;
-  className?: string;
-  labelledBy: string;
-  children: React.ReactNode;
-}) {
-  const ref = useRef<HTMLElement>(null);
-  useRegisterStep(id, step, ref);
-  const { activeId, setActive } = useActiveSection();
-  return (
-    <section
-      ref={ref}
-      id={id}
-      className={className}
-      aria-labelledby={labelledBy}
-      data-step={id}
-      data-active={activeId === id ? "" : undefined}
-      onClick={() => setActive(id)}
-    >
-      {children}
-    </section>
   );
 }

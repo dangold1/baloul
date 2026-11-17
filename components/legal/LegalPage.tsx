@@ -1,14 +1,12 @@
-"use client";
-
 import type { LegalDoc } from "@/content/legal";
-import { legalDocs, legalDocsEn } from "@/content/legal";
-import { useLanguage } from "@/components/i18n/LanguageProvider";
-import { pick } from "@/lib/i18n/languages";
+import { getContent } from "@/content/localized";
+import { makeI18n } from "@/lib/i18n/i18n";
+import type { Lang } from "@/lib/i18n/languages";
 
 /** Legal document as a standalone page, reusing the original dialog typography. English pages say the Hebrew text binds. */
-export function LegalPage({ doc: heDoc }: { doc: LegalDoc }) {
-  const { lang, t, href } = useLanguage();
-  const docs = pick(lang, legalDocs, legalDocsEn);
+export function LegalPage({ lang, doc: heDoc }: { lang: Lang; doc: LegalDoc }) {
+  const { t, href } = makeI18n(lang);
+  const docs = getContent(lang).legalDocs;
   const doc = docs.find((d) => d.slug === heDoc.slug) ?? heDoc;
   return (
     <main id="top" className="b-legal-page">

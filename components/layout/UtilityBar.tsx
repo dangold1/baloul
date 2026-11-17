@@ -1,11 +1,10 @@
-"use client";
-
 import { site } from "@/content/site";
 import { contactLink } from "@/lib/contact";
-import { useLanguage } from "@/components/i18n/LanguageProvider";
+import { makeI18n } from "@/lib/i18n/i18n";
+import type { Lang } from "@/lib/i18n/languages";
 
-export function UtilityBar() {
-  const { lang, t } = useLanguage();
+export function UtilityBar({ lang }: { lang: Lang }) {
+  const { t } = makeI18n(lang);
   const phone = contactLink("phone", lang);
   const email = contactLink("email", lang);
   return (

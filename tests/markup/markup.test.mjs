@@ -17,6 +17,9 @@ export function normalize(html) {
     .trim();
 }
 
+/** React useId values (`_R_…_`) shift whenever the component tree changes; compare them as one placeholder. */
+const maskIds = (html) => html.replace(/_R_[A-Za-z0-9]+_/g, "_R_");
+
 function pages() {
   if (!existsSync(out)) throw new Error("run npm run build first");
   return readdirSync(out, { recursive: true })
@@ -25,10 +28,7 @@ function pages() {
     .sort();
 }
 
-const allowlist = [
-  "עברית",
-  "לא למלא", // TODO Task 7: Honeypot label from a prop
-];
+const allowlist = ["עברית"];
 
 for (const file of pages()) {
   test(`markup ${file}`, () => {
@@ -40,7 +40,7 @@ for (const file of pages()) {
       if (!process.env.UPDATE) assert.fail(`no snapshot for ${file}; run UPDATE=1 npm run test:markup`);
       return;
     }
-    assert.equal(actual, readFileSync(snap, "utf8"));
+    assert.equal(maskIds(actual), maskIds(readFileSync(snap, "utf8")));
   });
 }
 

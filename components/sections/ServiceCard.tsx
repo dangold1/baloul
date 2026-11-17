@@ -1,14 +1,14 @@
 import type { Service } from "@/content/services";
 import { servicePath } from "@/content/services";
+import { makeI18n } from "@/lib/i18n/i18n";
+import type { Lang } from "@/lib/i18n/languages";
 import { ArrowIcon } from "@/components/ui/Icons";
 import { ServiceEmblem } from "@/components/ui/ServiceEmblem";
-import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 /** Home page list row: icon, title, one short line, and a "more" arrow. The whole row is the link. */
-export function ServiceCard({ service, moreLabel }: { service: Service; moreLabel: string }) {
-  const { href } = useLanguage();
+export function ServiceCard({ lang, service, moreLabel }: { lang: Lang; service: Service; moreLabel: string }) {
   return (
-    <a className="b-solution" id={service.id} href={href(servicePath(service))}>
+    <a className="b-solution" id={service.id} href={makeI18n(lang).href(servicePath(service))}>
       <span aria-hidden="true" className="b-solution-icon">
         <ServiceEmblem name={service.icon} />
       </span>

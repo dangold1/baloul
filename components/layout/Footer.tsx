@@ -1,23 +1,23 @@
-"use client";
-
 import type { DictKey } from "@/content/dictionary";
 import { site } from "@/content/site";
 import { legalDocs } from "@/content/legal";
+import { sectionHref, type SectionId } from "@/content/sections";
 import { services, servicePath } from "@/content/services";
 import { AboutLink } from "@/components/about/AboutLink";
 import { CookieSettingsLink } from "@/components/consent/CookieSettingsLink";
 import { FacebookIcon, MailIcon, WhatsAppIcon } from "@/components/ui/Icons";
 import { contactLink } from "@/lib/contact";
+import { makeI18n } from "@/lib/i18n/i18n";
+import type { Lang } from "@/lib/i18n/languages";
 import { Logo } from "@/components/ui/Logo";
-import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 const legalLinks = legalDocs.map((d) => ({ href: `/${d.slug}`, labelKey: `footer.legal.${d.slug}` as DictKey }));
 
-export function Footer({ base = "" }: { base?: string }) {
-  const { lang, t, href } = useLanguage();
+export function Footer({ lang, home }: { lang: Lang; home: boolean }) {
+  const { t, href } = makeI18n(lang);
   const [phone, whatsapp, email, address] = (["phone", "whatsapp", "email", "address"] as const).map((k) => contactLink(k, lang));
   /** Sub pages link back to the home page sections; the home page links in place. */
-  const root = base ? href("/") : "";
+  const section = (id: SectionId) => (home ? sectionHref(id) : href(sectionHref(id, "/")));
   return (
     <footer className="b-footer" id="footer">
       <div className="b-container">
@@ -47,11 +47,11 @@ export function Footer({ base = "" }: { base?: string }) {
           </div>
           <div>
             <h2 className="b-footer-title">{t("footer.siteTitle")}</h2>
-            {base ? <a href={`${root}#about-inline`}>{t("nav.about")}</a> : <AboutLink className="b-open-about">{t("nav.about")}</AboutLink>}
-            <a href={`${root}#process`}>{t("nav.process")}</a>
-            <a href={`${root}#reviews`}>{t("nav.reviews")}</a>
-            <a href={`${root}#knowledge`}>{t("footer.knowledge")}</a>
-            <a href={`${root}#contact`}>{t("nav.contact")}</a>
+            {home ? <AboutLink className="b-open-about">{t("nav.about")}</AboutLink> : <a href={section("about-inline")}>{t("nav.about")}</a>}
+            <a href={section("process")}>{t("nav.process")}</a>
+            <a href={section("reviews")}>{t("nav.reviews")}</a>
+            <a href={section("knowledge")}>{t("footer.knowledge")}</a>
+            <a href={section("contact")}>{t("nav.contact")}</a>
           </div>
           <div>
             <h2 className="b-footer-title">{t("footer.legalTitle")}</h2>

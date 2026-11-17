@@ -9,7 +9,7 @@ import { useActiveSection } from "./ActiveSection";
  * done by HashLinkController, so this never prevents the default.
  */
 export function NavLink({ href, className, children }: { href: string; className?: string; children: React.ReactNode }) {
-  const { activeId, setActive, markClick } = useActiveSection();
+  const { activeId, setActive } = useActiveSection();
   const target = toSectionId(href);
   const current = target !== null && activeId === target;
   return (
@@ -18,9 +18,7 @@ export function NavLink({ href, className, children }: { href: string; className
       href={href}
       aria-current={current ? "true" : undefined}
       onClick={() => {
-        if (!target) return;
-        markClick();
-        setActive(target);
+        if (target) setActive(target);
       }}
     >
       {children}

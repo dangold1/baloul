@@ -8,6 +8,11 @@ export const stepIds = ["top", ...sectionIds] as const;
 
 export type StepId = (typeof stepIds)[number];
 
+/** "#process", or "/#process" with base "/". Wrap in href() for the language prefix when base is a path. */
+export function sectionHref(id: SectionId, base?: string): string {
+  return `${base ?? ""}#${id}`;
+}
+
 /** "#process" or "process" → "process". Anything else (other pages, modal links, empty) → null. */
 export function toSectionId(hashOrId: string): SectionId | null {
   const id = hashOrId.startsWith("#") ? hashOrId.slice(1) : hashOrId;

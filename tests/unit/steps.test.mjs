@@ -2,6 +2,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readingLine, resolveStep } from "../../lib/steps.ts";
+import { sectionHref } from "../../content/sections.ts";
 
 const boxes = [
   { id: "top", top: -500 },
@@ -17,3 +18,5 @@ test("bottom of page picks last", () => assert.equal(resolveStep(boxes, 300, tru
 test("order independent", () => assert.equal(resolveStep([...boxes].reverse(), 300, false), "process"));
 test("empty", () => assert.equal(resolveStep([], 300, false), null));
 test("reading line", () => assert.equal(readingLine(80, 900), 367));
+test("section href in place", () => assert.equal(sectionHref("process"), "#process"));
+test("section href with base", () => assert.equal(sectionHref("contact", "/"), "/#contact"));
