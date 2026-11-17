@@ -1,18 +1,22 @@
 # BALOUL – דף נחיתה (Next.js)
 
 האתר baloul.co.il, בנוי ב־Next.js (App Router) ומיוצא כקבצים סטטיים ל־Netlify.
+עברית בכתובות `/…`, אנגלית ב־`/en/…`.
 הגרסה הקודמת (קובץ index.html יחיד) שמורה בתיקייה `_legacy/` ולא עולה לאוויר.
+כללי הקומפוננטות (שכבות, שרת/לקוח, איך מוסיפים מקטע, שירות או חלון) מתועדים ב־`AGENTS.md`.
 
 ## הרצה מקומית
 
-דרוש Node.js 20 ומעלה.
+דרוש Node.js 20 ומעלה. פורט 3100 בלבד (3000-3002 שמורים לפרויקטים אחרים).
 
 ```bash
 npm install
-npm run dev        # פיתוח: http://localhost:3000
-npm run build      # בנייה מלאה לתיקייה out/
-npm start          # הצגת תוצאת ה־build: http://localhost:3000
+npm run dev -- -p 3100        # פיתוח: http://localhost:3100
+npm run build                 # בנייה מלאה לתיקייה out/
+npx serve@14 out -l 3100      # הצגת תוצאת ה־build: http://localhost:3100
 ```
+
+בדיקות: `npm run lint && npm run test:unit && npm run build && npm run test:markup && npm run test:e2e`.
 
 טפסי Netlify לא נקלטים בהרצה מקומית (WhatsApp כן נפתח). הם עובדים רק אחרי פריסה ל־Netlify.
 
@@ -21,6 +25,7 @@ npm start          # הצגת תוצאת ה־build: http://localhost:3000
 | מה רוצים לשנות | קובץ |
 |---|---|
 | טלפון, וואטסאפ, מייל, כתובת, תמונות | `content/site.ts` |
+| טקסטים קבועים בעברית ובאנגלית (כותרות, כפתורים, תפריט) | `content/dictionary.ts` |
 | תחומי פעילות (כרטיסים, תפריט, נושאי טופס) | `content/services.ts` |
 | שאלות נפוצות (כלליות בבית, לפי תחום בעמודי השירות) | `content/faq.ts` |
 | עמודי השירות: כתובת (slug), כותרת ומטא, פתיח | `content/services.ts` |
@@ -34,17 +39,21 @@ npm start          # הצגת תוצאת ה־build: http://localhost:3000
 ## מבנה
 
 ```
-app/                 עמודים: בית, app/[slug] לעמודי השירות (/pension-retirement וכו') ולעמודים המשפטיים (/privacy וכו'), sitemap, robots, manifest
+app/                 נתיבים: app/(he) לעברית, app/(en)/en לאנגלית; בכל אחד בית ו־[slug] לעמודי השירות (/pension-retirement וכו') והעמודים המשפטיים (/privacy וכו'); sitemap, robots, manifest
+components/pages     HomePage, SubPage: העמודים המלאים ש־app/ מציג
+components/ui        אבני בסיס: ButtonLink, Stars, Logo, Dialog, Icons, ServiceEmblem, SectionHeading
+components/blocks    חלקים משותפים לבית ולעמודי השירות: ContactBlock, FaqList, StepsList, ReviewCard ועוד
 components/service   ServicePage: תבנית אחת לארבעת עמודי השירות
-components/layout    UtilityBar, Header, MobileMenu, Footer, FloatingWhatsApp, HashLinkController
-components/sections Hero, Situations, Services (+ServiceCard), Process, About, Reviews, Knowledge, Contact
-components/lead      ContactForm, LeadPopup, useLeadSubmit (זרימת הליד המשותפת)
+components/layout    PageChrome, UtilityBar, Header, MobileMenu, Footer, FloatingWhatsApp, Section, ActiveSection, ScrollStepper
+components/sections Hero, Services (+ServiceCard), Process, About, Reviews, Knowledge, Contact
+components/i18n      LanguageProvider (useLanguage), LanguageSwitch
+components/lead      ContactForm, LeadPopup, LeadFields, useLeadSubmit (זרימת הליד המשותפת)
 components/consent   CookieConsent, CookieSettingsLink
 components/analytics TagManager (GTM אחרי הסכמה), ClickTracker
 components/about     AboutModal, AboutLink
 components/seo       JsonLd (InsuranceAgency + FAQPage)
-content/             כל הטקסטים והנתונים
-lib/                 whatsapp, netlify-forms, analytics, consent
+content/             כל הטקסטים והנתונים; content/localized.ts (getContent) מחזיר אותם בשפה המבוקשת
+lib/                 i18n (makeI18n), contact, dom, cx, useDismiss, steps, whatsapp, netlify-forms, analytics, consent
 styles/              base.css (טוקנים: צבעים, פונטים, ריווח) + shared.css (כפתורים, שדות, כותרות) + index.ts
 .agents/             product-marketing.md: הקשר שיווקי (קהל, שפה, הוכחות) לשימוש בכלי השיווק
 public/llms.txt      תקציר הסוכנות למנועי חיפוש מבוססי AI
@@ -55,8 +64,9 @@ public/llms.txt      תקציר הסוכנות למנועי חיפוש מבוס�
 
 ## סדר העמוד
 
-Hero (כותרת, שתי פעולות, עובדות: 2003 / 2014 / דירוג Google) → קיצורי דרך לתחומים → "מתי פונים אלינו" → תחומי פעילות →
+Hero (כותרת, פעולה, עובדות: 2003 / 2014 / דירוג Google) → תחומי פעילות →
 "איך עובדים איתנו" → מי אנחנו → לקוחות מספרים → מרכז ידע (FAQ) → יצירת קשר.
+"נשמע מוכר?" (מצבים מהחיים) מופיע בעמודי השירות בלבד.
 במובייל יש פס תחתון קבוע עם "התקשרו אלינו" ו־WhatsApp.
 
 ## מקטע פעיל (active section)

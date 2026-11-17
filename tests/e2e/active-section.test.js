@@ -116,6 +116,16 @@ async function setup(browser, errs, options) {
     await page.waitForTimeout(1200);
     assert.ok(await page.$("#reviews[data-active]"));
 
+    step = "active-section works on /en";
+    await page.goto(HOME + "en");
+    assert.equal(await page.$$eval("[data-active]", (els) => els.length), 0);
+    await page.click("#process h2");
+    assert.ok(await page.$("#process[data-active]"));
+    assert.equal(await page.$$eval("[data-active]", (els) => els.length), 1);
+    await page.click("#reviews h2");
+    assert.ok(await page.$("#reviews[data-active]"));
+    assert.equal(await page.$("#process[data-active]"), null);
+
     step = "no console errors";
     assert.deepEqual(errs, []);
     console.log("PASS active-section");

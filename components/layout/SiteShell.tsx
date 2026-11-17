@@ -2,8 +2,8 @@ import "@/styles";
 import { heebo } from "@/app/fonts";
 import { consentBootstrapScript } from "@/lib/consent";
 import { dirOf, homeRedirectScript, type Lang } from "@/lib/i18n/languages";
+import { makeI18n } from "@/lib/i18n/i18n";
 import { LanguageProvider } from "@/components/i18n/LanguageProvider";
-import { T } from "@/components/ui/Typography";
 import { CookieConsent } from "@/components/consent/CookieConsent";
 import { TagManager } from "@/components/analytics/TagManager";
 import { ClickTracker } from "@/components/analytics/ClickTracker";
@@ -22,7 +22,7 @@ export function SiteShell({ lang, children }: { lang: Lang; children: React.Reac
         <LanguageProvider lang={lang}>
           <div id="baloul-site" className="site">
             <a className="b-skip" href="#main" data-no-scroll="">
-              <T k="skip.main" />
+              {makeI18n(lang).t("skip.main")}
             </a>
             {children}
           </div>

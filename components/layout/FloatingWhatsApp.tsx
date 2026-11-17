@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { site } from "@/content/site";
-import { whatsappTopics } from "@/content/services";
+import { topicLabel, whatsappTopics } from "@/content/services";
 import { contactLink } from "@/lib/contact";
+import { useDismiss } from "@/lib/useDismiss";
+import { useMediaQuery } from "@/lib/useMediaQuery";
 import { topicMessage, whatsappUrl } from "@/lib/whatsapp";
-import { topicLabel } from "@/content/services";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { ArrowIcon, CloseIcon, PhoneIcon, WhatsAppIcon } from "@/components/ui/Icons";
 
@@ -33,52 +33,32 @@ export function FloatingWhatsApp() {
     clearTimeout(timer.current);
     timer.current = setTimeout(fn, ms);
   }, []);
-  const close = useCallback(
-    (refocus = false) => {
-      clearTimeout(timer.current);
-      setOpen(false);
-      if (refocus) buttonRef.current?.focus({ preventScroll: true });
-    },
-    [],
-  );
+  const close = useCallback((refocus = false) => {
+    clearTimeout(timer.current);
+    setOpen(false);
+    if (refocus) buttonRef.current?.focus({ preventScroll: true });
+  }, []);
   const canHover = () => matchMedia("(min-width: 760px) and (hover: hover) and (pointer: fine)").matches;
   const isDesktop = () => matchMedia("(min-width: 760px)").matches;
-  // Phones get the sheet with an X; read after mount so the static HTML is the same for everyone.
-  const [isPhone, setIsPhone] = useState(false);
-  useEffect(() => {
-    const mq = matchMedia("(max-width: 759px)");
-    const sync = () => {
-      setIsPhone(mq.matches);
-      setOpen(false);
-    };
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
+  // Phones get the sheet with an X. Crossing the breakpoint closes whatever was open.
+  const isPhone = useMediaQuery("(max-width: 759px)");
+  const [wasPhone, setWasPhone] = useState(isPhone);
+  if (wasPhone !== isPhone) {
+    setWasPhone(isPhone);
+    setOpen(false);
+  }
   const closeRef = useRef<HTMLButtonElement>(null);
   // On phones, move focus into the sheet so screen readers and keyboards land on it.
   useEffect(() => {
     if (open && isPhone) closeRef.current?.focus({ preventScroll: true });
   }, [open, isPhone]);
 
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        dismissed.current = true;
-        close(true);
-      }
-    };
-    const onDown = (e: PointerEvent) => {
-      if (!wrapRef.current?.contains(e.target as Node)) close();
-    };
-    document.addEventListener("keydown", onKey);
-    document.addEventListener("pointerdown", onDown);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("pointerdown", onDown);
-    };
-  }, [open, close]);
+  // Escape and the X also keep the bubble shut until the pointer leaves, and return focus to the button.
+  const dismiss = () => {
+    dismissed.current = true;
+    close(true);
+  };
+  useDismiss(wrapRef, open, (reason) => (reason === "outside" ? close() : dismiss()));
   useEffect(() => () => clearTimeout(timer.current), []);
 
   return (
@@ -91,6 +71,7 @@ export function FloatingWhatsApp() {
         ref={wrapRef}
         className="b-wa-wrap"
         data-open={open ? "" : undefined}
+        data-dialog-open={open ? "" : undefined}
         onPointerEnter={(e) => {
           if (e.pointerType !== "mouse" || !canHover() || dismissed.current) return;
           later(() => setOpen(true), OPEN_DELAY_MS);
@@ -143,10 +124,7 @@ export function FloatingWhatsApp() {
               aria-label={t("wa.close")}
               className="b-wa-menu-close"
               type="button"
-              onClick={() => {
-                dismissed.current = true;
-                close(true);
-              }}
+              onClick={dismiss}
             >
               <CloseIcon />
             </button>

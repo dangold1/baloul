@@ -1,5 +1,7 @@
 # Language Switch (Hebrew / English) Implementation Plan
 
+> **Note (2026-11-17):** Shipped as per-URL routes; see code. Hebrew at `/…`, English at `/en/…` (`app/(he)`, `app/(en)/en`); localStorage only remembers the choice for a redirect from `/`. Conventions: `AGENTS.md` → Components.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** A visitor can switch the site chrome between Hebrew (default) and English from the top nav. The choice is kept in localStorage and restored on the next visit.

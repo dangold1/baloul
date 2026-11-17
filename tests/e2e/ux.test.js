@@ -24,6 +24,12 @@ async function setup(browser, errs, options, { consent = true } = {}) {
 }
 
 const scrollTo = (page, y) => page.evaluate((v) => window.scrollTo({ top: v, behavior: "instant" }), y);
+/** A press and click on the page body, outside every menu and dialog. */
+const pressOutside = (page) =>
+  page.evaluate(() => {
+    document.body.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
+    document.body.click();
+  });
 
 (async () => {
   const server = await serve("out", PORT);
@@ -63,6 +69,17 @@ const scrollTo = (page, y) => page.evaluate((v) => window.scrollTo({ top: v, beh
     assert.equal(await mobile.locator(".b-mobile-group-title").textContent(), "תחומי פעילות");
     assert.equal(await mobile.locator(".b-mobile > a:last-child").getAttribute("class"), "b-mobile-cta");
 
+    step = "phones: Escape and a press outside close the menu";
+    // <details> reports opening with an async "toggle" event; give it a frame, as a person always would.
+    await mobile.waitForTimeout(100);
+    await mobile.keyboard.press("Escape");
+    assert.equal(await mobile.locator("#bMobileMenu[open]").count(), 0, "Escape closes the menu");
+    await mobile.click(".b-menu");
+    assert.equal(await mobile.locator("#bMobileMenu[open]").count(), 1, "the menu opens again");
+    await mobile.waitForTimeout(100);
+    await pressOutside(mobile);
+    assert.equal(await mobile.locator("#bMobileMenu[open]").count(), 0, "a press outside closes the menu");
+
     step = "home: the domain strip is gone (services are not listed three times)";
     assert.equal(await mobile.locator(".b-domain-nav").count(), 0);
 
@@ -88,6 +105,74 @@ const scrollTo = (page, y) => page.evaluate((v) => window.scrollTo({ top: v, beh
     assert.equal(await page.$eval(".b-lead-pop-submit svg", (s) => getComputedStyle(s).color), "rgb(255, 255, 255)");
     await page.keyboard.press("Escape");
     assert.equal(await page.locator(".b-lead-pop.open").count(), 0);
+
+    step = "dialogs: Escape closes the About dialog and focus returns to the link that opened it";
+    const dlg = await setup(browser, errs, desk);
+    await dlg.goto(HOME);
+    const opener = dlg.locator('main a[href="#about-modal"]').first();
+    await opener.scrollIntoViewIfNeeded();
+    await opener.evaluate((a) => (a.dataset.testOpener = "1"));
+    await opener.focus();
+    await opener.press("Enter");
+    await dlg.waitForSelector("#about-modal.open");
+    await dlg.waitForTimeout(50);
+    assert.equal(await dlg.evaluate(() => document.activeElement?.classList.contains("b-modal-close")), true);
+    await dlg.keyboard.press("Escape");
+    assert.equal(await dlg.locator("#about-modal.open").count(), 0);
+    assert.equal(await dlg.evaluate(() => document.activeElement?.dataset.testOpener), "1");
+
+    step = "dialogs: one Escape closes only the top layer (About over the open services menu)";
+    await scrollTo(dlg, 0);
+    await dlg.click(".b-services-menu > summary");
+    await dlg.waitForTimeout(100);
+    await dlg.evaluate(() => window.dispatchEvent(new Event("baloul:open-about")));
+    await dlg.waitForSelector("#about-modal.open");
+    await dlg.keyboard.press("Escape");
+    assert.equal(await dlg.locator("#about-modal.open").count(), 0);
+    assert.equal(await dlg.locator(".b-services-menu[open]").count(), 1, "the menu under the dialog stays open");
+    await dlg.keyboard.press("Escape");
+    assert.equal(await dlg.locator(".b-services-menu[open]").count(), 0);
+
+    step = "menus: a press outside closes the services menu; Escape and a press outside close the language menu";
+    await dlg.click(".b-services-menu > summary");
+    await dlg.waitForTimeout(100);
+    await pressOutside(dlg);
+    assert.equal(await dlg.locator(".b-services-menu[open]").count(), 0, "a press outside closes the services menu");
+    await dlg.click(".b-lang-trigger");
+    assert.equal(await dlg.locator(".b-lang[data-open]").count(), 1);
+    await dlg.keyboard.press("Escape");
+    assert.equal(await dlg.locator(".b-lang[data-open]").count(), 0, "Escape closes the language menu");
+    assert.equal(await dlg.evaluate(() => document.activeElement?.className), "b-lang-trigger");
+    await dlg.click(".b-lang-trigger");
+    await pressOutside(dlg);
+    assert.equal(await dlg.locator(".b-lang[data-open]").count(), 0, "a press outside closes the language menu");
+
+    step = "dialogs: the lead popup waits while another dialog is open";
+    await dlg.evaluate(() => {
+      const r = document.getElementById("reviews").getBoundingClientRect();
+      window.scrollTo({ top: window.scrollY + r.bottom, behavior: "instant" });
+      window.dispatchEvent(new Event("baloul:open-about"));
+    });
+    await dlg.waitForTimeout(1000);
+    assert.equal(await dlg.locator(".b-lead-pop.open").count(), 0, "popup must not open over the About dialog");
+    await dlg.keyboard.press("Escape");
+    await dlg.evaluate(() => window.scrollBy({ top: 40, behavior: "instant" }));
+    await dlg.waitForSelector(".b-lead-pop.open", { timeout: 3000 });
+
+    step = "lead forms: no duplicate ids with the popup open, labels point at their fields";
+    const ids = await dlg.evaluate(() => {
+      const all = [...document.querySelectorAll("[id]")].map((el) => el.id);
+      const dupes = all.filter((id, i) => all.indexOf(id) !== i);
+      const orphans = [...document.querySelectorAll("#bForm label, #bLeadPopForm label")]
+        .filter((l) => l.htmlFor && !document.getElementById(l.htmlFor))
+        .map((l) => l.htmlFor);
+      return { dupes, orphans };
+    });
+    assert.deepEqual(ids.dupes, [], "duplicate ids");
+    assert.deepEqual(ids.orphans, [], "labels without a field");
+    await dlg.click('label[for="bLeadPopName"]');
+    assert.equal(await dlg.evaluate(() => document.activeElement?.id), "bLeadPopName", "the popup label focuses its field");
+    await dlg.context().close();
 
     step = "service page: facts panel replaces the icon circle";
     await page.goto(`${HOME}pension-retirement`);
@@ -115,6 +200,42 @@ const scrollTo = (page, y) => page.evaluate((v) => window.scrollTo({ top: v, beh
       if (vp.width >= 1280) assert.ok(fit.block <= fit.room, `${vp.width}px: heading + list ${fit.block}px > room ${fit.room}px`);
       await p.context().close();
     }
+
+    step = "faq keeps one open";
+    const faq = await setup(browser, errs, desk);
+    await faq.goto(HOME);
+    await faq.click("#knowledge .b-faq-item:nth-child(1) > summary");
+    await faq.click("#knowledge .b-faq-item:nth-child(2) > summary");
+    await faq.waitForTimeout(100);
+    assert.equal(await faq.locator("#knowledge .b-faq-item[open]").count(), 1);
+    assert.equal(await faq.locator("#knowledge .b-faq-item:nth-child(2)[open]").count(), 1);
+
+    // Smooth scrolling takes longer on some runs: wait for the hash and the form in view, not a fixed time.
+    const contactReached = () =>
+      faq
+        .waitForFunction(() => location.hash === "#contact" && Math.abs(document.getElementById("contact").getBoundingClientRect().top) < 200, null, {
+          timeout: 10000,
+        })
+        .catch(() => {});
+
+    for (const path of ["", "en", "pension-retirement", "en/pension-retirement"]) {
+      step = `cta reaches contact form (/${path})`;
+      await faq.goto(HOME + path);
+      await faq.click(".b-hero-actions a");
+      await contactReached();
+      assert.ok(faq.url().endsWith("#contact"), faq.url());
+      assert.ok(await faq.locator("#contact #bForm").isVisible());
+      assert.ok(await faq.evaluate(() => Math.abs(document.getElementById("contact").getBoundingClientRect().top) < 200));
+    }
+
+    step = "faq keeps one open (service page)";
+    await faq.goto(`${HOME}pension-retirement`);
+    await faq.click(".b-knowledge .b-faq-item:nth-child(1) > summary");
+    await faq.click(".b-knowledge .b-faq-item:nth-child(2) > summary");
+    await faq.waitForTimeout(100);
+    assert.equal(await faq.locator(".b-knowledge .b-faq-item[open]").count(), 1);
+    assert.equal(await faq.locator(".b-knowledge .b-faq-item:nth-child(2)[open]").count(), 1);
+    await faq.context().close();
 
     step = "no console errors";
     assert.deepEqual(errs, []);
