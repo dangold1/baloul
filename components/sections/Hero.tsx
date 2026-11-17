@@ -5,11 +5,15 @@ import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { site } from "@/content/site";
 import { googleRating } from "@/content/reviews";
 import { PhoneIcon } from "@/components/ui/Icons";
+import { ButtonLink } from "@/components/ui/Button";
+import { Stars } from "@/components/ui/Stars";
+import { contactLink } from "@/lib/contact";
 
 const yearsActive = new Date().getFullYear() - site.foundedYear;
 
 export function Hero() {
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
+  const phone = contactLink("phone", lang);
   /** Facts only. Each one can be checked by the visitor. */
   const facts = [
     { value: googleRating.score, label: t("hero.factRating"), stars: true },
@@ -26,13 +30,11 @@ export function Hero() {
           </h1>
           <p className="b-hero-lead">{t("hero.lead")}</p>
           <div className="b-hero-actions">
-            <a className="b-btn b-btn-primary" href="#contact">
-              {t("common.cta")}
-            </a>
+            <ButtonLink href="#contact">{t("common.cta")}</ButtonLink>
           </div>
           <p className="b-hero-call">
             <PhoneIcon />
-            {t("hero.call")} <a href={site.phone.href}>{site.phone.display}</a>
+            {t("hero.call")} <a href={phone.href}>{phone.display}</a>
           </p>
           <dl className="b-facts" aria-label={t("hero.factsLabel")}>
             {facts.map((f) => (
@@ -41,9 +43,7 @@ export function Hero() {
                 <dd>
                   {f.value}
                   {f.stars ? (
-                    <span className="b-fact-stars" role="img" aria-label={t("common.stars")}>
-                      ★★★★★
-                    </span>
+                    <Stars as="span" className="b-fact-stars" label={t("common.stars")} />
                   ) : null}
                 </dd>
               </div>

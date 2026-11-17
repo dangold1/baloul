@@ -7,13 +7,15 @@ import { services, servicePath } from "@/content/services";
 import { AboutLink } from "@/components/about/AboutLink";
 import { CookieSettingsLink } from "@/components/consent/CookieSettingsLink";
 import { FacebookIcon, MailIcon, WhatsAppIcon } from "@/components/ui/Icons";
-import { greetingFor, whatsappUrl } from "@/lib/whatsapp";
+import { contactLink } from "@/lib/contact";
+import { Logo } from "@/components/ui/Logo";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 const legalLinks = legalDocs.map((d) => ({ href: `/${d.slug}`, labelKey: `footer.legal.${d.slug}` as DictKey }));
 
 export function Footer({ base = "" }: { base?: string }) {
   const { lang, t, href } = useLanguage();
+  const [phone, whatsapp, email, address] = (["phone", "whatsapp", "email", "address"] as const).map((k) => contactLink(k, lang));
   /** Sub pages link back to the home page sections; the home page links in place. */
   const root = base ? href("/") : "";
   return (
@@ -21,13 +23,13 @@ export function Footer({ base = "" }: { base?: string }) {
       <div className="b-container">
         <div className="b-footer-grid">
           <div className="b-footer-brand">
-            <img alt="BALOUL" className="b-footer-logo" src={site.images.logo.src} width={site.images.logo.width} height={site.images.logo.height} loading="lazy" decoding="async" />
+            <Logo alt={t("brand.logoAlt")} className="b-footer-logo" lazy />
             <p>{t("footer.about", { founded: site.foundedYear, agency: site.agencyYear })}</p>
             <div className="b-socials">
-              <a aria-label="WhatsApp" href={whatsappUrl(greetingFor(lang))} rel="noopener" target="_blank">
+              <a aria-label="WhatsApp" href={whatsapp.href} rel="noopener" target="_blank">
                 <WhatsAppIcon />
               </a>
-              <a aria-label={t("footer.mailLabel")} href={`mailto:${site.email}`}>
+              <a aria-label={t("footer.mailLabel")} href={email.href}>
                 <MailIcon />
               </a>
               <a aria-label="Facebook" href={site.social.facebook} rel="noopener" target="_blank">
@@ -61,13 +63,13 @@ export function Footer({ base = "" }: { base?: string }) {
           </div>
           <div>
             <h2 className="b-footer-title">{t("footer.contactTitle")}</h2>
-            <a href={site.phone.href}>{t("footer.phone", { phone: site.phone.display })}</a>
-            <a href={whatsappUrl(greetingFor(lang))} rel="noopener" target="_blank">
-              WhatsApp: {site.whatsapp.display}
+            <a href={phone.href}>{t("footer.phone", { phone: phone.display })}</a>
+            <a href={whatsapp.href} rel="noopener" target="_blank">
+              WhatsApp: {whatsapp.display}
             </a>
-            <a href={`mailto:${site.email}`}>{site.email}</a>
-            <a href={site.address.mapsUrl} rel="noopener" target="_blank">
-              {t("footer.address")}
+            <a href={email.href}>{email.display}</a>
+            <a href={address.href} rel="noopener" target="_blank">
+              {address.display}
             </a>
           </div>
         </div>

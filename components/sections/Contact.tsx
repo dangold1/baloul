@@ -2,14 +2,14 @@
 
 import { Section } from "@/components/layout/ActiveSection";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
-import { site } from "@/content/site";
 import { contactTopics } from "@/content/services";
 import { ContactForm } from "@/components/lead/ContactForm";
 import { MailIcon, PhoneIcon, PinIcon, WhatsAppIcon } from "@/components/ui/Icons";
-import { greetingFor, whatsappUrl } from "@/lib/whatsapp";
+import { contactLink } from "@/lib/contact";
 
 export function Contact() {
   const { lang, t } = useLanguage();
+  const [phone, whatsapp, email, address] = (["phone", "whatsapp", "email", "address"] as const).map((k) => contactLink(k, lang));
   return (
     <Section id="contact" step={t("nav.contact")} className="b-section b-contact" labelledBy="contactTitle">
       <div className="b-container b-contact-wrap">
@@ -21,25 +21,25 @@ export function Contact() {
             <li>
               <PhoneIcon />
               <span>{t("contact.phone")}</span>
-              <a href={site.phone.href}>{site.phone.display}</a>
+              <a href={phone.href}>{phone.display}</a>
             </li>
             <li>
               <WhatsAppIcon />
               <span>WhatsApp</span>
-              <a href={whatsappUrl(greetingFor(lang))} rel="noopener" target="_blank">
-                {site.whatsapp.display}
+              <a href={whatsapp.href} rel="noopener" target="_blank">
+                {whatsapp.display}
               </a>
             </li>
             <li>
               <MailIcon />
               <span>{t("contact.email")}</span>
-              <a href={`mailto:${site.email}`}>{site.email}</a>
+              <a href={email.href}>{email.display}</a>
             </li>
             <li>
               <PinIcon />
               <span>{t("contact.office")}</span>
-              <a href={site.address.mapsUrl} rel="noopener" target="_blank">
-                {t("footer.address")}
+              <a href={address.href} rel="noopener" target="_blank">
+                {address.display}
               </a>
             </li>
           </ul>

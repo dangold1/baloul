@@ -5,6 +5,8 @@ import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { site } from "@/content/site";
 import { googleRating, googleRatingEn, reviews, reviewsEn } from "@/content/reviews";
 import { pick } from "@/lib/i18n/languages";
+import { ButtonLink } from "@/components/ui/Button";
+import { Stars } from "@/components/ui/Stars";
 import { SectionHead } from "@/components/ui/SectionHeading";
 
 export function Reviews() {
@@ -17,19 +19,15 @@ export function Reviews() {
         <div className="b-review-grid">
           <aside className="b-google-card" aria-label={t("reviews.googleLabel")}>
             <div className="b-google-big">{rating.score}</div>
-            <div aria-label={t("common.stars")} className="b-stars" role="img">
-              ★★★★★
-            </div>
+            <Stars label={t("common.stars")} />
             <div className="b-google-count">{rating.countLabel}</div>
-            <a className="b-btn b-btn-secondary b-google-link" href={site.googleReviewsUrl} rel="noopener" target="_blank">
+            <ButtonLink variant="secondary" className="b-google-link" href={site.googleReviewsUrl} rel="noopener" target="_blank">
               {t("reviews.allLink")}
-            </a>
+            </ButtonLink>
           </aside>
           {pick(lang, reviews, reviewsEn).map((r, i) => (
             <figure key={i} className="b-review-card">
-              <div aria-label={t("common.stars")} className="b-stars" role="img">
-                ★★★★★
-              </div>
+              <Stars label={t("common.stars")} />
               <blockquote>
                 <p>{r.quote}</p>
               </blockquote>

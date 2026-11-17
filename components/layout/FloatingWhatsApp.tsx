@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { site } from "@/content/site";
 import { whatsappTopics } from "@/content/services";
-import { greetingFor, topicMessage, whatsappUrl } from "@/lib/whatsapp";
+import { contactLink } from "@/lib/contact";
+import { topicMessage, whatsappUrl } from "@/lib/whatsapp";
 import { topicLabel } from "@/content/services";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { ArrowIcon, CloseIcon, PhoneIcon, WhatsAppIcon } from "@/components/ui/Icons";
@@ -82,7 +83,7 @@ export function FloatingWhatsApp() {
 
   return (
     <div className="b-floating">
-      <a className="b-call" href={site.phone.href}>
+      <a className="b-call" href={contactLink("phone", lang).href}>
         <PhoneIcon />
         <span>{t("wa.call")}</span>
       </a>
@@ -117,7 +118,7 @@ export function FloatingWhatsApp() {
           aria-haspopup={isPhone ? "true" : undefined}
           aria-label="WhatsApp"
           className="b-wa"
-          href={whatsappUrl(greetingFor(lang))}
+          href={contactLink("whatsapp", lang).href}
           rel="noopener"
           target="_blank"
           onClick={(e) => {

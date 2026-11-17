@@ -1,6 +1,6 @@
-import { site } from "@/content/site";
-import { topicLabel } from "@/content/services";
-import type { Lang } from "@/lib/i18n/languages";
+import { site } from "../content/site.ts";
+import { topicLabel } from "../content/services.ts";
+import type { Lang } from "./i18n/languages.ts";
 
 /** Default greeting for the floating button and plain WhatsApp links. */
 const GREETING: Record<Lang, string> = {

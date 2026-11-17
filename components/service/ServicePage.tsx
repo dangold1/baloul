@@ -12,7 +12,9 @@ import { ContactForm } from "@/components/lead/ContactForm";
 import { ArrowIcon, PhoneIcon, ServiceIcon, WhatsAppIcon } from "@/components/ui/Icons";
 import { SectionHead } from "@/components/ui/SectionHeading";
 import { BreadcrumbJsonLd, FaqJsonLd, ServiceJsonLd } from "@/components/seo/JsonLd";
-import { greetingFor, whatsappUrl } from "@/lib/whatsapp";
+import { contactLink } from "@/lib/contact";
+import { ButtonLink } from "@/components/ui/Button";
+import { Stars } from "@/components/ui/Stars";
 
 /**
  * One service page. Same structure for all four:
@@ -20,6 +22,8 @@ import { greetingFor, whatsappUrl } from "@/lib/whatsapp";
  */
 export function ServicePage({ service: heService }: { service: Service }) {
   const { lang, t, href } = useLanguage();
+  const phone = contactLink("phone", lang);
+  const whatsapp = contactLink("whatsapp", lang);
   const service = localizeService(heService, lang);
   const mySituations = situations.filter((s) => s.serviceId === service.id);
   const heFaqs = faqsFor(service.id);
@@ -58,13 +62,11 @@ export function ServicePage({ service: heService }: { service: Service }) {
               <h1 id="serviceTitle">{service.title}</h1>
               <p className="b-hero-lead">{service.intro}</p>
               <div className="b-hero-actions">
-                <a className="b-btn b-btn-primary" href="#contact">
-                  {t("common.cta")}
-                </a>
+                <ButtonLink href="#contact">{t("common.cta")}</ButtonLink>
               </div>
               <p className="b-hero-call">
                 <PhoneIcon />
-                {t("hero.call")} <a href={site.phone.href}>{site.phone.display}</a>
+                {t("hero.call")} <a href={phone.href}>{phone.display}</a>
               </p>
             </div>
             <dl className="b-service-facts" aria-label={t("service.factsLabel")}>
@@ -158,9 +160,7 @@ export function ServicePage({ service: heService }: { service: Service }) {
       <section className="b-section b-reviews" aria-label={t("nav.reviews")}>
         <div className="b-container b-review-single">
           <figure className="b-review-card">
-            <div aria-label={t("common.stars")} className="b-stars" role="img">
-              ★★★★★
-            </div>
+            <Stars label={t("common.stars")} />
             <blockquote>
               <p>{review.quote}</p>
             </blockquote>
@@ -183,13 +183,13 @@ export function ServicePage({ service: heService }: { service: Service }) {
               <li>
                 <PhoneIcon />
                 <span>{t("contact.phone")}</span>
-                <a href={site.phone.href}>{site.phone.display}</a>
+                <a href={phone.href}>{phone.display}</a>
               </li>
               <li>
                 <WhatsAppIcon />
                 <span>WhatsApp</span>
-                <a href={whatsappUrl(greetingFor(lang))} rel="noopener" target="_blank">
-                  {site.whatsapp.display}
+                <a href={whatsapp.href} rel="noopener" target="_blank">
+                  {whatsapp.display}
                 </a>
               </li>
             </ul>

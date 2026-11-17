@@ -1,6 +1,6 @@
 "use client";
 
-import { site } from "@/content/site";
+import { Logo } from "@/components/ui/Logo";
 import { AboutLink } from "@/components/about/AboutLink";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { LanguageSwitch } from "@/components/i18n/LanguageSwitch";
@@ -22,7 +22,7 @@ export function Header({ home = true, contactHref }: { home?: boolean; contactHr
     <header className="b-header">
       <div className="b-container b-nav">
         <a aria-label={t("brand.homeLabel")} className="b-brand" href={home ? "#top" : href("/")}>
-          <img alt={t("brand.logoAlt")} src={site.images.logo.src} width={site.images.logo.width} height={site.images.logo.height} />
+          <Logo alt={t("brand.logoAlt")} />
           <span className="b-brand-text">
             <span className="b-brand-name">BALOUL</span>
             <span className="b-brand-tag">{t("brand.tagline")}</span>

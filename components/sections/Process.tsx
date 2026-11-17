@@ -4,6 +4,7 @@ import { Section } from "@/components/layout/ActiveSection";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { steps, stepsEn } from "@/content/journey";
 import { pick } from "@/lib/i18n/languages";
+import { ButtonLink } from "@/components/ui/Button";
 import { SectionHead } from "@/components/ui/SectionHeading";
 
 export function Process() {
@@ -24,9 +25,7 @@ export function Process() {
           ))}
         </ol>
         <div className="b-process-cta">
-          <a className="b-btn b-btn-primary" href="#contact">
-            {t("common.cta")}
-          </a>
+          <ButtonLink href="#contact">{t("common.cta")}</ButtonLink>
           <span>{t("process.note")}</span>
         </div>
       </div>
