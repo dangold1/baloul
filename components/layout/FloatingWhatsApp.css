@@ -1,0 +1,91 @@
+/* Phones: fixed bottom bar with "call" and "WhatsApp". Desktop: a single WhatsApp button. */
+.site .b-floating{
+  position:fixed;z-index:60;inset-inline:0;bottom:0;
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:rgba(255,255,255,.97);border-top:1px solid var(--line);
+  box-shadow:0 -6px 20px rgba(23,42,70,.08);
+  transition:opacity .2s ease;
+}
+.site .b-floating a{
+  display:flex;align-items:center;justify-content:center;gap:8px;min-height:50px;
+  border-radius:var(--radius-sm);text-decoration:none;font-weight:600;font-size:17px;
+}
+.site .b-call{background:var(--navy);color:#fff}
+.site .b-wa{background:var(--wa);color:#fff}
+.site .b-wa:hover{background:var(--wa-2)}
+@media (min-width:760px){
+  .site .b-floating{
+    inset-inline:auto;left:24px;bottom:24px;display:block;padding:0;background:none;border:0;box-shadow:none;
+  }
+  .site .b-call{display:none!important}
+  /* Desktop: a round WhatsApp button in the familiar WhatsApp green, follows the page. */
+  .site .b-floating a.b-wa{
+    width:60px;height:60px;min-height:0;padding:0;border-radius:50%;
+    background:#25d366;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.18);
+    transition:transform var(--t),box-shadow var(--t),background-color var(--t);
+  }
+  .site .b-floating a.b-wa svg{width:32px;height:32px}
+  .site .b-floating .b-wa-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .site .b-floating a.b-wa:hover{background:#1ebe5b;transform:scale(1.06);box-shadow:0 8px 24px rgba(0,0,0,.22)}
+}
+/* Topic bubble (Dan, 2026-11-10). One markup: a sheet above the bottom bar on phones (with X), a bubble above the round button on desktop (no X). */
+.site .b-wa-wrap{display:contents}
+.site .b-wa-menu{
+  position:fixed;z-index:61;inset-inline:12px;bottom:calc(80px + env(safe-area-inset-bottom));
+  padding:14px 12px 12px;border-radius:16px;background:var(--white);color:var(--ink);
+  border:1px solid var(--line);box-shadow:0 4px 10px rgba(20,40,74,.08),0 18px 44px rgba(20,40,74,.20);
+  text-align:start;
+  opacity:0;visibility:hidden;transform:translateY(10px);transform-origin:bottom left;
+  transition:opacity .2s cubic-bezier(.16,1,.3,1),transform .24s cubic-bezier(.16,1,.3,1),visibility 0s linear .24s;
+}
+.site [data-open] > .b-wa-menu{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+/* The tail points at the WhatsApp button: on phones it is the left half of the bar. */
+.site .b-wa-menu::after{
+  content:"";position:absolute;left:25%;bottom:-7px;width:14px;height:14px;background:var(--white);
+  border-right:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(45deg);
+}
+.site .b-wa-menu-head{display:flex;align-items:center;gap:10px;margin:0 4px 6px}
+.site .b-wa-menu-badge{
+  flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#25d366;color:#fff;
+}
+.site .b-wa-menu-badge svg{width:20px;height:20px}
+.site .b-wa-menu-title{flex:1;margin:0;font-size:17px;font-weight:700;color:var(--navy);line-height:1.3}
+.site .b-wa-menu-close{
+  flex:none;width:44px;height:44px;margin:-6px 0 -6px -6px;border:0;border-radius:50%;background:transparent;
+  color:var(--navy);display:grid;place-items:center;cursor:pointer;
+}
+.site .b-wa-menu-close svg{width:22px;height:22px}
+.site .b-wa-menu-close:active{background:var(--paper-2)}
+.site .b-wa-menu ul{list-style:none;margin:0;padding:0}
+.site .b-wa-menu li + li{border-top:1px solid var(--line)}
+.site .b-floating .b-wa-menu li a{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:50px;padding:0 8px;
+  border-radius:8px;background:none;color:var(--ink);font-size:17px;font-weight:500;text-decoration:none;
+  transition:background-color .15s ease,color .15s ease;
+}
+.site .b-floating .b-wa-menu li a:active{background:var(--paper)}
+.site .b-wa-menu li a svg{width:18px;height:18px;flex:none;color:var(--muted);transition:transform .15s ease,color .15s ease}
+.site .b-wa-menu-note{margin:8px 6px 0;font-size:14px;line-height:1.45;color:var(--muted)}
+
+@media (min-width:760px){
+  .site .b-wa-wrap{display:block;position:relative}
+  .site .b-wa-menu{
+    position:absolute;inset-inline:auto;left:0;bottom:calc(100% + 14px);width:296px;padding:16px 14px 14px;
+    transform:translateY(8px) scale(.98);
+  }
+  /* Closing waits a moment (also in JS), so moving from the button up to the bubble never closes it. */
+  .site .b-wa-menu::before{content:"";position:absolute;inset-inline:0;top:100%;height:16px}
+  .site .b-wa-menu::after{left:23px}
+  .site .b-wa-menu-close{display:none}
+  .site .b-floating .b-wa-menu li a{min-height:46px;font-size:16px}
+  .site .b-wa-menu-note{font-size:13.5px}
+}
+@media (hover:hover) and (pointer:fine){
+  .site .b-floating .b-wa-menu li a:hover{background:var(--paper);color:var(--navy)}
+  .site .b-floating .b-wa-menu li a:hover svg{color:var(--wa);transform:translateX(-3px)}
+}
+@media (prefers-reduced-motion:reduce){
+  .site .b-wa-menu{transform:none!important;transition:opacity .01s,visibility 0s!important}
+}
+.site.b-about-open .b-floating,.site.b-lead-open .b-floating{opacity:0;pointer-events:none}

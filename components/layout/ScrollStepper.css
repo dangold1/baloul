@@ -1,0 +1,82 @@
+/* Scroll stepper. Desktop (1200px+): rail on the right edge, labels open toward the content. Below 1200px there is too little room beside the content (32px at 1024), so the gold bar under the sticky header is used instead. */
+.site .b-stepper{display:none}
+.site .b-stepper-fill{
+  display:block;width:100%;height:100%;background:var(--bronze-soft);
+  transform-origin:top;transform:scaleY(var(--stepper-progress,0));
+}
+
+@media (min-width:1200px){
+  .site .b-stepper{
+    display:block;position:fixed;z-index:40;right:14px;top:50%;transform:translateY(-50%);
+    direction:rtl;
+  }
+  .site .b-stepper ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+  /* The track runs through the dot centres. */
+  .site .b-stepper-track{
+    position:absolute;right:11px;top:18px;bottom:18px;width:2px;border-radius:2px;background:var(--line-strong);overflow:hidden;
+  }
+  /* Only the dot is the hit area, so the hidden labels never block clicks on the page. */
+  .site .b-stepper-step{
+    position:relative;display:grid;place-items:center;width:24px;height:30px;text-decoration:none;color:var(--navy);
+  }
+  .site .b-stepper-dot{
+    position:relative;flex:none;width:24px;height:24px;display:grid;place-items:center;
+  }
+  .site .b-stepper-dot::before{
+    content:"";width:10px;height:10px;border-radius:50%;
+    background:var(--white);border:2px solid var(--line-strong);
+    transition:transform .25s ease,background-color .2s ease,border-color .2s ease;
+  }
+  .site .b-stepper-step[data-state="past"] .b-stepper-dot::before{background:var(--navy);border-color:var(--navy)}
+  .site .b-stepper-step[data-state="current"] .b-stepper-dot::before{
+    background:var(--bronze-soft);border-color:var(--bronze-soft);transform:scale(1.4);
+    box-shadow:0 0 0 3px rgba(201,163,90,.22);
+  }
+  /* Labels: a small pill so they stay readable over any section. Hidden until hover or focus. */
+  .site .b-stepper-label{
+    position:absolute;right:34px;top:50%;margin-top:-14px;
+    font-size:14px;font-weight:600;line-height:1;white-space:nowrap;
+    padding:7px 10px;border-radius:999px;background:var(--white);color:var(--navy);
+    box-shadow:0 1px 2px rgba(20,40,74,.08),0 4px 14px rgba(20,40,74,.10);
+    opacity:0;transform:translateX(4px);pointer-events:none;
+    transition:opacity .2s ease,transform .2s ease;
+  }
+  .site .b-stepper-step:hover .b-stepper-label,
+  .site .b-stepper-step:focus-visible .b-stepper-label{opacity:1;transform:none}
+  .site .b-stepper-step:hover .b-stepper-dot::before{border-color:var(--navy)}
+  .site .b-stepper-step:focus-visible{outline:none}
+  .site .b-stepper-step:focus-visible .b-stepper-dot::before{box-shadow:0 0 0 3px var(--focus)}
+
+  /* Over the dark bands (reviews, footer). */
+  .site [data-tone="dark"] .b-stepper-track{background:rgba(255,255,255,.28)}
+  .site [data-tone="dark"] .b-stepper-dot::before{background:transparent;border-color:rgba(255,255,255,.55)}
+  .site [data-tone="dark"] .b-stepper-step[data-state="past"] .b-stepper-dot::before{background:#fff;border-color:#fff}
+  .site [data-tone="dark"] .b-stepper-step[data-state="current"] .b-stepper-dot::before{background:#e2b76f;border-color:#e2b76f}
+}
+/* Wide screens have room beside the content: the current label stays visible. */
+@media (min-width:1400px){
+  .site .b-stepper-step[data-state="current"] .b-stepper-label{opacity:1;transform:none}
+}
+
+/* Phones, tablets and small laptops: a thin bar under the header, with the current part's name. Hidden in the hero. */
+.site .b-stepper-mobile{
+  position:fixed;z-index:45;inset-inline:0;top:var(--stepper-top,72px);
+  display:flex;align-items:center;justify-content:flex-start;pointer-events:none;
+  transition:opacity .2s ease;
+}
+.site .b-stepper-mobile-bar{position:absolute;inset-inline:0;top:0;height:3px;background:rgba(20,40,74,.08)}
+.site .b-stepper-mobile-bar .b-stepper-fill{transform-origin:right;transform:scaleX(var(--stepper-progress,0))}
+.site .b-stepper-mobile-label{
+  margin:7px 12px 0;padding:3px 10px;border-radius:999px;font-size:13px;font-weight:600;line-height:1.4;
+  background:rgba(255,255,255,.94);color:var(--navy);box-shadow:0 1px 6px rgba(20,40,74,.12);
+}
+.site [data-hero] .b-stepper-mobile{opacity:0}
+@media (min-width:1200px){.site .b-stepper-mobile{display:none}}
+.site.b-about-open .b-stepper-root,.site.b-lead-open .b-stepper-root{visibility:hidden}
+
+@media (prefers-reduced-motion:reduce){
+  .site .b-stepper-dot::before,.site .b-stepper-label,.site .b-stepper-mobile{transition:none}
+}
+
+/* English: the phone progress bar fills from the left, the reading start. The desktop rail stays on the right edge. */
+:root[dir="ltr"] .site .b-stepper-mobile-bar .b-stepper-fill{transform-origin:left}

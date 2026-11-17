@@ -1,0 +1,15 @@
+import type { Viewport } from "next";
+import { SiteShell } from "@/components/layout/SiteShell";
+import { baseMetadata } from "@/lib/seo";
+
+export const metadata = baseMetadata;
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#f7f5f1",
+};
+
+export default function EnglishLayout({ children }: { children: React.ReactNode }) {
+  return <SiteShell lang="en">{children}</SiteShell>;
+}

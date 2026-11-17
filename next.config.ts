@@ -1,20 +1,13 @@
 import type { NextConfig } from "next";
 
-// Set only by the GitHub Pages build, so local dev stays at the root.
-const basePath = process.env.PAGES_BASE_PATH ?? "";
-
 const nextConfig: NextConfig = {
+  // Static HTML export, deployed to Netlify as plain files.
   output: "export",
-  basePath,
-  env: { NEXT_PUBLIC_BASE_PATH: basePath },
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
-  },
+  images: { unoptimized: true },
+  trailingSlash: false,
+  reactStrictMode: true,
+  // Two root layouts (Hebrew at /, English at /en), so the 404 page is defined once in app/global-not-found.tsx.
+  experimental: { globalNotFound: true, agentUpgrade: "security" },
 };
 
 export default nextConfig;

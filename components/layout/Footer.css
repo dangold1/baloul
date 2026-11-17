@@ -1,0 +1,33 @@
+.site .b-footer{background:var(--paper);border-top:1px solid var(--line);padding:56px 0 28px;font-size:16px}
+.site .b-footer-grid{display:grid;gap:32px}
+@media (min-width:760px){.site .b-footer-grid{grid-template-columns:1fr 1fr}}
+@media (min-width:1024px){.site .b-footer-grid{grid-template-columns:1.3fr 1fr .9fr .9fr 1.1fr}}
+.site .b-footer-logo{width:96px;mix-blend-mode:multiply;margin-bottom:12px}
+.site .b-footer-brand p{color:var(--muted);max-width:26em}
+.site .b-footer-title{font-family:var(--sans);font-size:16px;font-weight:700;color:var(--navy);margin:0 0 10px}
+.site .b-footer-grid>div:not(.b-footer-brand){display:flex;flex-direction:column;align-items:flex-start}
+.site .b-footer-grid a{color:var(--ink);text-decoration:none;padding:6px 0;line-height:1.5}
+.site .b-footer-grid a:hover{color:var(--navy);text-decoration:underline;text-underline-offset:4px}
+.site .b-socials{display:flex;gap:10px;margin-top:4px}
+.site .b-socials a{width:44px;height:44px;padding:0;display:grid;place-items:center;border:1px solid var(--line-strong);border-radius:50%;color:var(--navy)}
+.site .b-socials a:hover{border-color:var(--navy);text-decoration:none}
+.site .b-footer-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;margin-top:40px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:14.5px}
+.site .b-footer-legal{display:flex;flex-wrap:wrap;gap:6px 18px}
+.site .b-footer-legal a{color:var(--muted);text-decoration:none;padding:4px 0}
+.site .b-footer-legal a:hover{color:var(--navy);text-decoration:underline}
+/* Room for the bottom action bar on phones */
+@media (max-width:759px){.site .b-footer{padding-bottom:104px}}
+
+/* Dark footer (Dan, 2026-11-10): the page ends on the same navy as "לקוחות מספרים". */
+.site .b-footer{background:var(--navy);border-top:0;color:#c9d2df}
+.site .b-footer-logo{mix-blend-mode:normal;background:#fff;border-radius:12px;padding:6px}
+.site .b-footer-brand p{color:#c9d2df}
+.site .b-footer-title{color:#e2b76f}
+.site .b-footer-grid a{color:#fff}
+.site .b-footer-grid a:hover{color:#fff;text-decoration-color:#e2b76f}
+.site .b-socials a{border-color:rgba(255,255,255,.3);color:#fff}
+.site .b-socials a:hover{border-color:#e2b76f}
+.site .b-footer-bottom{border-top-color:rgba(255,255,255,.16);color:#c9d2df}
+.site .b-footer-legal a{color:#c9d2df}
+.site .b-footer-legal a:hover{color:#fff}
+.site .b-footer :focus-visible{outline-color:#fff}

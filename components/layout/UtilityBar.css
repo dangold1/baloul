@@ -1,0 +1,13 @@
+/* Thin top line: the facts people look for first (since when, where, how to call). */
+.site .b-utility{background:var(--navy);color:#e9edf3;font-size:14.5px}
+.site .b-utility-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:40px}
+.site .b-utility-brand{white-space:nowrap}
+.site .b-utility-links{display:flex;align-items:center;gap:20px}
+.site .b-utility-links a{color:#fff;text-decoration:none;padding:8px 0;white-space:nowrap}
+.site .b-utility-links a:hover{text-decoration:underline;text-underline-offset:4px}
+.site .b-utility :focus-visible{outline-color:#fff}
+/* Phones: call and WhatsApp already sit in the bottom bar, so the top line keeps only the facts. */
+@media (max-width:759px){
+  .site .b-utility-links{display:none}
+  .site .b-utility-inner{justify-content:center}
+}
