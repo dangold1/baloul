@@ -7,6 +7,7 @@ const serve = require("./serve");
 const PORT = 4331;
 const HOME = `http://localhost:${PORT}/`;
 const NAVY = "rgb(20, 40, 74)";
+const PAPER = "rgb(248, 246, 241)";
 
 async function setup(browser, errs, options) {
   const ctx = await browser.newContext(options);
@@ -38,14 +39,12 @@ const style = (page, selector, prop, pseudo) => page.$eval(selector, (e, [p, ps]
     await page.goto(HOME);
     await mobile.goto(HOME);
 
-    step = "service row gets a light ground, slides in, fills its icon and nudges the arrow";
+    step = "service card lifts, gets a gold border and nudges the arrow";
     await page.hover(".b-solution >> nth=0");
     await page.waitForTimeout(300);
-    assert.equal(await style(page, ".b-solution", "backgroundColor"), "rgb(246, 248, 251)");
-    assert.equal(await style(page, ".b-solution .b-solution-body", "transform"), "matrix(1, 0, 0, 1, -6, 0)");
-    assert.ok((await style(page, ".b-solution .b-solution-icon", "boxShadow")).includes("rgb(214, 178, 106)"), "emblem gets a gold ring");
+    assert.equal(await style(page, ".b-solution", "transform"), "matrix(1, 0, 0, 1, 0, -2)");
+    assert.equal(await style(page, ".b-solution", "borderTopColor"), "rgb(201, 163, 90)");
     assert.equal(await style(page, ".b-solution .b-solution-arrow", "transform"), "matrix(1, 0, 0, 1, -4, 0)");
-    assert.equal(await style(page, ".b-solution .b-solution-arrow", "backgroundColor"), NAVY);
 
     step = "situation card lifts (service page; the home page no longer has situations)";
     await page.goto(`${HOME}insurance`);
@@ -61,10 +60,12 @@ const style = (page, selector, prop, pseudo) => page.$eval(selector, (e, [p, ps]
     assert.equal(await style(page, ".b-domain-link .b-domain-icon", "backgroundColor"), NAVY);
     await page.goto(HOME);
 
-    step = "primary button lifts by 1px";
+    step = "primary button is a gold pill with white text and lifts by 1px";
     await page.hover(".b-hero .b-btn-primary");
     await page.waitForTimeout(300);
     assert.equal(await style(page, ".b-hero .b-btn-primary", "transform"), "matrix(1, 0, 0, 1, 0, -1)");
+    assert.equal(await style(page, ".b-hero .b-btn-primary", "backgroundColor"), "rgb(156, 121, 55)");
+    assert.equal(await style(page, ".b-hero .b-btn-primary", "color"), "rgb(255, 255, 255)");
 
     step = "desktop WhatsApp button is a round green button";
     assert.equal(await style(page, ".b-floating .b-wa", "borderRadius"), "50%");
@@ -74,7 +75,7 @@ const style = (page, selector, prop, pseudo) => page.$eval(selector, (e, [p, ps]
     step = "FAQ row gets a paper ground";
     await page.hover(".b-faq-item summary >> nth=0");
     await page.waitForTimeout(300);
-    assert.equal(await style(page, ".b-faq-item summary", "backgroundColor"), "rgb(246, 248, 251)");
+    assert.equal(await style(page, ".b-faq-item summary", "backgroundColor"), PAPER);
 
     step = "nav link underline grows on hover";
     await page.hover('.b-links a[href="#reviews"]');
@@ -85,7 +86,7 @@ const style = (page, selector, prop, pseudo) => page.$eval(selector, (e, [p, ps]
     assert.equal(await mobile.evaluate(() => matchMedia("(hover:hover)").matches), false);
     await mobile.hover(".b-solution >> nth=0");
     await mobile.waitForTimeout(300);
-    assert.equal(await style(mobile, ".b-solution", "backgroundColor"), "rgb(255, 255, 255)");
+    assert.equal(await style(mobile, ".b-solution", "transform"), "none");
 
     step = "no horizontal scroll on mobile";
     assert.ok(await mobile.evaluate(() => document.documentElement.scrollWidth <= innerWidth));

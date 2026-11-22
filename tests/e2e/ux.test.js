@@ -201,6 +201,26 @@ const pressOutside = (page) =>
       await p.context().close();
     }
 
+    step = "desktop: the hero fills the first screen and Services starts only after scrolling";
+    for (const [width, height] of [[1440, 900], [1280, 800], [1100, 800]]) {
+      for (const path of ["", "en"]) {
+        const p = await setup(browser, errs, { viewport: { width, height } });
+        await p.goto(HOME + path);
+        const m = await p.evaluate(() => ({
+          hero: document.querySelector(".b-hero").getBoundingClientRect().bottom,
+          services: document.querySelector("#services").getBoundingClientRect().top,
+          overflow: document.documentElement.scrollWidth - innerWidth,
+        }));
+        const at = `${width}x${height}/${path}`;
+        // Exact when the content fits; a taller hero (long English copy on a small laptop) may only grow.
+        if (width >= 1280 && path === "") assert.ok(Math.abs(m.hero - height) <= 1, `${at}: hero ends at ${m.hero}`);
+        else assert.ok(m.hero >= height - 1, `${at}: hero ends at ${m.hero}`);
+        assert.ok(m.services >= height - 1, `${at}: Services starts at ${m.services}`);
+        assert.equal(m.overflow, 0, `${at}: sideways scroll`);
+        await p.context().close();
+      }
+    }
+
     step = "faq keeps one open";
     const faq = await setup(browser, errs, desk);
     await faq.goto(HOME);

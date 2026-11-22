@@ -6,7 +6,7 @@ import { useSteps } from "./ActiveSection";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 /** Dark bands where the stepper switches to its light colours. */
-const darkAreas = [DOM.reviews, ".b-footer"];
+const darkAreas = [DOM.stats, DOM.reviews, ".b-footer"];
 
 /**
  * Scroll progress for the home page (Dan, 2026-11-10).

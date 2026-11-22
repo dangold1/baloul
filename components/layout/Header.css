@@ -5,6 +5,13 @@
   border-bottom:1px solid var(--line);
 }
 @supports (backdrop-filter:blur(8px)){.site .b-header{background:rgba(255,255,255,.92);backdrop-filter:blur(8px)}}
+/* Wide screens: a white rounded card floating on the ivory page. Below 1200px the progress bar sits under a full-width header. */
+@media (min-width:1200px){
+  .site .b-header{
+    top:12px;margin:12px auto 0;width:calc(100% - var(--gutter) * 2);max-width:calc(var(--container) + var(--gutter) * 2);
+    border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
+  }
+}
 .site .b-nav{display:flex;align-items:center;gap:24px;min-height:var(--header-h)}
 
 .site .b-brand{display:flex;align-items:center;gap:12px;text-decoration:none;margin-inline-end:auto}
@@ -36,13 +43,22 @@
   .site .b-links a[aria-current="true"]{color:var(--navy)}
   .site .b-nav-cta{
     display:inline-flex;align-items:center;justify-content:center;
-    min-height:48px;padding:0 22px;border-radius:var(--radius-sm);
-    background:var(--navy);color:var(--white);text-decoration:none;font-weight:600;font-size:17px;
+    min-height:48px;padding:0 24px;border-radius:var(--radius-pill);
+    background:var(--gold-btn);color:var(--white);text-decoration:none;font-weight:700;font-size:19px;
     transition:background-color var(--t),transform var(--t),box-shadow var(--t);
   }
-  @media (hover:hover){.site .b-nav-cta:hover{background:var(--navy-2);transform:translateY(-1px);box-shadow:var(--shadow-hover)}}
+  @media (hover:hover){.site .b-nav-cta:hover{background:var(--gold-btn-2);transform:translateY(-1px);box-shadow:var(--shadow-hover)}}
   .site .b-nav-cta:active{transform:none;box-shadow:none}
   .site .b-mobile-menu-shell{display:none}
+  .site .b-links a,.site .b-services-menu summary,.site .b-nav-cta,.site .b-brand-tag{white-space:nowrap}
+}
+/* Small laptops: tighter menu so the row stays on one line. */
+@media (min-width:1024px) and (max-width:1199px){
+  .site .b-nav{gap:12px}
+  .site .b-links{gap:0}
+  .site .b-links a,.site .b-services-menu summary{padding-inline:8px;font-size:16px}
+  .site .b-links a::after{inset-inline:8px}
+  .site .b-nav-cta{padding:0 18px}
 }
 
 /* Mobile menu (native <details>) */
@@ -79,7 +95,7 @@
 .site .b-mobile-group a{padding-inline-start:16px}
 .site .b-mobile a.b-mobile-cta{
   border:0;margin-top:14px;justify-content:center;
-  background:var(--navy);color:var(--white);border-radius:var(--radius-sm);font-weight:600;
+  background:var(--gold-btn);color:var(--white);border-radius:var(--radius-pill);font-weight:700;font-size:19px;
 }
 
 /* Desktop services menu (native <details>) */
@@ -102,9 +118,3 @@
 }
 .site .b-services-menu-list a{padding:12px 14px;border-radius:var(--radius-sm);text-decoration:none;color:var(--ink);font-size:17px;font-weight:500}
 .site .b-services-menu-list a:hover{background:var(--paper);color:var(--navy)}
-
-/* Prototype: the header button stays quiet so the hero button is the only filled navy action on screen. */
-@media (min-width:980px){
-  .site .b-nav-cta{background:transparent!important;color:var(--navy)!important;border:1.5px solid var(--navy)!important}
-  @media (hover:hover){.site .b-nav-cta:hover{background:var(--navy)!important;color:var(--white)!important}}
-}

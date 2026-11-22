@@ -59,6 +59,7 @@ export const he = {
   "hero.titleSince": "מאז {year}.",
   "hero.lead":
     "כסף, פנסיה וביטוח משפיעים זה על זה, אבל לרוב מנוהלים כל אחד לחוד. אנחנו מרכזים את התמונה, מסבירים בשפה פשוטה מה קיים ומה חסר, ונשארים לצדכם גם אחרי שההחלטות התקבלו.",
+  "hero.ctaServices": "לכל השירותים שלנו",
   "hero.call": "מעדיפים לדבר?",
   "hero.factsLabel": "BALOUL בעובדות",
   "hero.factRating": "דירוג ב־Google, מעל 100 ביקורות",
@@ -216,6 +217,7 @@ export const en: Record<DictKey, string> = {
   "hero.titleSince": "since {year}.",
   "hero.lead":
     "Money, pensions and insurance affect one another, yet each is usually managed on its own. We bring the picture together, explain in plain words what you have and what is missing, and stay by your side after the decisions are made.",
+  "hero.ctaServices": "All our services",
   "hero.call": "Prefer to talk?",
   "hero.factsLabel": "BALOUL in facts",
   "hero.factRating": "Google rating, over 100 reviews",

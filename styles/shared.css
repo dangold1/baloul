@@ -21,28 +21,31 @@
 .site .b-section-head h2{margin-bottom:14px}
 .site .b-lead{font-size:clamp(18px,1.6vw,20px);line-height:1.7;color:var(--muted);margin:0;max-width:680px}
 
-/* Buttons: one primary style, one quiet secondary. Large targets for touch. */
+/* Buttons: one gold primary, one outlined secondary, both pills. Large targets for touch. */
 .site .b-btn{
   display:inline-flex;align-items:center;justify-content:center;gap:10px;
-  min-height:54px;padding:0 26px;border-radius:var(--radius-sm);
+  min-height:54px;padding:0 28px;border-radius:var(--radius-pill);
   font-size:17px;font-weight:600;line-height:1.2;text-decoration:none;text-align:center;
   border:1.5px solid transparent;cursor:pointer;
-  transition:background-color var(--t),border-color var(--t),color var(--t),transform var(--t),box-shadow var(--t);
+  transition:background-color var(--t),border-color var(--t),color var(--t),transform 160ms var(--ease-out),box-shadow var(--t);
 }
 .site .b-btn svg{flex:none}
-.site .b-btn-primary{background:var(--navy);border-color:var(--navy);color:var(--white)}
-.site .b-btn-secondary{background:var(--white);border-color:var(--line-strong);color:var(--navy)}
+/* White on gold reads only as large bold text: keep 19px/700. */
+.site .b-btn-primary{background:var(--gold-btn);border-color:var(--gold-btn);color:var(--white);font-size:19px;font-weight:700}
+.site .b-btn-primary:focus-visible{outline-color:var(--navy)}
+.site .b-btn-secondary{background:transparent;border-color:var(--navy);color:var(--navy)}
 .site .b-btn-block{width:100%}
 /* Every button that leads to WhatsApp (Dan, 2026-11-10): green, white WhatsApp icon on the right of the text (first in RTL). */
 .site .b-btn-wa{background:var(--wa);border-color:var(--wa);color:var(--white)}
 .site .b-btn-wa svg{width:22px;height:22px}
-.site .b-btn:active{transform:none;box-shadow:none}
 /* Pointer devices only: a 1px lift with a soft shadow, no color tricks. */
-@media (hover:hover){
-  .site .b-btn-primary:hover{background:var(--navy-2);border-color:var(--navy-2);transform:translateY(-1px);box-shadow:var(--shadow-hover)}
+@media (hover:hover) and (pointer:fine){
+  .site .b-btn-primary:hover{background:var(--gold-btn-2);border-color:var(--gold-btn-2);transform:translateY(-1px);box-shadow:var(--shadow-hover)}
   .site .b-btn-wa:hover{background:var(--wa-2);border-color:var(--wa-2);transform:translateY(-1px);box-shadow:var(--shadow-hover)}
-  .site .b-btn-secondary:hover{background:var(--paper);border-color:var(--navy)}
+  .site .b-btn-secondary:hover{background:var(--navy);border-color:var(--navy);color:var(--white)}
 }
+/* Press: a slight squeeze confirms the tap, on every device. After the hover rules so it wins while hovered. */
+.site .b-btn:active{transform:scale(.97);box-shadow:none}
 
 .site .b-text-link{
   display:inline-flex;align-items:center;gap:8px;
@@ -68,7 +71,7 @@
   transition:border-color .15s ease,box-shadow .15s ease;
 }
 .site .b-form input[dir="ltr"]{text-align:right}
-.site .b-form input::placeholder{color:#6b7380}
+.site .b-form input::placeholder{color:var(--muted)}
 .site .b-form input:focus,.site .b-form select:focus{
   outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(29,95,184,.18);
 }

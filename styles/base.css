@@ -1,7 +1,7 @@
 /*
  * Design tokens, reset and typography.
- * Direction (Dan, 2026-11-10): clean and light. Navy text and buttons, near-white grey-blue
- * backgrounds, a soft gold accent taken from the logo's "B". One font family (Heebo).
+ * Direction (Dan, 2026-11-18): warm and light. Navy text, ivory backgrounds, gold pill buttons,
+ * one deep teal band, rounded white cards. One font family (Heebo).
  * Large readable type for an older audience.
  */
 /*
@@ -16,13 +16,17 @@
   --navy-2:#203c68;
   --ink:#151b24;
   --muted:#4b5563;        /* 7:1 on white */
-  --paper:#f6f8fb;        /* grey-blue, almost white */
-  --paper-2:#edf1f6;
+  --paper:#f8f6f1;        /* warm ivory */
+  --paper-2:#f1ede4;
   --white:#ffffff;
-  --line:#e2e7ee;
-  --line-strong:#c9d1dc;
-  --bronze:#8c6a2e;       /* gold accent text, 5:1 on paper */
+  --line:#e9e3d8;
+  --line-strong:#d3cab9;
+  --bronze:#8c6a2e;       /* gold accent text, 4.6:1 on paper */
   --bronze-soft:#c9a35a;  /* gold rules and small decorations only */
+  --gold-btn:#b08a42;     /* filled gold buttons: white text must be bold and 19px or larger (3.2:1) */
+  --gold-btn-2:#9c7937;   /* gold button hover */
+  --teal:#2f4a57;         /* the stats band */
+  --teal-2:#3f6170;       /* hills in the stats band, hero corner wave */
   --wa:#15803d;           /* WhatsApp action: a clear WhatsApp-style green that keeps AA (5:1) with white text */
   --wa-2:#116b33;
   --focus:#1d5fb8;
@@ -37,19 +41,27 @@
 
   --active-tint:#f1f4f8;  /* background of the active section */
 
-  --radius:10px;
-  --radius-sm:6px;
+  --radius:20px;
+  --radius-sm:10px;
+  --radius-pill:999px;    /* buttons */
   --shadow:0 1px 2px rgba(23,42,70,.05),0 8px 24px rgba(23,42,70,.06);
   --shadow-hover:0 2px 4px rgba(23,42,70,.06),0 14px 32px rgba(23,42,70,.10);
   --t:.2s ease;           /* one hover/active transition speed everywhere */
+  --ease-out:cubic-bezier(.23,1,.32,1);       /* entrances and press feedback: moves at once, settles softly */
+  --ease-in-out:cubic-bezier(.77,0,.175,1);   /* on-screen drawing (the hero's gold line) */
   --header-h:72px;
+  --utility-h:40px;       /* the navy top line */
+  /* Everything above the hero: top line, header and its 1px bottom border. The hero fills the screen below it. */
+  --chrome-h:calc(var(--utility-h) + var(--header-h) + 1px);
   --container:1160px;
   --gutter:20px;
 }
 @media (min-width:760px){:root{--gutter:32px;--header-h:84px}}
+/* Header card (Header.css): 12px top margin and a 1px border on both sides. */
+@media (min-width:1200px){:root{--chrome-h:calc(var(--utility-h) + 12px + var(--header-h) + 2px)}}
 
 html{color-scheme:light;scroll-behavior:smooth;-webkit-text-size-adjust:100%;touch-action:manipulation}
-body{margin:0;background:var(--white);color:var(--ink)}
+body{margin:0;background:var(--paper);color:var(--ink)}
 .site{
   font-family:var(--sans);
   font-size:17px;

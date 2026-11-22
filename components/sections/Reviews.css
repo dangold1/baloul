@@ -8,7 +8,7 @@
 .site .b-google-card{background:var(--navy);color:var(--white);border-radius:var(--radius);padding:28px 26px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
 .site .b-google-card .b-stars{color:var(--gold-light)}
 .site .b-google-big{font-family:var(--serif);font-size:64px;line-height:1;font-weight:700}
-.site .b-google-count{color:#d8dee8;font-size:17px}
+.site .b-google-count{color:var(--on-dark-muted);font-size:17px}
 .site .b-google-link{margin-top:auto;width:100%;background:transparent;color:var(--white);border-color:rgba(255,255,255,.55)}
 .site .b-google-link:hover{border-color:var(--white);background:rgba(255,255,255,.06)}
 .site .b-google-card :focus-visible{outline-color:var(--white)}

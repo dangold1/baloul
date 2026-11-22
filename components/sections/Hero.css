@@ -1,63 +1,161 @@
-/* Hero: headline, plain explanation, two clear actions, and checkable facts. */
-.site .b-hero{background:var(--paper);padding:32px 0 48px;border-bottom:1px solid var(--line)}
-.site .b-hero-grid{display:grid;gap:32px;align-items:center}
-.site .b-hero h1{margin-bottom:20px;max-width:15em}
-.site .b-hero-lead{font-size:clamp(18px,1.7vw,21px);line-height:1.75;color:var(--muted);max-width:36em;margin-bottom:28px}
+/* Hero: ivory ground, bold navy headline with a gold brush line, two pill actions, and the team photo with one curved edge. */
+/* Spacing follows an 8px scale: kicker 12, headline 20, lead 28, buttons 16, phone line. */
+/* Clipped sideways only: the photo bleeds to the screen edge. */
+.site .b-hero{position:relative;overflow-x:clip;background:var(--paper);padding:24px 0 40px}
+.site .b-hero-grid{position:relative;z-index:1;display:grid;gap:32px;align-items:center}
+.site .b-hero .b-kicker{margin-bottom:12px}
+.site .b-hero h1{margin-bottom:20px;max-width:15em;font-weight:800}
+/* Gold brush stroke close under the closing words: thick in the middle, tapered ends, a hair line below. It starts at the
+   reading start and stops before the full stop. Drawn on ::after so it can wipe in along the reading direction without
+   clipping the words. The colour repeats --gold-btn: a data URI cannot read a CSS variable. */
+.site .b-hero h1 .b-nowrap{position:relative}
+.site .b-hero h1 .b-nowrap::after{
+  content:"";position:absolute;inset-inline:0;bottom:0;height:.26em;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 10' preserveAspectRatio='none'%3E%3Cpath fill='%23b08a42' d='M1 6.5C40 1 130 0 199 2C140 5.5 60 8 1 6.5Z'/%3E%3Cpath fill='%23b08a42' d='M40 9.6C90 8 150 7.6 190 8.2C150 8.4 90 8.9 40 9.6Z'/%3E%3C/svg%3E") no-repeat 100% 100%/92% 100%;
+  animation:b-brush-rtl 450ms var(--ease-out) 300ms both;
+}
+:root[dir="ltr"] .site .b-hero h1 .b-nowrap::after{background-position:0 100%;animation-name:b-brush-ltr}
+
+/* Entrance, once per page load (CSS, so it runs off the main thread and never blocks a click).
+   The copy rises in reading order with short, uneven gaps. Opacity starts at .001, not 0, so the headline still counts
+   as painted for load-speed metrics. The brush stroke wipes in from the reading start just after the headline. */
+@keyframes b-rise{from{opacity:.001;transform:translateY(10px)}}
+@keyframes b-frame-in{from{transform:scale(1.025);clip-path:inset(0 0 8% 0)}to{transform:none;clip-path:inset(0)}}
+@keyframes b-gold-in{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0)}}
+@keyframes b-brush-rtl{from{clip-path:inset(0 0 0 100%)}to{clip-path:inset(0)}}
+@keyframes b-brush-ltr{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0)}}
+.site .b-hero-copy > *{animation:b-rise 520ms var(--ease-out) both}
+.site .b-hero-copy > :nth-child(2){animation-delay:50ms}
+.site .b-hero-copy > :nth-child(3){animation-delay:90ms}
+.site .b-hero-copy > :nth-child(4){animation-delay:120ms}
+.site .b-hero-copy > :nth-child(5){animation-delay:150ms}
+@media (min-width:980px){
+  .site .b-hero-copy > :nth-child(2){animation-delay:60ms}
+  .site .b-hero-copy > :nth-child(3){animation-delay:110ms}
+  .site .b-hero-copy > :nth-child(4){animation-delay:150ms}
+  .site .b-hero-copy > :nth-child(5){animation-delay:180ms}
+}
+.site .b-hero-lead{font-size:18px;line-height:1.7;color:var(--muted);max-width:30em;margin-bottom:28px}
 .site .b-hero-actions{display:flex;flex-wrap:wrap;gap:12px}
-.site .b-hero-actions .b-btn-secondary svg{color:var(--wa)}
-.site .b-hero-call{display:flex;align-items:center;gap:8px;margin:20px 0 0;color:var(--muted);font-size:17px}
+.site .b-hero-call{display:flex;align-items:center;gap:8px;margin:16px 0 0;color:var(--muted);font-size:17px}
 .site .b-hero-call svg{color:var(--bronze)}
 .site .b-hero-call a{color:var(--navy);font-weight:700;text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--bronze-soft);direction:ltr;unicode-bidi:isolate}
-/* Team photo is 3:2 with people near both edges: keep its full width, never crop the sides. */
-.site .b-hero-visual img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;object-position:center top;border-radius:var(--radius)}
 
-@media (max-width:559px){
+/* Team photo: its own shape, drawn by a mask stretched over the box (not border-radius). Straight top and outer edges
+   (it bleeds to the screen edge), a convex curve on the side facing the text, and a bottom wave that rises toward the
+   text. A thin gold line follows the curve. Mirrored in English. */
+.site .b-hero-visual{position:relative;margin-inline-end:calc(-1 * var(--gutter))}
+.site .b-hero-visual img{
+  width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;object-position:center 20%;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0H84C96 8 100 34 100 60C100 86 99 92 92 95C70 98 30 99 0 100Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0H84C96 8 100 34 100 60C100 86 99 92 92 95C70 98 30 99 0 100Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+}
+:root[dir="ltr"] .site .b-hero-visual img{
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M100 0H16C4 8 0 34 0 60C0 86 1 92 8 95C30 98 70 99 100 100Z'/%3E%3C/svg%3E");
+  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M100 0H16C4 8 0 34 0 60C0 86 1 92 8 95C30 98 70 99 100 100Z'/%3E%3C/svg%3E");
+}
+/* The gold line: the same curve in a box 14px wider on the text side and 12px lower, fading out toward the screen edge.
+   The colour repeats --bronze-soft: a data URI cannot read a CSS variable. */
+.site .b-hero-visual::before{
+  content:"";position:absolute;top:0;inset-inline-end:0;inset-inline-start:-14px;bottom:-12px;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23c9a35a' stop-opacity='0'/%3E%3Cstop offset='.45' stop-color='%23c9a35a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M84 0C96 8 99.5 34 99.5 60C99.5 86 99 92 92 95C70 98 30 99 0 100' fill='none' stroke='url(%23g)' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+}
+@media (max-width:979px){
+  :root[dir="ltr"] .site .b-hero-visual::before{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='.55' stop-color='%23c9a35a'/%3E%3Cstop offset='1' stop-color='%23c9a35a' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M16 0C4 8 .5 34 .5 60C.5 86 1 92 8 95C30 98 70 99 100 100' fill='none' stroke='url(%23g)' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  }
+}
+
+@media (max-width:599px){
+  .site .b-hero h1{font-size:32px}
+  .site .b-hero-lead{line-height:1.65}
   .site .b-hero-actions .b-btn{width:100%}
 }
-@media (min-width:980px){
-  .site .b-hero{padding:56px 0 56px}
-  /* The photo spans exactly from the kicker to the phone line; the facts run under both columns. */
-  .site .b-hero-grid{
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:56px;row-gap:0;align-items:start;
-    grid-template-areas:"kicker photo" "title photo" "lead photo" "actions photo" "call photo" "facts facts";
+@media (min-width:600px) and (max-width:979px){
+  .site .b-hero h1{font-size:40px}
+}
+/* Phones and tablets: a small teal curve shows through the photo's curved corner. The colours repeat --teal-2 and --teal:
+   a data URI cannot read a CSS variable. */
+@media (max-width:979px){
+  .site .b-hero-grid::after{
+    content:"";position:absolute;z-index:-1;pointer-events:none;bottom:-40px;inset-inline-start:0;width:60%;height:104px;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 130' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%233f6170' stop-opacity='.25'/%3E%3Cstop offset='.5' stop-color='%233f6170'/%3E%3Cstop offset='1' stop-color='%232f4a57'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='%233f6170' fill-opacity='.22' d='M0 130C200 128 330 104 440 58S570 4 600 0V130Z'/%3E%3Cpath fill='url(%23g)' d='M40 130C220 130 350 113 455 70S575 17 600 11V130Z'/%3E%3C/svg%3E") no-repeat 0 0/100% 100%;
   }
-  .site .b-hero-copy{display:contents}
-  .site .b-hero-copy .b-kicker{grid-area:kicker}
-  .site .b-hero-copy h1{grid-area:title;max-width:none;font-size:clamp(38px,3.3vw,50px)}
-  .site .b-hero-lead{font-size:19px;margin-bottom:24px}
-  .site .b-hero-lead{grid-area:lead}
-  .site .b-hero-actions{grid-area:actions}
-  .site .b-hero-call{grid-area:call;margin-bottom:0}
-  .site .b-hero-copy .b-facts{grid-area:facts;grid-template-columns:repeat(3,1fr);margin-top:40px;padding-top:28px}
-  .site .b-hero-visual{grid-area:photo;position:relative;min-height:100%}
-  .site .b-hero-visual img{position:absolute;inset:0;height:100%;aspect-ratio:auto;object-position:center 15%}
+  :root[dir="ltr"] .site .b-hero-grid::after{transform:scaleX(-1)}
+}
+/* Wide screens: the hero fills the first screen below the header. Text 42%, photo 53%. min-height, not height: when the
+   content is taller (a short laptop), the hero grows instead of clipping. Shapes measured on the design reference. */
+@media (min-width:980px){
+  .site .b-hero{
+    --teal-h:calc(.194 * (100svh - var(--chrome-h)));
+    display:flex;flex-direction:column;min-height:calc(100svh - var(--chrome-h));padding:0;
+  }
+  .site .b-hero-grid{flex:1;grid-template-columns:minmax(0,42fr) minmax(0,53fr);column-gap:5%;align-items:start}
+  .site .b-hero-copy{position:relative;z-index:2;align-self:center;padding-block:24px}
+  .site .b-hero h1{font-size:clamp(38px,3.6vw,52px);line-height:1.14}
+  /* Team photo in the reference frame (design reference 13.png): a prebuilt image per language (hero-frame-he/en.webp)
+     holds the photo, the extended office and the frosted pearl glass, cut to the frame and transparent outside the gold.
+     The gold ring and its highlight are vector on top. The frame keeps its 1086:878 proportions, sits right under the
+     header and bleeds to the screen edge. It fills the hero height but never grows wider than the photo column plus the
+     gap: the gold (98.3% of the frame) stays 16px clear of the text. 109.43% = column + gap (5 of 53 parts). */
+  .site .b-hero-visual{
+    position:relative;justify-self:end;aspect-ratio:1086/878;
+    width:min(calc((100svh - var(--chrome-h)) * 1086 / 878), calc((109.43% + max(var(--gutter), (100vw - var(--container)) / 2) - 16px) / .983));
+    margin-inline-end:calc(-1 * max(var(--gutter), (100vw - var(--container)) / 2));
+  }
+  .site .b-hero-visual picture{display:contents}
+  .site .b-hero-visual img{width:100%;height:100%;aspect-ratio:auto;object-fit:fill;-webkit-mask:none;mask:none}
+  :root[dir="ltr"] .site .b-hero-visual img{-webkit-mask-image:none;mask-image:none}
+  /* Gold edge around the whole frame: one smoothed outline from the top, down the arc, through the sweep and along the
+     bottom wave to the screen edge. A single 4.6px champagne-gold line with one controlled highlight on the upper arc; the
+     glass image carries a warm tint just inside it, so the gold sits in the glass edge. Same 1086:878 box as the image,
+     so it never distorts. Colours echo --gold-icon/--bronze: a data URI cannot read a CSS variable. */
+  .site .b-hero-visual::before{
+    z-index:1;inset:0;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1086 878' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='1' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23c8a55e'/%3E%3Cstop offset='.13' stop-color='%23f0dcab'/%3E%3Cstop offset='.3' stop-color='%23bf9a52'/%3E%3Cstop offset='.55' stop-color='%23d6b979'/%3E%3Cstop offset='.8' stop-color='%23b18c46'/%3E%3Cstop offset='1' stop-color='%23cdb06f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M967 0C971.4 6.3 985.1 25 993.4 38C1001.7 51 1009.5 64.3 1016.8 77.9C1024 91.5 1030.9 105.4 1036.8 119.6C1042.6 133.9 1047.8 148.5 1052 163.3C1056.3 178.1 1059.6 193.2 1062.1 208.4C1064.5 223.6 1066.3 239.1 1066.8 254.4C1067.4 269.8 1066.7 285.3 1065.5 300.6C1064.2 316 1062 331.3 1059.2 346.4C1056.3 361.6 1052.6 376.6 1048.2 391.4C1043.8 406.1 1038.3 420.6 1033 435C1027.7 449.5 1023 464 1016.5 477.9C1009.9 491.7 1001.7 504.9 993.6 518.1C985.5 531.2 977.1 544.2 968.2 556.7C959.2 569.2 949.7 581.5 939.8 593.2C929.9 605 919.3 616.3 908.6 627.4C897.9 638.6 887.1 649.6 875.8 660.1C864.5 670.5 853 680.9 840.7 690.1C828.4 699.4 814.8 707.5 802 715.5C789.2 723.5 777.2 731.1 763.9 738.3C750.6 745.5 736.6 752.6 722.5 758.9C708.4 765.2 694.1 771 679.5 776C664.9 781 650 785.2 635.1 788.8C620.1 792.4 604.9 795.2 589.6 797.5C574.4 799.9 559 801.4 543.7 802.6C528.3 803.9 512.9 804.5 497.5 805C482 805.6 466.6 805.7 451.2 805.7C435.8 805.8 420.3 805.7 404.9 805.6C389.5 805.6 374.1 805.4 358.7 805.5C343.2 805.5 327.8 805.6 312.4 806C297 806.4 281.5 806.8 266.2 807.7C250.8 808.7 235.4 809.7 220 811.4C204.7 813.1 189.4 815 174.2 817.7C159 820.4 143.9 823.7 129 827.6C114.1 831.4 99.3 836 84.8 841.1C70.2 846.2 55.8 851.9 41.7 858C27.6 864.2 7 874.7 0 878' fill='none' stroke='url(%23g)' stroke-width='4.6' stroke-linecap='round' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+  }
+  :root[dir="ltr"] .site .b-hero-visual::before{transform:scaleX(-1)}
+  /* Entrance: the photo settles into the frame (a small zoom-out and a reveal from the top, always fully opaque, so the
+     load-speed paint is not delayed); the gold then traces the frame from the top, down the arc and along the bottom. */
+  .site .b-hero-visual img{transform-origin:top left;animation:b-frame-in 900ms var(--ease-out) both}
+  :root[dir="ltr"] .site .b-hero-visual img{transform-origin:top right}
+  .site .b-hero-visual::before{animation:b-gold-in 1100ms var(--ease-in-out) 250ms both}
+  /* Teal in the bottom corner on the text side: 17% of the width, 19.4% of the first screen's hero height, edge fitted to
+     the reference. It fades in from its start, darkens toward the corner and has a light sheen along its top edge.
+     The colours repeat --teal-2 and --teal: a data URI cannot read a CSS variable. */
+  .site .b-hero::after{
+    content:"";position:absolute;z-index:0;pointer-events:none;bottom:0;inset-inline-start:0;width:17%;height:var(--teal-h);
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='h' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%233f6170' stop-opacity='.3'/%3E%3Cstop offset='.45' stop-color='%233f6170'/%3E%3Cstop offset='1' stop-color='%232f4a57'/%3E%3C/linearGradient%3E%3ClinearGradient id='v' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff' stop-opacity='.14'/%3E%3Cstop offset='.5' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23h)' d='M0 100C3.4 97.5 14.9 88.8 20.2 85.2C25.5 81.7 27.9 80.9 31.8 78.7C35.7 76.5 39.5 74.5 43.4 72.2C47.2 69.9 51.4 67.6 54.9 65.1C58.4 62.6 61.5 59.9 64.2 57.4C66.9 54.9 68.8 52.9 71.1 50.3C73.4 47.7 75.7 45.1 78 42C80.3 38.9 82.7 35.2 85 31.4C87.3 27.6 89.4 24.2 91.9 19C94.4 13.8 98.7 3.2 100 0V100Z'/%3E%3Cpath fill='url(%23v)' d='M0 100C3.4 97.5 14.9 88.8 20.2 85.2C25.5 81.7 27.9 80.9 31.8 78.7C35.7 76.5 39.5 74.5 43.4 72.2C47.2 69.9 51.4 67.6 54.9 65.1C58.4 62.6 61.5 59.9 64.2 57.4C66.9 54.9 68.8 52.9 71.1 50.3C73.4 47.7 75.7 45.1 78 42C80.3 38.9 82.7 35.2 85 31.4C87.3 27.6 89.4 24.2 91.9 19C94.4 13.8 98.7 3.2 100 0V100Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+  }
+  :root[dir="ltr"] .site .b-hero::after{transform:scaleX(-1)}
+}
+/* Small laptops: tighter buttons so both stay on one row, and room under the copy so long text never meets the teal. */
+@media (min-width:980px) and (max-width:1199px){
+  .site .b-hero-copy{padding-bottom:calc(var(--teal-h) * .8)}
+  .site .b-hero-actions{gap:8px}
+  .site .b-hero-actions .b-btn{padding-inline:16px}
 }
 
-/* Facts: part of the first screen, directly under the actions. */
-.site .b-facts{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:0;margin:28px 0 0;padding-top:22px;border-top:1px solid var(--line)}
-.site .b-fact{display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:2px;padding-inline-end:22px;margin-inline-end:22px;border-inline-end:1px solid var(--line)}
-.site .b-fact:last-child{border-inline-end:0;margin-inline-end:0;padding-inline-end:0}
-.site .b-fact dd{margin:0;display:flex;align-items:baseline;gap:8px;font-family:var(--serif);font-weight:700;font-size:clamp(26px,2.4vw,32px);line-height:1.1;color:var(--navy)}
-.site .b-fact-stars{font-family:var(--sans);font-size:14px;letter-spacing:1px;color:var(--gold)}
-.site .b-fact dt{font-size:14.5px;line-height:1.4;color:var(--muted);max-width:15em}
-/* Phones: the facts move up under the headline so they are seen before any scrolling. */
-@media (max-width:979px){
-  .site .b-hero-copy{display:flex;flex-direction:column}
-  .site .b-hero-copy .b-facts{order:2;margin:0 0 22px;padding:14px 0;border-block:1px solid var(--line)}
-  .site .b-hero-copy h1{order:1}
-  .site .b-hero-copy .b-kicker{order:0}
-  .site .b-hero-lead{order:3}
-  .site .b-hero-actions{order:4}
-  .site .b-hero-call{order:5}
-}
-@media (max-width:559px){
-  .site .b-hero h1{font-size:32px;margin-bottom:18px}
-  .site .b-hero-lead{font-size:18px;line-height:1.65;margin-bottom:22px}
-  .site .b-facts{grid-template-columns:repeat(3,1fr)}
-  .site .b-fact{padding-inline-end:10px;margin-inline-end:10px}
-  .site .b-fact dd{font-size:24px;flex-direction:column;gap:2px}
-  .site .b-fact-stars{font-size:11px}
-  .site .b-fact dt{font-size:13.5px}
+/* Stats band: the three checkable facts on deep teal, with hills drawn behind them. */
+.site .b-stats{position:relative;overflow:hidden;background:var(--teal);color:var(--white);padding:36px 0 40px}
+.site .b-stats-hills{position:absolute;inset-inline:0;bottom:0;width:100%;max-width:none;height:75%}
+.site .b-stats-hills path{fill:var(--teal-2)}
+.site .b-stats-hills .b-stats-arc{fill:none;stroke:var(--gold-light);stroke-width:1.5;vector-effect:non-scaling-stroke;opacity:.55}
+.site .b-stats .b-container{position:relative}
+.site .b-facts{display:grid;grid-template-columns:repeat(3,1fr);margin:0}
+.site .b-fact{display:flex;flex-direction:column-reverse;justify-content:flex-end;align-items:center;gap:6px;padding-inline:8px;text-align:center;border-inline-end:1px solid var(--bronze-soft)}
+.site .b-fact:last-child{border-inline-end:0}
+.site .b-fact dd{margin:0;display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:700;font-size:clamp(24px,3vw,38px);line-height:1.1;color:var(--white)}
+.site .b-fact-icon{color:var(--gold-light)}
+.site .b-fact-icon svg{width:30px;height:30px}
+.site .b-fact-stars{font-size:12px;font-weight:400;letter-spacing:1px;color:var(--gold-light)}
+.site .b-fact dt{font-size:14px;line-height:1.4;color:var(--white);max-width:15em}
+@media (min-width:760px){
+  .site .b-stats{padding:48px 0 56px}
+  .site .b-fact{padding-inline:20px}
+  .site .b-fact-icon svg{width:36px;height:36px}
+  .site .b-fact-stars{font-size:14px}
+  .site .b-fact dt{font-size:16px}
 }
 
 /* Service shortcuts under the hero */
@@ -82,4 +180,10 @@
 @media (min-width:860px){
   .site .b-domain-title{margin:0;flex:none}
   .site .b-domain-list{grid-template-columns:repeat(4,1fr);flex:1}
+}
+
+/* Reduced motion: the hero shows its final state at once. base.css shortens durations, but the delays would still hold
+   elements back. Kept last so it wins over the desktop entrance rules above. */
+@media (prefers-reduced-motion:reduce){
+  .site .b-hero-copy > *,.site .b-hero h1 .b-nowrap::after,.site .b-hero-visual img,.site .b-hero-visual::before{animation:none}
 }

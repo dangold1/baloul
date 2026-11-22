@@ -3,6 +3,7 @@ export const DOM = {
   site: ".site",
   header: ".b-header",
   reviews: "#reviews",
+  stats: ".b-stats",
   mobileMenu: "#bMobileMenu",
   /** Any dialog, banner or popover on screen (see components/ui/Dialog.tsx). */
   openDialog: "[data-dialog-open]",

@@ -1,6 +1,7 @@
 import { PageChrome } from "@/components/layout/PageChrome";
 import { Hero } from "@/components/sections/Hero";
 import { Services } from "@/components/sections/Services";
+import { Stats } from "@/components/sections/Stats";
 import { Process } from "@/components/sections/Process";
 import { About } from "@/components/sections/About";
 import { Reviews } from "@/components/sections/Reviews";
@@ -17,7 +18,7 @@ export const homeMetadata = (lang: Lang) => {
 };
 
 /**
- * Page order follows the visitor's questions: what do you do and can I trust you (Hero),
+ * Page order follows the visitor's questions: what do you do (Hero), can I trust you (Stats, the band under Services),
  * what exactly do you offer (Services; "נשמע מוכר?" lives on each service page, removed from home by Dan 2026-11-10), what happens if I call (Process),
  * who are you (About), what do others say (Reviews), my remaining questions (Knowledge), and how to start (Contact).
  */
@@ -32,6 +33,7 @@ export function HomePage({ lang }: { lang: Lang }) {
           <span id="main" tabIndex={-1} />
           <Hero lang={lang} />
           <Services lang={lang} />
+          <Stats lang={lang} />
           <Process lang={lang} />
           <About lang={lang} />
           <Reviews lang={lang} />
