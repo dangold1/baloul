@@ -5,13 +5,7 @@
   border-bottom:1px solid var(--line);
 }
 @supports (backdrop-filter:blur(8px)){.site .b-header{background:rgba(255,255,255,.92);backdrop-filter:blur(8px)}}
-/* Wide screens: a white rounded card floating on the ivory page. Below 1200px the progress bar sits under a full-width header. */
-@media (min-width:1200px){
-  .site .b-header{
-    top:12px;margin:12px auto 0;width:calc(100% - var(--gutter) * 2);max-width:calc(var(--container) + var(--gutter) * 2);
-    border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
-  }
-}
+/* A full-width white bar at every size; its content follows the page container. Wide screens: 68px tall, logo 52px. */
 .site .b-nav{display:flex;align-items:center;gap:24px;min-height:var(--header-h)}
 
 .site .b-brand{display:flex;align-items:center;gap:12px;text-decoration:none;margin-inline-end:auto}
@@ -19,10 +13,41 @@
 .site .b-brand-text{display:grid;line-height:1.15}
 .site .b-brand-name{font-family:var(--serif);font-weight:700;font-size:22px;letter-spacing:.08em;color:var(--navy)}
 .site .b-brand-tag{font-size:13px;color:var(--muted)}
+/* Phones: the logo alone (it carries the BALOUL wordmark), leaving room for the language, call and menu buttons. */
+@media (max-width:599px){.site .b-brand-text{display:none}}
 @media (min-width:760px){.site .b-brand img{width:60px}}
+@media (min-width:980px){.site .b-brand img{width:52px}}
 
 .site .b-links{display:none}
-.site .b-nav-cta{display:none}
+
+/* Call button (tel:). Phones and tablets: a round gold button with the ringing handset. Laptops: a pill with the
+   question and the number. The label is navy (4.6:1 on gold) because white text on gold needs 19px bold (3.2:1). */
+.site .b-nav-cta{
+  display:inline-flex;align-items:center;justify-content:center;flex:none;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--gold-btn);color:var(--white);text-decoration:none;
+  transition:transform var(--t),box-shadow var(--t);
+}
+.site .b-nav-call-icon{display:inline-flex}
+.site .b-nav-call-text{display:none}
+@media (hover:hover){.site .b-nav-cta:hover{transform:translateY(-1px);box-shadow:var(--shadow-hover)}}
+.site .b-nav-cta:active{transform:none;box-shadow:none}
+
+/* The handset rings once after load, and again on hover or keyboard focus. */
+.site .b-ring-handset{transform-box:fill-box;transform-origin:50% 50%;animation:b-ring .9s ease-in-out 1.2s both}
+.site .b-ring-wave{animation:b-ring-wave .9s ease-in-out 1.2s both}
+.site .b-ring-wave-2{animation-delay:1.3s}
+@media (hover:hover){
+  .site .b-nav-cta:hover .b-ring-handset{animation:b-ring-again .9s ease-in-out both}
+  .site .b-nav-cta:hover .b-ring-wave{animation:b-ring-wave-again .9s ease-in-out both}
+}
+.site .b-nav-cta:focus-visible .b-ring-handset{animation:b-ring-again .9s ease-in-out both}
+.site .b-nav-cta:focus-visible .b-ring-wave{animation:b-ring-wave-again .9s ease-in-out both}
+@keyframes b-ring{0%,70%,100%{transform:rotate(0)}10%,30%,50%{transform:rotate(-14deg)}20%,40%,60%{transform:rotate(14deg)}}
+@keyframes b-ring-again{0%,70%,100%{transform:rotate(0)}10%,30%,50%{transform:rotate(-14deg)}20%,40%,60%{transform:rotate(14deg)}}
+@keyframes b-ring-wave{0%,100%{opacity:1}25%,55%{opacity:.2}40%{opacity:1}}
+@keyframes b-ring-wave-again{0%,100%{opacity:1}25%,55%{opacity:.2}40%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.site .b-nav-cta .b-ring-handset,.site .b-nav-cta .b-ring-wave{animation:none}}
 
 @media (min-width:1024px){
   .site .b-brand{margin-inline-end:0}
@@ -42,13 +67,16 @@
   .site .b-links a:hover::after,.site .b-links a[aria-current="true"]::after{transform:scaleX(1)}
   .site .b-links a[aria-current="true"]{color:var(--navy)}
   .site .b-nav-cta{
-    display:inline-flex;align-items:center;justify-content:center;
-    min-height:48px;padding:0 24px;border-radius:var(--radius-pill);
-    background:var(--gold-btn);color:var(--white);text-decoration:none;font-weight:700;font-size:19px;
-    transition:background-color var(--t),transform var(--t),box-shadow var(--t);
+    width:auto;height:auto;min-height:52px;gap:10px;
+    padding-block:4px;padding-inline:5px 22px;border-radius:var(--radius-pill);
   }
-  @media (hover:hover){.site .b-nav-cta:hover{background:var(--gold-btn-2);transform:translateY(-1px);box-shadow:var(--shadow-hover)}}
-  .site .b-nav-cta:active{transform:none;box-shadow:none}
+  .site .b-nav-call-icon{
+    align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;
+    background:var(--white);color:var(--bronze);
+  }
+  .site .b-nav-call-text{display:grid;line-height:1.1;text-align:start}
+  .site .b-nav-call-label{font-size:15px;font-weight:600;color:var(--navy)}
+  .site .b-nav-call-number{font-size:19px;font-weight:700;direction:ltr;unicode-bidi:isolate;justify-self:start}
   .site .b-mobile-menu-shell{display:none}
   .site .b-links a,.site .b-services-menu summary,.site .b-nav-cta,.site .b-brand-tag{white-space:nowrap}
 }
@@ -58,7 +86,7 @@
   .site .b-links{gap:0}
   .site .b-links a,.site .b-services-menu summary{padding-inline:8px;font-size:16px}
   .site .b-links a::after{inset-inline:8px}
-  .site .b-nav-cta{padding:0 18px}
+  .site .b-nav-cta{padding-inline-end:16px}
 }
 
 /* Mobile menu (native <details>) */

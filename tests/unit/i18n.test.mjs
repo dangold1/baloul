@@ -22,7 +22,7 @@ test("en value wins when set", () => {
   assert.equal(translate("en", "lang.en"), "English");
 });
 test("vars interpolate", () => {
-  const s = translate("he", "utility.since", { year: 2003, city: "חולון" });
+  const s = translate("he", "footer.about", { founded: 2003, agency: 2017 });
   assert.ok(s.includes("2003"));
   assert.ok(!s.includes("{"));
 });

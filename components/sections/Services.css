@@ -28,16 +28,81 @@
   .site .b-solutions .b-section-head h2{font-size:clamp(30px,2.6vw,36px);margin-bottom:8px}
   .site .b-solutions .b-lead{font-size:18px;line-height:1.6;max-width:none}
 }
-/* Wide screens: the card stands up, icon on top, everything centred. The stats band follows closely. */
+/* The card photo is for wide screens only (hidden, so the lazy image is never fetched on phones and tablets). */
+.site .b-solution-photo{display:none}
+/* Wide screens: the cards start right under the hero, one strip of turquoise waves below the photo's gold edge, on a
+   light full-width panel. Each card: a compact gold icon and title on top, and a photo filling about 75% of the card
+   below, emerging from the white through a long soft fade. The card height comes from Hero.css (--card-photo scales
+   with the window so the whole row ends on screen). The one-line text and the "more" arrow are left to phones; the
+   whole card stays the link. */
 @media (min-width:980px){
-  .site .b-solutions{padding-bottom:56px}
+  .site .b-solutions{
+    --panel:color-mix(in srgb,var(--white) 55%,var(--paper));
+    position:relative;z-index:2;padding:0 0 32px;background:var(--panel);
+  }
+  /* The waves: one soft S-flow joining the photo to the cards, 170px above the card tops and 150px behind them. A pale
+     aqua wave starts just under the photo's gold edge and rises behind the services heading (nearly white where the
+     bronze eyebrow sits, so the text keeps 4.5:1). A turquoise and a deeper teal band follow the gold under the photo,
+     swell where it sweeps into the arc, then dive behind the cards; their strength varies along the width and a mask
+     softens them top to bottom. Two tapered white highlights and a soft sheen catch the crests, and everything fades
+     into the panel behind the cards. Painted above the panel and the hero photo, under the heading and cards; mirrored
+     in English. #6fa9b0 and #4f8e97 are tints of the brand teal, #fcfbf9 is --panel: a data URI cannot read a CSS
+     variable. */
+  .site .b-solutions::before{
+    content:"";position:absolute;z-index:-1;pointer-events:none;inset-inline:0;top:-170px;height:320px;
+    --waves:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='p' gradientUnits='userSpaceOnUse' x1='0' y1='0' x2='0' y2='190'%3E%3Cstop offset='0' stop-color='%23fafcfb'/%3E%3Cstop offset='.4' stop-color='%23f4f9f8'/%3E%3Cstop offset='1' stop-color='%23d4e9e8'/%3E%3C/linearGradient%3E%3ClinearGradient id='t' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%236fa9b0' stop-opacity='.5'/%3E%3Cstop offset='0.4' stop-color='%236fa9b0' stop-opacity='.44'/%3E%3Cstop offset='0.62' stop-color='%236fa9b0' stop-opacity='.34'/%3E%3Cstop offset='1' stop-color='%236fa9b0' stop-opacity='.5'/%3E%3C/linearGradient%3E%3ClinearGradient id='d' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%234f8e97' stop-opacity='.42'/%3E%3Cstop offset='0.4' stop-color='%234f8e97' stop-opacity='.32'/%3E%3Cstop offset='0.6' stop-color='%234f8e97' stop-opacity='.24'/%3E%3Cstop offset='1' stop-color='%234f8e97' stop-opacity='.4'/%3E%3C/linearGradient%3E%3ClinearGradient id='mv' gradientUnits='userSpaceOnUse' x1='0' y1='50' x2='0' y2='236'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.55' stop-color='%23fff' stop-opacity='.7'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cmask id='m' maskUnits='userSpaceOnUse' x='0' y='0' width='1440' height='320'%3E%3Crect width='1440' height='320' fill='url(%23mv)'/%3E%3C/mask%3E%3ClinearGradient id='f' gradientUnits='userSpaceOnUse' x1='0' y1='170' x2='0' y2='228'%3E%3Cstop offset='0' stop-color='%23fcfbf9' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23fcfbf9'/%3E%3C/linearGradient%3E%3ClinearGradient id='h' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23fff' stop-opacity='0'/%3E%3Cstop offset='.12' stop-color='%23fff' stop-opacity='.95'/%3E%3Cstop offset='.55' stop-color='%23fff' stop-opacity='.8'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='s' x='-5%25' y='-20%25' width='110%25' height='140%25'%3E%3CfeGaussianBlur stdDeviation='1.2'/%3E%3C/filter%3E%3Cfilter id='g' x='-5%25' y='-50%25' width='110%25' height='200%25'%3E%3CfeGaussianBlur stdDeviation='3'/%3E%3C/filter%3E%3C/defs%3E%3Cpath fill='url(%23p)' d='M0 150C20 145.5 70 129 120 123C170 117 246.7 116.7 300 114C353.3 111.3 401.7 111 440 107C478.3 103 503.3 97.5 530 90C556.7 82.5 578.3 70.7 600 62C621.7 53.3 636.7 44 660 38C683.3 32 700 28.7 740 26C780 23.3 836.7 23 900 22C963.3 21 1053.3 21.5 1120 20C1186.7 18.5 1246.7 15.3 1300 13C1353.3 10.7 1416.7 7.2 1440 6V320H0Z'/%3E%3Cg mask='url(%23m)'%3E%3Cpath fill='url(%23t)' filter='url(%23s)' d='M0 160C33.3 155.3 130 138.3 200 132C270 125.7 360 126.7 420 122C480 117.3 523.3 108.5 560 104C596.7 99.5 615 94.7 640 95C665 95.3 685 98.2 710 106C735 113.8 761.7 131.3 790 142C818.3 152.7 845 162 880 170C915 178 955 185.3 1000 190C1045 194.7 1100 197.7 1150 198C1200 198.3 1251.7 194.3 1300 192C1348.3 189.7 1416.7 185.3 1440 184V320H0Z'/%3E%3Cpath fill='url(%23d)' filter='url(%23s)' d='M0 184C43.3 180.5 173.3 167.8 260 163C346.7 158.2 446.7 155.2 520 155C593.3 154.8 643.3 157.2 700 162C756.7 166.8 801.7 177 860 184C918.3 191 976.7 200.3 1050 204C1123.3 207.7 1235 206.7 1300 206C1365 205.3 1416.7 201 1440 200V320H0Z'/%3E%3C/g%3E%3Cpath fill='none' stroke='%23fff' stroke-opacity='.22' stroke-width='8' filter='url(%23g)' d='M60 150C86.7 148.3 156.7 143.2 220 140C283.3 136.8 381.7 135.3 440 131C498.3 126.7 535 118.2 570 114C605 109.8 627.5 105.7 650 106C672.5 106.3 695.8 114.3 705 116'/%3E%3Cpath fill='url(%23f)' d='M0 0H1440V320H0Z'/%3E%3Cpath fill='none' stroke='url(%23h)' stroke-width='1.4' stroke-opacity='.85' vector-effect='non-scaling-stroke' d='M60 125C83.3 123.8 151.7 120 200 118C248.3 116 306.7 115.3 350 113C393.3 110.7 430 108 460 104C490 100 506.7 96.2 530 89C553.3 81.8 578.3 69.7 600 61C621.7 52.3 636.7 43 660 37C683.3 31 700 27.7 740 25C780 22.3 850 21.7 900 21C950 20.3 1016.7 21 1040 21'/%3E%3Cpath fill='none' stroke='url(%23h)' stroke-width='1.2' stroke-opacity='.55' vector-effect='non-scaling-stroke' d='M90 142C111.7 140.2 165 134.5 220 131C275 127.5 363.3 125.7 420 121C476.7 116.3 523.3 107.5 560 103C596.7 98.5 616.7 94.2 640 94C663.3 93.8 690 100.7 700 102'/%3E%3C/svg%3E");
+    background:var(--waves) 0 0/100% 100% no-repeat;
+  }
+  :root[dir="ltr"] .site .b-solutions::before{transform:scaleX(-1)}
+  .site .b-solutions > .b-container{position:relative;padding-block:0 20px}
+  /* The heading sits just above the cards, in the hero's text column (the hero keeps room for it below its text), so it
+     takes no height of its own. It stays first in reading order. */
+  .site .b-solutions .b-section-head{
+    position:absolute;bottom:100%;inset-inline-start:var(--gutter);width:calc((100% - var(--gutter) * 2) * var(--text-col));
+    min-height:0;margin:0 0 16px;
+  }
+  .site .b-solutions .b-section-head .b-eyebrow{margin-bottom:6px}
+  .site .b-solutions .b-section-head h2{margin:0 0 4px;font-size:clamp(24px,2vw,28px)}
+  .site .b-solutions .b-lead{max-width:none;font-size:15px;line-height:1.5}
   .site .b-solution-list{grid-template-columns:repeat(4,1fr);gap:20px}
-  .site .b-solution{grid-template-columns:1fr;justify-items:center;align-content:start;row-gap:10px;padding:28px 18px 20px;text-align:center}
-  .site .b-solution-icon{width:56px;height:56px}
-  .site .b-solution-icon svg{width:48px;height:48px;stroke-width:1.2}
-  .site .b-solution-body h3{font-size:19px;margin-bottom:4px}
-  .site .b-solution-more{margin-top:4px}
-  .site .b-solution-more-label{display:inline}
+  .site .b-solution{
+    grid-template-columns:1fr;grid-template-rows:auto auto 1fr;justify-items:center;align-items:start;row-gap:2px;
+    --card-head:113.4px;min-height:calc(var(--card-photo) + var(--card-head));padding:8px 18px 0;text-align:center;
+    box-shadow:0 1px 2px rgba(47,74,87,.06),0 10px 28px rgba(47,74,87,.12);  /* a --teal tint: the cards sit in the water */
+  }
+  .site .b-solution-icon{width:28px;height:28px}
+  .site .b-solution-icon svg{width:25px;height:25px;stroke-width:1.5}
+  .site .b-solution-body h3{margin:0;font-size:16px;line-height:21px;text-wrap:balance}
+  .site .b-solution-summary,.site .b-solution-more{display:none}
+  /* The card keeps the height Hero.css reserves for it (--card-photo plus --card-head, the header room for one title
+     line in Hebrew and two in English); the photo fills whatever the compact header leaves. */
+  :root[dir="ltr"] .site .b-solution{--card-head:136.8px}
+  .site .b-solution-photo{
+    display:block;position:relative;align-self:stretch;width:calc(100% + 36px);margin:2px -18px 0;
+    overflow:hidden;border-radius:0 0 calc(var(--radius) - 1px) calc(var(--radius) - 1px);
+  }
+  /* Each photo is cropped for this band, its subject below the fade; --fade is where the photo reaches full colour,
+     set per card so no face sits in the faded part. */
+  .site .b-solution-photo img{
+    --fade:44%;
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    -webkit-mask-image:linear-gradient(to bottom,transparent 0,rgba(0,0,0,.05) calc(var(--fade) * .2),rgba(0,0,0,.16) calc(var(--fade) * .4),rgba(0,0,0,.4) calc(var(--fade) * .6),rgba(0,0,0,.72) calc(var(--fade) * .8),#000 var(--fade));
+    mask-image:linear-gradient(to bottom,transparent 0,rgba(0,0,0,.05) calc(var(--fade) * .2),rgba(0,0,0,.16) calc(var(--fade) * .4),rgba(0,0,0,.4) calc(var(--fade) * .6),rgba(0,0,0,.72) calc(var(--fade) * .8),#000 var(--fade));
+  }
+  .site #service-financial .b-solution-photo img{--fade:30%}
+  .site #service-savings .b-solution-photo img{--fade:36%}
+  .site #service-pension .b-solution-photo img{--fade:40%}
+}
+/* Wide windows, where the margin beside the text is broad: the turquoise and deeper bands rise again at the outer edge
+   (the right in Hebrew, the left in English), balancing the photo. This layer is as wide as that margin plus 40px, so
+   it climbs only where there is no text; it fades in from nothing at its inner end, where it meets the main waves. */
+@media (min-width:1400px){
+  .site .b-solutions::before{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 320' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='t' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%236fa9b0' stop-opacity='0'/%3E%3Cstop offset='.35' stop-color='%236fa9b0' stop-opacity='.45'/%3E%3Cstop offset='1' stop-color='%236fa9b0' stop-opacity='.72'/%3E%3C/linearGradient%3E%3ClinearGradient id='d' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%234f8e97' stop-opacity='0'/%3E%3Cstop offset='.45' stop-color='%234f8e97' stop-opacity='.32'/%3E%3Cstop offset='1' stop-color='%234f8e97' stop-opacity='.58'/%3E%3C/linearGradient%3E%3ClinearGradient id='mv' gradientUnits='userSpaceOnUse' x1='0' y1='50' x2='0' y2='236'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.55' stop-color='%23fff' stop-opacity='.7'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cmask id='m' maskUnits='userSpaceOnUse' x='0' y='0' width='200' height='320'%3E%3Crect width='200' height='320' fill='url(%23mv)'/%3E%3C/mask%3E%3ClinearGradient id='f' gradientUnits='userSpaceOnUse' x1='0' y1='170' x2='0' y2='228'%3E%3Cstop offset='0' stop-color='%23fcfbf9' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23fcfbf9'/%3E%3C/linearGradient%3E%3ClinearGradient id='h' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23fff' stop-opacity='0'/%3E%3Cstop offset='.5' stop-color='%23fff' stop-opacity='.85'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='.4'/%3E%3C/linearGradient%3E%3Cfilter id='s' x='-5%25' y='-20%25' width='110%25' height='140%25'%3E%3CfeGaussianBlur stdDeviation='1.2'/%3E%3C/filter%3E%3C/defs%3E%3Cg mask='url(%23m)'%3E%3Cpath fill='url(%23t)' filter='url(%23s)' d='M0 192C7.5 191.5 29.2 193.3 45 189C60.8 184.7 79.2 176.2 95 166C110.8 155.8 126.2 140 140 128C153.8 116 168 102.3 178 94C188 85.7 196.3 80.7 200 78V320H0Z'/%3E%3Cpath fill='url(%23d)' filter='url(%23s)' d='M0 204C11.7 203.5 50 206 70 201C90 196 104.2 184.2 120 174C135.8 163.8 151.7 149.3 165 140C178.3 130.7 194.2 121.7 200 118V320H0Z'/%3E%3C/g%3E%3Cpath fill='url(%23f)' d='M0 0H200V320H0Z'/%3E%3Cpath fill='none' stroke='url(%23h)' stroke-width='1.3' stroke-opacity='.75' vector-effect='non-scaling-stroke' d='M60 182C65.8 179.2 81.7 174.2 95 165C108.3 155.8 126.2 139 140 127C153.8 115 168 101.3 178 93C188 84.7 196.3 79.7 200 77'/%3E%3C/svg%3E"),var(--waves);
+    background-position:right 0 top 0,0 0;
+    background-size:calc((100vw - var(--content)) / 2 + 40px) 320px,100% 100%;
+    background-repeat:no-repeat;
+  }
 }
 /* Pointer devices only. Transform and colour only, so nothing around the card moves. */
 @media (hover:hover){

@@ -50,15 +50,14 @@
   --ease-out:cubic-bezier(.23,1,.32,1);       /* entrances and press feedback: moves at once, settles softly */
   --ease-in-out:cubic-bezier(.77,0,.175,1);   /* on-screen drawing (the hero's gold line) */
   --header-h:72px;
-  --utility-h:40px;       /* the navy top line */
-  /* Everything above the hero: top line, header and its 1px bottom border. The hero fills the screen below it. */
-  --chrome-h:calc(var(--utility-h) + var(--header-h) + 1px);
+  /* Everything above the hero: the header and its 1px bottom border. */
+  --chrome-h:calc(var(--header-h) + 1px);
   --container:1160px;
   --gutter:20px;
 }
 @media (min-width:760px){:root{--gutter:32px;--header-h:84px}}
-/* Header card (Header.css): 12px top margin and a 1px border on both sides. */
-@media (min-width:1200px){:root{--chrome-h:calc(var(--utility-h) + 12px + var(--header-h) + 2px)}}
+/* Wide screens: a more compact full-width navbar. */
+@media (min-width:980px){:root{--header-h:68px}}
 
 html{color-scheme:light;scroll-behavior:smooth;-webkit-text-size-adjust:100%;touch-action:manipulation}
 body{margin:0;background:var(--paper);color:var(--ink)}

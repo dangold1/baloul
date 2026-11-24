@@ -201,21 +201,66 @@ const pressOutside = (page) =>
       await p.context().close();
     }
 
-    step = "desktop: the hero fills the first screen and Services starts only after scrolling";
-    for (const [width, height] of [[1440, 900], [1280, 800], [1100, 800]]) {
+    step = "desktop: full-width navbar, a large photo, the services heading and all four cards in the first screen";
+    for (const [width, height] of [[1512, 850], [1440, 900], [1920, 1080], [1280, 800], [1100, 800]]) {
       for (const path of ["", "en"]) {
         const p = await setup(browser, errs, { viewport: { width, height } });
         await p.goto(HOME + path);
-        const m = await p.evaluate(() => ({
-          hero: document.querySelector(".b-hero").getBoundingClientRect().bottom,
-          services: document.querySelector("#services").getBoundingClientRect().top,
-          overflow: document.documentElement.scrollWidth - innerWidth,
-        }));
+        // Measure the settled layout: the hero copy rises 10px into place on load.
+        await p.evaluate(() => Promise.all(document.querySelector(".b-hero").getAnimations({ subtree: true }).map((a) => a.finished)));
+        const m = await p.evaluate(() => {
+          const cards = [...document.querySelectorAll("#services .b-solution")];
+          const top = Math.min(...cards.map((c) => c.getBoundingClientRect().top));
+          const bottom = Math.max(...cards.map((c) => c.getBoundingClientRect().bottom));
+          const list = document.querySelector("#services .b-solution-list").getBoundingClientRect();
+          const vis = document.querySelector(".b-hero-visual").getBoundingClientRect();
+          // The visible gold edge, not the image box: rebuild the gold path from the frame's ::before SVG and find its
+          // lowest point above the cards (the frame is mirrored in English).
+          const bg = decodeURIComponent(getComputedStyle(document.querySelector(".b-hero-visual"), "::before").backgroundImage);
+          const [, , vbW, vbH] = bg.match(/viewBox='([^']+)'/)[1].split(" ").map(Number);
+          const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+          const gold = svg.appendChild(document.createElementNS("http://www.w3.org/2000/svg", "path"));
+          gold.setAttribute("d", bg.match(/ d='([^']+)'/)[1]);
+          document.body.appendChild(svg);
+          const ltr = document.documentElement.dir === "ltr";
+          let goldLow = -Infinity;
+          for (let i = 0, n = gold.getTotalLength(); i <= 1000; i++) {
+            const pt = gold.getPointAtLength((n * i) / 1000);
+            const x = ltr ? vis.right - (pt.x / vbW) * vis.width : vis.left + (pt.x / vbW) * vis.width;
+            if (x >= list.left && x <= list.right) goldLow = Math.max(goldLow, vis.top + (pt.y / vbH) * vis.height);
+          }
+          svg.remove();
+          return {
+            nav: document.querySelector(".b-header").getBoundingClientRect().width,
+            hero: document.querySelector(".b-hero").getBoundingClientRect().bottom,
+            frameH: vis.height,
+            goldLow,
+            services: document.querySelector("#services").getBoundingClientRect().top,
+            heading: document.querySelector("#services h2").getBoundingClientRect().bottom,
+            headTop: document.querySelector("#services .b-section-head").getBoundingClientRect().top,
+            copyEnd: document.querySelector(".b-hero .b-hero-actions").getBoundingClientRect().bottom,
+            cardBottom: bottom,
+            cardTop: top,
+            rows: new Set(cards.map((c) => Math.round(c.getBoundingClientRect().top))).size,
+            clipped: cards.filter((c) => c.scrollHeight > c.clientHeight + 1).length,
+            overflow: document.documentElement.scrollWidth - innerWidth,
+          };
+        });
         const at = `${width}x${height}/${path}`;
-        // Exact when the content fits; a taller hero (long English copy on a small laptop) may only grow.
-        if (width >= 1280 && path === "") assert.ok(Math.abs(m.hero - height) <= 1, `${at}: hero ends at ${m.hero}`);
-        else assert.ok(m.hero >= height - 1, `${at}: hero ends at ${m.hero}`);
-        assert.ok(m.services >= height - 1, `${at}: Services starts at ${m.services}`);
+        assert.equal(Math.round(m.nav), width, `${at}: the navbar is ${m.nav}px wide`);
+        // A visible strip of waves between the photo's gold edge and the cards; no overlap.
+        assert.ok(m.cardTop - m.goldLow >= 40, `${at}: only ${Math.round(m.cardTop - m.goldLow)}px of waves between the gold edge (${m.goldLow}) and the cards (${m.cardTop})`);
+        assert.ok(m.headTop >= m.copyEnd, `${at}: the services heading (top ${m.headTop}) overlaps the hero text (ends ${m.copyEnd})`);
+        if ([1512, 1440, 1920].includes(width)) {
+          assert.ok(m.frameH >= 440, `${at}: the hero photo is ${m.frameH}px tall`);
+          assert.ok(m.heading <= height, `${at}: the services heading ends at ${m.heading}, below the first screen`);
+          assert.ok(m.cardBottom <= height, `${at}: the cards end at ${m.cardBottom}, below the first screen`);
+        }
+        // 18px minimum gap plus at least 8px spare at the reference size.
+        if (width === 1512) assert.ok(m.headTop - m.copyEnd >= 26, `${at}: only ${Math.round(m.headTop - m.copyEnd)}px between the hero text and the services heading`);
+        assert.ok(Math.abs(m.services - m.hero) <= 1, `${at}: Services starts at ${m.services}, right after the hero (${m.hero})`);
+        assert.equal(m.rows, 1, `${at}: the four cards sit in one row`);
+        assert.equal(m.clipped, 0, `${at}: a card's content is clipped`);
         assert.equal(m.overflow, 0, `${at}: sideways scroll`);
         await p.context().close();
       }

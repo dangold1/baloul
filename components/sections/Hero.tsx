@@ -4,7 +4,6 @@ import { sectionHref } from "@/content/sections";
 import { makeI18n } from "@/lib/i18n/i18n";
 import type { Lang } from "@/lib/i18n/languages";
 import { ButtonLink } from "@/components/ui/Button";
-import { CallLine } from "@/components/blocks/CallLine";
 
 export function Hero({ lang }: { lang: Lang }) {
   const { t } = makeI18n(lang);
@@ -21,7 +20,6 @@ export function Hero({ lang }: { lang: Lang }) {
             <ButtonLink href={sectionHref("contact")}>{t("common.cta")}</ButtonLink>
             <ButtonLink variant="secondary" href={sectionHref("services")}>{t("hero.ctaServices")}</ButtonLink>
           </div>
-          <CallLine lang={lang} />
         </div>
         <div className="b-hero-visual">
           <picture>

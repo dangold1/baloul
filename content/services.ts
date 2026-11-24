@@ -9,6 +9,8 @@ export type Service = {
   /** Matches an option in the lead form topic list. */
   topic: string;
   icon: "chart" | "coin" | "clock" | "shield";
+  /** Home page card photo (desktop), decorative. Free Unsplash License photos, cropped to a wide band. */
+  image: string;
   /** Phones only, home page list: one short line, under ~32 characters. Desktop shows `summary`. */
   tagline: string;
   /** One or two sentences: the problem and what we do about it. */
@@ -32,6 +34,7 @@ export const services: Service[] = [
     navLabel: "פנסיה ופרישה",
     topic: "פנסיה ופרישה",
     icon: "clock",
+    image: "/images/service-pension.webp",
     tagline: "כמה תקבלו, ומה לא לפספס.",
     summary:
       "כמה תקבלו בפרישה, כמה מס תשלמו ואיך לא לפספס זכויות. בודקים מוקדם ומלווים אתכם גם בתהליך הפרישה עצמו.",
@@ -53,6 +56,7 @@ export const services: Service[] = [
     navLabel: "ביטוח",
     topic: "ביטוח וניהול סיכונים",
     icon: "shield",
+    image: "/images/service-insurance.webp",
     tagline: "כיסוי נכון, וליווי ביום התביעה.",
     summary:
       "ביטוחים כפולים, כיסויים חסרים ותביעה שנתקעת מול החברה. מסדרים את המעטפת ומלווים אתכם גם ביום שבו צריך אותה.",
@@ -79,6 +83,7 @@ export const services: Service[] = [
     navLabel: "חיסכון והשקעות",
     topic: "חיסכון והשקעות",
     icon: "coin",
+    image: "/images/service-savings.webp",
     tagline: "חיסכון שמתאים למטרה ולטווח.",
     summary:
       "כסף שיושב בעו״ש, קרן השתלמות שלא נבדקה שנים או תיק שלא ברור כמה הוא מסוכן. מתאימים את החיסכון למטרה, לטווח ולצורך בנזילות.",
@@ -100,6 +105,7 @@ export const services: Service[] = [
     navLabel: "תכנון פיננסי",
     topic: "תכנון פיננסי",
     icon: "chart",
+    image: "/images/service-financial.webp",
     tagline: "הכנסות, הלוואות וחסכון בתוכנית אחת.",
     summary:
       "הכנסות, הלוואות וחסכונות שמתנהלים כל אחד לחוד מקשים לדעת אם אתם בכיוון הנכון. בונים יחד תמונה אחת ותוכנית שאפשר לעמוד בה.",

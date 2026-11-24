@@ -10,7 +10,7 @@ export function ClickTracker() {
       const link = (e.target as Element).closest<HTMLAnchorElement>("a[href]");
       if (!link) return;
       const href = link.getAttribute("href") ?? "";
-      const area = link.closest("section[id], header, footer, .b-floating, .b-utility");
+      const area = link.closest("section[id], header, footer, .b-floating");
       const location = area?.id || area?.className.split(" ")[0] || "page";
       if (href.includes("wa.me/")) track("click_whatsapp", { location });
       else if (href.startsWith("tel:")) track("click_phone", { location });

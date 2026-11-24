@@ -1,7 +1,9 @@
 "use client";
 
 import { sectionHref, toSectionId } from "@/content/sections";
+import { site } from "@/content/site";
 import { Logo } from "@/components/ui/Logo";
+import { PhoneRingIcon } from "@/components/ui/Icons";
 import { AboutLink } from "@/components/about/AboutLink";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { LanguageSwitch } from "@/components/i18n/LanguageSwitch";
@@ -12,8 +14,8 @@ import { desktopNav, mobileNav } from "./nav";
 
 /**
  * Site header. On the home page the anchors stay in-page and the about link opens the dialog.
- * On sub pages (services, legal) they point back to the home page, except the contact link
- * when the page has its own form (contactHref).
+ * On sub pages (services, legal) they point back to the home page, except the mobile menu's contact
+ * link when the page has its own form (contactHref). The header button calls the office (tel:).
  */
 export function Header({ home = true, contactHref }: { home?: boolean; contactHref?: string }) {
   const { t, href } = useLanguage();
@@ -49,9 +51,15 @@ export function Header({ home = true, contactHref }: { home?: boolean; contactHr
           )}
         </nav>
         <LanguageSwitch />
-        <NavLink className="b-nav-cta" href={cta}>
-          {t("nav.contact")}
-        </NavLink>
+        <a className="b-nav-cta" href={site.phone.href} aria-label={`${t("nav.call")} ${site.phone.display}`}>
+          <span className="b-nav-call-icon">
+            <PhoneRingIcon />
+          </span>
+          <span className="b-nav-call-text">
+            <span className="b-nav-call-label">{t("nav.call")}</span>
+            <span className="b-nav-call-number">{site.phone.display}</span>
+          </span>
+        </a>
         <MobileMenu
           items={mobileNav.map((i) => ({
             ...i,

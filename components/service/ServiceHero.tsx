@@ -3,7 +3,6 @@ import type { Service } from "@/content/services";
 import { makeI18n } from "@/lib/i18n/i18n";
 import type { Lang } from "@/lib/i18n/languages";
 import { ButtonLink } from "@/components/ui/Button";
-import { CallLine } from "@/components/blocks/CallLine";
 
 /** Crumbs, title, intro and the main button, beside a short facts panel. */
 export function ServiceHero({ lang, service }: { lang: Lang; service: Service }) {
@@ -25,7 +24,6 @@ export function ServiceHero({ lang, service }: { lang: Lang; service: Service })
             <div className="b-hero-actions">
               <ButtonLink href="#contact">{t("common.cta")}</ButtonLink>
             </div>
-            <CallLine lang={lang} />
           </div>
           <dl className="b-service-facts" aria-label={t("service.factsLabel")}>
             <div>

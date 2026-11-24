@@ -1,5 +1,4 @@
 import type { Lang } from "@/lib/i18n/languages";
-import { UtilityBar } from "./UtilityBar";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { FloatingWhatsApp } from "./FloatingWhatsApp";
@@ -9,7 +8,7 @@ import { ActiveSectionProvider } from "./ActiveSection";
 import { AboutModal } from "@/components/about/AboutModal";
 import { LeadPopup } from "@/components/lead/LeadPopup";
 
-/** The chrome around every page: bars, header, footer and the floating parts. The home page also gets the scroll-spy and stepper. */
+/** The chrome around every page: header, footer and the floating parts. The home page also gets the scroll-spy and stepper. */
 export function PageChrome({
   lang,
   variant,
@@ -23,7 +22,6 @@ export function PageChrome({
   const header = <Header home={home} contactHref={variant === "service" ? "#contact" : undefined} />;
   return (
     <>
-      <UtilityBar lang={lang} />
       {home ? (
         <ActiveSectionProvider>
           {header}

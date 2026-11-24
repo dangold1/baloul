@@ -76,10 +76,8 @@ async function setup(browser, errs, options) {
     await page.waitForTimeout(1500);
     assert.ok(await page.evaluate(() => Math.abs(document.getElementById("process").getBoundingClientRect().top) < 120));
 
-    step = "header CTA marks contact";
-    await page.click(".b-nav-cta");
-    await page.waitForTimeout(50);
-    assert.equal(await page.getAttribute(".b-nav-cta", "aria-current"), "true");
+    step = "header button calls the office";
+    assert.equal(await page.getAttribute(".b-nav-cta", "href"), "tel:+97236510298");
 
     step = "mobile menu link activates its target";
     await mobile.click(".b-menu");

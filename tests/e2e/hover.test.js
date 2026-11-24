@@ -39,12 +39,12 @@ const style = (page, selector, prop, pseudo) => page.$eval(selector, (e, [p, ps]
     await page.goto(HOME);
     await mobile.goto(HOME);
 
-    step = "service card lifts, gets a gold border and nudges the arrow";
+    step = "service card lifts and gets a gold border (desktop cards show a photo, not the arrow)";
     await page.hover(".b-solution >> nth=0");
     await page.waitForTimeout(300);
     assert.equal(await style(page, ".b-solution", "transform"), "matrix(1, 0, 0, 1, 0, -2)");
     assert.equal(await style(page, ".b-solution", "borderTopColor"), "rgb(201, 163, 90)");
-    assert.equal(await style(page, ".b-solution .b-solution-arrow", "transform"), "matrix(1, 0, 0, 1, -4, 0)");
+    assert.equal(await style(page, ".b-solution .b-solution-photo", "display"), "block");
 
     step = "situation card lifts (service page; the home page no longer has situations)";
     await page.goto(`${HOME}insurance`);

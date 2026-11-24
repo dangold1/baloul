@@ -4,7 +4,6 @@
  */
 import "./base.css";
 import "./shared.css";
-import "@/components/layout/UtilityBar.css";
 import "@/components/layout/Header.css";
 import "@/components/i18n/LanguageSwitch.css";
 import "@/components/sections/Hero.css";
