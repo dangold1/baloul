@@ -14,3 +14,15 @@
   for = "/images/*"
   [headers.values]
     Cache-Control = "public, max-age=2592000"
+
+# Netlify Forms detection page: never in search results (the page also carries a noindex meta).
+[[headers]]
+  for = "/__forms.html"
+  [headers.values]
+    X-Robots-Tag = "noindex"
+
+# Hebrew text for AI crawlers: explicit charset.
+[[headers]]
+  for = "/llms.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"

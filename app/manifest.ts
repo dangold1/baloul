@@ -1,11 +1,15 @@
 import type { MetadataRoute } from "next";
+import { site } from "@/content/site";
 
 export const dynamic = "force-static";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "BALOUL | פיננסים • פנסיה • ביטוח",
-    short_name: "BALOUL",
+    id: "/",
+    name: `${site.name} | ${site.tagline}`,
+    short_name: site.name,
+    description: site.shareDescription,
+    categories: ["finance", "business"],
     start_url: "/",
     scope: "/",
     display: "browser",

@@ -25,3 +25,31 @@
 - [מדיניות פרטיות](https://baloul.co.il/privacy)
 - [תנאי שימוש](https://baloul.co.il/terms)
 - [הצהרת נגישות](https://baloul.co.il/accessibility)
+
+## English
+
+> BALOUL is a finance, pension and insurance agency in Holon, Israel. Professional activity began in 2003 with Yitzhak Baloul and grew into an agency in 2014. The agency supports individuals, families and businesses. Hebrew pages live at https://baloul.co.il/ and English pages under https://baloul.co.il/en.
+
+### Services
+- Financial planning: budget and cash flow, loans and mortgage, emergency fund, goals such as a home, children and retirement.
+- Savings and investments: investment provident funds, study funds (Keren Hishtalmut), provident funds, savings policies, managed portfolios, IRA, Amendment 190, transfers and management fees.
+- Pension and retirement: retirement planning, tax-exemption allocation (Kibua Zchuyot), Form 161, pension and severance continuity, tax and annuity factors.
+- Insurance and risk management: health, life, critical illness, loss of earning capacity, long-term care, home, car, business and professional liability, and claims support with the insurer.
+
+### Details
+- Address: 15 Ehud Manor St., Holon, Israel
+- Phone: +972-3-6510298
+- WhatsApp: +972-54-9194771
+- Email: baloulassistance@gmail.com
+- Google rating: 5.0, over 100 reviews
+
+### Pages
+- [Home](https://baloul.co.il/en)
+- [Pension and retirement](https://baloul.co.il/en/pension-retirement): pension review, retirement planning, Kibua Zchuyot, Form 161
+- [Insurance and risk management](https://baloul.co.il/en/insurance): duplicate cover, health, life, loss of earning capacity, claims support
+- [Savings and investments](https://baloul.co.il/en/savings-investments): study funds, investment provident funds, Amendment 190, management fees
+- [Financial planning](https://baloul.co.il/en/financial-planning): budget and cash flow, loans, emergency fund, goals
+- [Disclosure](https://baloul.co.il/en/disclosure)
+- [Privacy policy](https://baloul.co.il/en/privacy)
+- [Terms of use](https://baloul.co.il/en/terms)
+- [Accessibility statement](https://baloul.co.il/en/accessibility)

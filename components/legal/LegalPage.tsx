@@ -2,6 +2,7 @@ import type { LegalDoc } from "@/content/legal";
 import { getContent } from "@/content/localized";
 import { makeI18n } from "@/lib/i18n/i18n";
 import type { Lang } from "@/lib/i18n/languages";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 /** Legal document as a standalone page, reusing the original dialog typography. English pages say the Hebrew text binds. */
 export function LegalPage({ lang, doc: heDoc }: { lang: Lang; doc: LegalDoc }) {
@@ -11,6 +12,7 @@ export function LegalPage({ lang, doc: heDoc }: { lang: Lang; doc: LegalDoc }) {
   return (
     <main id="top" className="b-legal-page">
       <span id="main" tabIndex={-1} />
+      <BreadcrumbJsonLd lang={lang} items={[{ name: t("common.home"), path: "/" }, { name: doc.title, path: `/${doc.slug}` }]} />
       <section aria-label={doc.title} className="b-legal-overlay">
         <article className="b-legal-dialog">
           <a aria-label={t("common.backHome")} className="b-legal-close" href={href("/")}>

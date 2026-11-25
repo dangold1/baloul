@@ -11,7 +11,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## Components
 
 Layers, imports point left only: `ui/` ← `blocks/` ← `sections/`, `service/`, `layout/` ← `pages/` ← `app/`.
-- `ui/`: primitives (`ButtonLink`, `Stars`, `Logo`, `Dialog`, `Icons`, `ServiceEmblem`, `SectionHead`/`Eyebrow`). Type-only imports from `content/` are fine (`Icons`, `ServiceEmblem` use `type Service`); no runtime imports from `content/` or i18n, except `Logo` (reads `content/site`).
+- `ui/`: primitives (`ButtonLink`, `Stars`, `Logo`, `Dialog`, `Icons`, `SectionHead`/`Eyebrow`). Type-only imports from `content/` are fine (`Icons` uses `type Service`); no runtime imports from `content/` or i18n, except `Logo` (reads `content/site`).
 - `blocks/`: server pieces shared by home and service pages. Never render `<section>` or an `id`; the caller owns them.
 - `sections/` (home), `service/` (service pages), `layout/` (chrome: `PageChrome` per variant home/service/legal), `pages/` (whole pages, called by `app/`).
 
@@ -40,5 +40,6 @@ DOM selectors used from client code live in `lib/dom.ts` (`DOM.header`, `DOM.ope
 Tokens: colors, fonts, radius, shadow, spacing and `--x` (reading direction) are CSS variables in `styles/base.css` `:root`. Use them, not raw values. New CSS uses the breakpoints 600 / 760 / 980 / 1200 listed there.
 
 Snapshot: `npm run test:markup` compares the `<body>` of every page in `out/` and `out/en/` (React `useId` values masked). A refactor keeps it unchanged. For an intended markup change, check the diff is only that change, then `UPDATE=1 npm run test:markup`.
+The same command runs `tests/markup/seo.test.mjs` on the build: title at most 70 chars, description at most 160, one `h1`, canonical + hreflang, valid JSON-LD, and sitemap / robots / manifest / `llms.txt` consistency. New meta text must fit those limits.
 
 Gate: `npm run lint && npm run test:unit && npm run build && npm run test:markup && npm run test:e2e`. Local server on port 3100 only (`npx serve@14 out -l 3100`).

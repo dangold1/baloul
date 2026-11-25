@@ -137,7 +137,7 @@ export const servicesEn: Record<string, Partial<Service>> = {
   "service-pension": {
     metaTitle: "Pension and Retirement Planning in Holon | BALOUL",
     metaDescription:
-      "Pension review, retirement planning, Kibua Zchuyot (tax-exemption allocation) and Form 161, with personal guidance. BALOUL agency in Holon, serving clients since 2003. Free introductory call.",
+      "Pension review, retirement planning, tax-exemption allocation (Kibua Zchuyot) and Form 161, personal guidance. BALOUL, Holon, since 2003. No-obligation call.",
     title: "Pension and retirement",
     navLabel: "Pension and retirement",
     tagline: "What you will get, and what not to miss.",
@@ -158,7 +158,7 @@ export const servicesEn: Record<string, Partial<Service>> = {
   "service-insurance": {
     metaTitle: "Health, Life and Business Insurance and Claims Support | BALOUL Holon",
     metaDescription:
-      "Duplicate-cover checks, the right health, life, home, car and business cover, and claims support with the insurer until it is settled. BALOUL agency in Holon, since 2003.",
+      "Duplicate-cover checks, the right health, life, home, car and business cover, and claims support until settled. BALOUL agency in Holon, since 2003.",
     title: "Insurance and risk management",
     navLabel: "Insurance",
     tagline: "The right cover, and support on claim day.",
@@ -177,9 +177,9 @@ export const servicesEn: Record<string, Partial<Service>> = {
     checksHeading: "What we check in your insurance",
   },
   "service-savings": {
-    metaTitle: "Savings and Investments: Study Funds, Investment Provident Funds, Amendment 190 | BALOUL",
+    metaTitle: "Savings and Investments: Study Funds, Amendment 190 and More | BALOUL",
     metaDescription:
-      "Savings matched to the goal and time frame: study funds (Keren Hishtalmut), investment provident funds, savings policies, Amendment 190, tracks and management fees. Personal guidance from BALOUL in Holon, since 2003.",
+      "Savings matched to your goal and time frame: study funds, investment provident funds, savings policies, Amendment 190 and fees. BALOUL, Holon, since 2003.",
     title: "Savings and investments",
     navLabel: "Savings and investments",
     tagline: "Savings that fit the goal and the timeline.",
@@ -200,7 +200,7 @@ export const servicesEn: Record<string, Partial<Service>> = {
   "service-financial": {
     metaTitle: "Financial Planning for Families and Businesses | BALOUL Holon",
     metaDescription:
-      "Order in your income, loans and savings: budget and cash flow, mortgage and emergency fund, goals such as a home, children and retirement. Long-term personal guidance from BALOUL in Holon.",
+      "Budget and cash flow, loans and mortgage, an emergency fund, and goals such as a home, children and retirement, in one plan. BALOUL, Holon, since 2003.",
     title: "Financial planning",
     navLabel: "Financial planning",
     tagline: "Income, loans and savings in one plan.",

@@ -17,9 +17,12 @@ const pages: Page[] = [
 /** Every page in both languages; each entry lists its Hebrew and English versions (xhtml:link hreflang). */
 export default function sitemap(): MetadataRoute.Sitemap {
   const url = (lang: (typeof LANGS)[number], path: string) => `${site.url}${localePath(lang, path)}`;
+  /** Build time: the site is static, so every deploy is the last change. Google reads lastmod and ignores changefreq/priority. */
+  const lastModified = new Date();
   return pages.flatMap((p) =>
     LANGS.map((lang) => ({
       url: url(lang, p.path),
+      lastModified,
       changeFrequency: p.changeFrequency,
       priority: p.priority,
       alternates: { languages: { he: url("he", p.path), en: url("en", p.path), "x-default": url("he", p.path) } },

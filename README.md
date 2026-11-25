@@ -41,10 +41,10 @@ npx serve@14 out -l 3100      # הצגת תוצאת ה־build: http://localhost:
 ```
 app/                 נתיבים: app/(he) לעברית, app/(en)/en לאנגלית; בכל אחד בית ו־[slug] לעמודי השירות (/pension-retirement וכו') והעמודים המשפטיים (/privacy וכו'); sitemap, robots, manifest
 components/pages     HomePage, SubPage: העמודים המלאים ש־app/ מציג
-components/ui        אבני בסיס: ButtonLink, Stars, Logo, Dialog, Icons, ServiceEmblem, SectionHeading
+components/ui        אבני בסיס: ButtonLink, Stars, Logo, Dialog, Icons, SectionHeading
 components/blocks    חלקים משותפים לבית ולעמודי השירות: ContactBlock, FaqList, StepsList, ReviewCard ועוד
 components/service   ServicePage: תבנית אחת לארבעת עמודי השירות
-components/layout    PageChrome, UtilityBar, Header, MobileMenu, Footer, FloatingWhatsApp, Section, ActiveSection, ScrollStepper
+components/layout    PageChrome, Header, MobileMenu, Footer, FloatingWhatsApp, Section, ActiveSection, ScrollStepper
 components/sections Hero, Services (+ServiceCard), Process, About, Reviews, Knowledge, Contact
 components/i18n      LanguageProvider (useLanguage), LanguageSwitch
 components/lead      ContactForm, LeadPopup, LeadFields, useLeadSubmit (זרימת הליד המשותפת)
@@ -99,6 +99,12 @@ Hero (כותרת, פעולה, עובדות: 2003 / 2014 / דירוג Google) →
 - את GA4, המרות Google Ads ו־Meta Pixel מגדירים בתוך GTM על האירועים:
   `generate_lead`, `click_whatsapp`, `click_phone`, `click_email`, `popup_view`, `lead_submit_error`.
 - "הגדרות עוגיות" בפוטר פותח מחדש את הבחירה.
+- אימות Google Search Console: למלא `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` (ב־`.env.local` ובהגדרות Netlify). תג האימות מופיע בכל עמוד רק כשהמשתנה מוגדר.
+
+## SEO ו־GEO
+
+`app/robots.ts`, `app/sitemap.ts` (hreflang he/en, lastmod) ו־`app/manifest.ts` נבנים בזמן build. מטא לכל עמוד ב־`lib/seo.ts`, סכמות ב־`components/seo/JsonLd.tsx`, תקציר למנועי AI ב־`public/llms.txt` (עברית ואנגלית).
+`npm run test:markup` בודק גם SEO על תוצאת ה־build: כותרת עד 70 תווים, תיאור עד 160, h1 אחד, canonical ו־hreflang, JSON-LD תקין, התאמה בין העמודים ל־sitemap, robots, manifest ו־llms.txt.
 
 ## פריסה ל־Netlify
 

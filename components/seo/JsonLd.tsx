@@ -15,6 +15,30 @@ function JsonLd({ data }: { data: object }) {
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />;
 }
 
+const addressNode = (lang: Lang) => ({
+  "@type": "PostalAddress",
+  streetAddress: pick(lang, site.address.street, "15 Ehud Manor St."),
+  addressLocality: pick(lang, site.address.city, "Holon"),
+  addressCountry: site.address.country,
+});
+
+/** Where the agency works: the city first, then the country. No coordinates or postal code: only facts shown on the page. */
+const areaServed = (lang: Lang) => [
+  { "@type": "City", name: pick(lang, site.address.city, "Holon") },
+  { "@type": "Country", name: "Israel" },
+];
+
+/** The agency in short, for pages without the full Organization node (service pages), so `provider` resolves on the page itself. */
+const providerNode = (lang: Lang) => ({
+  "@type": "InsuranceAgency",
+  "@id": orgId,
+  name: site.name,
+  url: pageUrl(lang, "/"),
+  telephone: site.phone.e164,
+  logo: `${site.url}${site.images.logo.src}`,
+  address: addressNode(lang),
+});
+
 function serviceNode(heService: Service, lang: Lang) {
   const s = localizeService(heService, lang);
   const url = pageUrl(lang, servicePath(s));
@@ -46,6 +70,7 @@ export function OrganizationJsonLd({ lang }: { lang: Lang }) {
         name: site.name,
         alternateName: ["בלול סוכנות לביטוח ופיננסים", "BALOUL פיננסים פנסיה וביטוח", "BALOUL Finance, Pensions and Insurance"],
         description: pick(lang, site.description, siteEn.description),
+        slogan: pick(lang, site.tagline, siteEn.tagline),
         disambiguatingDescription: pick(lang, aboutParagraphs, aboutParagraphsEn).join(" "),
         url: pageUrl(lang, "/"),
         logo: `${site.url}${site.images.logo.src}`,
@@ -54,14 +79,9 @@ export function OrganizationJsonLd({ lang }: { lang: Lang }) {
         email: site.email,
         foundingDate: String(site.foundedYear),
         founder: { "@type": "Person", name: pick(lang, "יצחק בלול", "Yitzhak Baloul") },
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: pick(lang, site.address.street, "15 Ehud Manor St."),
-          addressLocality: pick(lang, site.address.city, "Holon"),
-          addressCountry: site.address.country,
-        },
+        address: addressNode(lang),
         hasMap: site.address.mapsUrl,
-        areaServed: { "@type": "Country", name: "Israel" },
+        areaServed: areaServed(lang),
         knowsLanguage: LANGUAGES,
         knowsAbout: services.map((s) => localizeService(s, lang)).flatMap((s) => [s.title, ...s.bullets]),
         hasOfferCatalog: {
@@ -110,9 +130,9 @@ export function FaqJsonLd({ lang, faqs = homeFaqs }: { lang: Lang; faqs?: Faq[] 
   );
 }
 
-/** Pass the Hebrew service; it is localized here. */
+/** Pass the Hebrew service; it is localized here. The provider is spelled out because the page has no Organization node to point at. */
 export function ServiceJsonLd({ lang, service }: { lang: Lang; service: Service }) {
-  return <JsonLd data={{ "@context": "https://schema.org", ...serviceNode(service, lang) }} />;
+  return <JsonLd data={{ "@context": "https://schema.org", ...serviceNode(service, lang), provider: providerNode(lang) }} />;
 }
 
 /** Items take Hebrew paths ("/", "/insurance"); URLs follow the page's language. */

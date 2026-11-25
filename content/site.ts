@@ -43,8 +43,9 @@ export const consentConfig = {
 
 /** English counterparts of the site-wide texts above (titles, descriptions). BALOUL is the agency's name in both languages. */
 export const siteEn = {
-  title: "BALOUL | Pension, Insurance and Financial Planning Agency in Holon, Since 2003",
+  title: "BALOUL | Pension, Insurance and Financial Planning in Holon since 2003",
   description:
-    "BALOUL is an agency in Holon supporting individuals, families and businesses with pensions and retirement planning, savings and investments, insurance and claims. Serving clients since 2003, rated 5.0 on Google.",
+    "BALOUL, an agency in Holon, supports individuals, families and businesses with pensions, retirement, savings, insurance and claims. Since 2003, 5.0 on Google.",
   shareDescription: "Personal guidance on pensions, savings and insurance, since 2003. Office in Holon.",
+  tagline: "Finance • Pensions • Insurance",
 };
